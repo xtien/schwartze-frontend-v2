@@ -8,105 +8,104 @@ export const ADMIN = 'admin'
 export const AUTH1 = 'auth1'
 export const AUTH2 = 'auth2'
 
-function AuthenticationService () {
-
-    function executeLogin(username, password) {
-        return axios.get(`${API_URL}/user/login`,
-            {
-                headers: {
-                    authorization: this.createBasicAuthToken(username, password)
-                }
-            }
-        )
-    }
-
-    function setAuthorities(authorities) {
-        if (authorities.includes("READ_PRIVILEGE")) {
-            sessionStorage.setItem(VISITOR, true)
-        }
-        if (authorities.includes("WRITE_PRIVILEGE")) {
-            sessionStorage.setItem(ADMIN, true)
-        }
-    }
-
-   function isAdmin() {
-        return sessionStorage.getItem(ADMIN);
-    }
-
-    function setAuth(username, password) {
-        sessionStorage.setItem(AUTH1, username)
-        sessionStorage.setItem(AUTH2, password)
-    }
-
-    function  getAuth1() {
-        return sessionStorage.getItem(AUTH1)
-    }
-
-    function getAuth2() {
-        return sessionStorage.getItem(AUTH2)
-    }
-
-    function getAuth() {
-        return {
-            authorization: this.createBasicAuthToken(this.getAuth1(), this.getAuth2())
-        }
-    }
-
-    function  getAxiosConfig() {
-        return {
+export function executeLogin(username:string, password: string) {
+    return axios.get(`${API_URL}/user/login`,
+        {
             headers: {
-                "Content-Type": "application/json",
-            },
-            authorization: this.createBasicAuthToken(this.getAuth1(), this.getAuth2())
-        }
-    }
-
-    function  createBasicAuthToken(username, password) {
-        return 'Basic ' + window.btoa(username + ":" + password)
-    }
-
-    function  registerSuccessfulLogin(username, password) {
-        sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
-        this.setupAxiosInterceptors(this.createBasicAuthToken(username, password))
-        this.setAuth(username, password)
-    }
-
-    function  logout() {
-        sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
-        sessionStorage.removeItem(AUTH1);
-        sessionStorage.removeItem(AUTH2);
-        sessionStorage.setItem(ADMIN, 'false');
-    }
-
-    function   isUserLoggedIn() {
-        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-        if (user === null) {
-            return false
-        } else {
-            return true
-        }
-    }
-
-    function    getLoggedInUserName() {
-        let user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
-        if (user === null) {
-            return ''
-        } else {
-            return user
-        }
-    }
-
-    function   setupAxiosInterceptors(token) {
-        axios.interceptors.request.use(
-            (config) => {
-                if (this.isUserLoggedIn()) {
-                    config.headers.authorization = token
-                }
-                return config
+                authorization: createBasicAuthToken(username, password)
             }
-        )
+        }
+    )
+}
+
+export function setAuthorities(authorities: string | string[]) {
+    if (authorities.includes("READ_PRIVILEGE")) {
+        sessionStorage.setItem(VISITOR, 'true')
+    }
+    if (authorities.includes("WRITE_PRIVILEGE")) {
+        sessionStorage.setItem(ADMIN, 'true')
     }
 }
 
-export default new AuthenticationService()
+export function isAdmin() {
+    return sessionStorage.getItem(ADMIN);
+}
+
+export function setAuth(username: string, password: string) {
+    sessionStorage.setItem(AUTH1, username)
+    sessionStorage.setItem(AUTH2, password)
+}
+
+export function getAuth1() {
+    return sessionStorage.getItem(AUTH1)?? ''
+}
+
+export function getAuth2() {
+    return sessionStorage.getItem(AUTH2)?? ''
+}
+
+export function getAuth() {
+    return {
+        authorization: createBasicAuthToken(getAuth1(), getAuth2())
+    }
+}
+
+export function getAxiosConfig() {
+    return {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        authorization: createBasicAuthToken(getAuth1(), getAuth2())
+    }
+}
+
+export function createBasicAuthToken(username: string, password:string) {
+    if (username === null || password === null) {
+        return null;
+    } else {
+        return 'Basic ' + window.btoa(username + ":" + password)
+    }
+}
+
+export function registerSuccessfulLogin(username: string, password: string) {
+    sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
+    setupAxiosInterceptors(createBasicAuthToken(username, password)?? '')
+    setAuth(username, password)
+}
+
+export function logout() {
+    sessionStorage.removeItem(USER_NAME_SESSION_ATTRIBUTE_NAME);
+    sessionStorage.removeItem(AUTH1);
+    sessionStorage.removeItem(AUTH2);
+    sessionStorage.setItem(ADMIN, 'false');
+}
+
+export function isUserLoggedIn() {
+    if (sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME) === null) {
+        return false
+    } else {
+        return true
+    }
+}
+
+export function getLoggedInUserName() {
+    const user = sessionStorage.getItem(USER_NAME_SESSION_ATTRIBUTE_NAME)
+    if (user === null) {
+        return ''
+    } else {
+        return user
+    }
+}
+
+export function setupAxiosInterceptors(token: string) {
+    axios.interceptors.request.use(
+        (config) => {
+            if (isUserLoggedIn()) {
+                config.headers.authorization = token
+            }
+            return config
+        }
+    )
+}
+
 

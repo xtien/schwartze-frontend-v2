@@ -1,7 +1,7 @@
 import './App.css'
 import {BrowserRouter, Link, Route, Routes} from "react-router";
 import strings from "./strings.tsx";
-import AuthenticationService from "./service/AuthenticationService.tsx";
+import {isAdmin} from "./service/AuthenticationService.tsx";
 import twitli from './images/logo.png'
 import Landing from "./Landing.tsx";
 
@@ -14,6 +14,7 @@ function App() {
                     <div className="d-block d-sm-none">
                         <h1 className='px-5'>{strings.titel}</h1>
                         <table>
+                            <tbody>
                             <tr>
                                 <td>
                                     <p className='navbar-nav'><Link to='/'
@@ -37,9 +38,11 @@ function App() {
                                                                               className='linkStyle'>{strings.locations}</Link>
                                     </p>
                                 </td>
+                                <td>
                                 <p className='navbar-nav textStyle'><Link to='/references/'
                                                                           className='linkStyle'>{strings.references}</Link>
                                 </p>
+                                </td>
                                 <td>
                                     <p className='navbar-nav textStyle'><Link to='/topics/'
                                                                               className='linkStyle'>{strings.topics}</Link>
@@ -55,7 +58,7 @@ function App() {
                                 <td>
                                     {/* Admin should only be visible after login. toggle enables Login.js
                                                to render App.js by setting its state  */}
-                                    {AuthenticationService.isAdmin() === 'true' ?
+                                    {isAdmin() === 'true' ?
                                         <p className='navbar-nav textStyle'><Link to={'/admin/'}
                                                                                   className='linkStyle'>{strings.admin}</Link>
                                         </p>
@@ -67,6 +70,7 @@ function App() {
                                     </p>
                                 </td>
                             </tr>
+                            </tbody>
                         </table>
                     </div>
                     <div className="d-none d-sm-block">
@@ -100,7 +104,7 @@ function App() {
                                             </p>
                                             {/* Admin should only be visible after login. toggle enables Login.js
                                                to render App.js by setting its state  */}
-                                            {AuthenticationService.isAdmin() === 'true' ?
+                                            {isAdmin() === 'true' ?
                                                 <p className='navbar-nav textStyle'><Link to={'/admin/'}
                                                                                           className='linkStyle'>{strings.admin}</Link>
                                                 </p>

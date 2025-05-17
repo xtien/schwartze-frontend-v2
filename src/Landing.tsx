@@ -23,12 +23,12 @@ import {
     type RemoveReferenceLinkRequest
 } from "./generated-api";
 import type {RefMap} from "./model/refMap.tsx";
-import AuthenticationService from "./service/AuthenticationService.tsx";
 import strings from "./strings";
 import language from "./language";
 import {EditPictureUrlForm} from "./functions/EditPictureUrlForm.tsx";
 import {EditReferenceForm} from "./functions/EditReferenceForm.tsx";
 import type {JSX} from 'react/jsx-runtime';
+import {isAdmin} from "./service/AuthenticationService.tsx";
 
 const homeTextApi = new HomeTextApi();
 const pageApi = new PageApi();
@@ -42,8 +42,8 @@ function Landing() {
     const [pageNumber] = useState<number>(0);
     const [chapterNumber] = useState<number>(0);
     const [leftBlockPage, setLeftBlockPage] = useState<Page>();
-    const [pageText, setPageText] = useState<string>('');
-    const [blogText, setBlogText] = useState<string>('');
+    const [pageText, setPageText] = useState('');
+    const [blogText, setBlogText] = useState('');
     const [refMap] = useState<RefMap>(
         {
             person: '/get_person_details/',
@@ -67,7 +67,7 @@ function Landing() {
 
         homeTextApi.getHomeText(postData)
             .then(response => {
-                setPageText(response.data.text!.toString);
+                setPageText(response.data.text!);
             })
             .catch(error => {
                 console.log(error.toString())
@@ -80,7 +80,7 @@ function Landing() {
         };
         homeTextApi.getHomeText(blogData)
             .then(response => {
-                setBlogText(response.data.text!.toString);
+                setBlogText(response.data.text!);
             })
             .catch(error => {
                 console.log(error.toString())
@@ -95,7 +95,9 @@ function Landing() {
         // set page object for left block
         pageApi.getPage(request).then((response) => {
             setLeftBlockPage(response.data.page);
-        }).catch()
+        }).catch((error) => {
+            console.log(error)
+        })
     }, []);
 
     function delete_link(link_id: number) {
@@ -120,7 +122,7 @@ function Landing() {
         setShowLinkEdit(false);
         setPage(page);
 
-        const request : PageTextRequest = {
+        const request: PageTextRequest = {
             page: page.page_number,
             chapter: page.chapter_number,
             language: lang
@@ -161,7 +163,7 @@ function Landing() {
                 return (<div className='mb-2'>
                     <Link to={refMap.person + reference.key}
                           className='linkStyle'>{reference.description}</Link>
-                    {AuthenticationService.isAdmin() === "true" ?
+                    {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
                                     delete_link(reference.id!)
@@ -172,7 +174,7 @@ function Landing() {
                 return (<div className='mb-2'>
                     <Link to={refMap.location + reference.key}
                           className='linkStyle'>{reference.description}</Link>
-                    {AuthenticationService.isAdmin() === "true" ?
+                    {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
                                     delete_link(reference.id!)
@@ -183,7 +185,7 @@ function Landing() {
                 return (<div className='mb-2'>
                     <Link to={refMap.letter + reference.key + '/0'}
                           className='linkStyle'>{reference.description}</Link>
-                    {AuthenticationService.isAdmin() === "true" ?
+                    {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
                                     delete_link(reference.id!)
@@ -194,7 +196,7 @@ function Landing() {
                 return (<div className='mb-2'>
                     <Link to={refMap.subject + reference.key}
                           className='linkStyle'>{reference.description}</Link>
-                    {AuthenticationService.isAdmin() === "true" ?
+                    {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
                                     delete_link(reference.id!)
@@ -204,7 +206,7 @@ function Landing() {
             case PageReferenceTypeEnum.Link:
                 return (<div className='mb-2'>
                     <a href={reference.key} target="_blank" rel="noopener noreferrer">{reference.description}</a>
-                    {AuthenticationService.isAdmin() === "true" ?
+                    {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
                                     delete_link(reference.id!)
@@ -217,9 +219,11 @@ function Landing() {
     }
 
 
-    const isAdmin = AuthenticationService.isAdmin();
+    const isAdm = isAdmin();
 
-    const picture_caption = leftBlockPage !== null ? leftBlockPage!.picture_caption : '';
+    const caption: string | undefined = leftBlockPage != null && leftBlockPage?.picture_caption != null ? leftBlockPage!.picture_caption : ''
+
+    const picture_caption = caption != null ? caption! : '';
 
     let picture_url = null;
     if (leftBlockPage != null) {
@@ -260,7 +264,7 @@ function Landing() {
                 <div className="float-child-left">
                     <div id="sidebar-wrapper">
                         <ul className="sidebar-nav mt-5">
-                            <div>{isAdmin === 'true' ?
+                            <div>{isAdm === 'true' ?
                                 <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
                                 </p>
                                 : null}
@@ -270,12 +274,14 @@ function Landing() {
                             </div>
 
                             <div className='sidebar-picture'>
-                                <div>{picture_url} != null ?<img src={picture_url!} width="200" alt=""/> : ''</div>
+                                {picture_url === null ? null :
+                                <div> <img src={picture_url!} width="200" alt=""/></div>
+                                }
                                 <div className='picture-caption'>{picture_caption}</div>
                             </div>
                             <div>
                                 {
-                                    AuthenticationService.isAdmin() === "true" ?
+                                    isAdmin() === "true" ?
                                         <div>
                                             <button type="button"
                                                     className='btn btn-link mt-5 pl-3'
@@ -325,13 +331,13 @@ function Landing() {
                                     />
                                 )
                                 :
-                                <p className='page_text'> {pageText}  </p>
+                                null
                             }
                         </div>
 
                         <div className='container'>
                             <div className='photo'>
-                                <img alt="briefkaart lizzy" src="https://www.lizzyansingh.nl/pics/32-1.jpg"
+                                <img alt="briefkaart lizzy" src="https://lizzyansingh.nl/pics/32-1.jpg"
                                      width="500px"/>
                             </div>
                             <div className='textpage'>
