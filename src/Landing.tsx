@@ -29,10 +29,10 @@ import {EditPictureUrlForm} from "./functions/EditPictureUrlForm.tsx";
 import {EditReferenceForm} from "./functions/EditReferenceForm.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {isAdmin} from "./service/AuthenticationService.tsx";
-
-const homeTextApi = new HomeTextApi();
-const pageApi = new PageApi();
-const adminReferencesApi = new AdminReferencesApi();
+import {apiConfig} from "./config.tsx";
+const homeTextApi = new HomeTextApi(apiConfig);
+const pageApi = new PageApi(apiConfig);
+const adminReferencesApi = new AdminReferencesApi(apiConfig);
 
 
 function Landing() {

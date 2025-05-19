@@ -4,6 +4,12 @@ import strings from "./strings.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import twitli from './images/logo.png'
 import Landing from "./Landing.tsx";
+import Letters from "./Letters.tsx";
+import SearchLetters from "./SearchLetters.tsx";
+
+function Letter() {
+    return null;
+}
 
 function App() {
 
@@ -129,7 +135,7 @@ function App() {
                             {/*<Route path="/admin/" element={<Admin/>}/>*/}
                             {/*<Route path="/login/" element={<Login/>}/>*/}
                             {/*<Route path="/signup/" element={<Signup/>}/>*/}
-                            {/*<Route path="/get_letters/:page" element={<Letters/>}/>*/}
+                            <Route path="/get_letters/:page" element={<Letters/>}/>
                             {/*<Route path="/add_person/" element={<AddPerson/>}/>*/}
                             {/*<Route path="/add_letter/" element={<AddLetter/>}/>*/}
                             {/*<Route path="/edit_letter/:number" element={<EditLetter/>}/>*/}
@@ -140,7 +146,7 @@ function App() {
                             {/*<Route path="/get_location_details/:id" element={<Location/>}/>*/}
                             {/*<Route path="/get_letters_for_location/:id" element={<LettersForLocation/>}/>*/}
                             {/*<Route path="/get_person_details/:id" element={<Person/>}/>*/}
-                            {/*<Route path="/get_letter_details/:number/:pagenumber" element={<Letter/>}/>*/}
+                            <Route path="/get_letter_details/:number/:pagenumber" element={<Letter/>}/>
                             {/*<Route path="/get_letters_from_person/:id" element={<PersonFromLetters/>}/>*/}
                             {/*<Route path="/get_letters_to_person/:id" element={<PersonToLetters/>}/>*/}
                             {/*<Route path="/get_text/:entity/:id" element={<Text/>}/>*/}
@@ -150,7 +156,7 @@ function App() {
                             {/*<Route path="/get_people/" element={<People/>}/>*/}
                             {/*<Route path="/references/" element={<References/>}/>*/}
                             {/*<Route path="/topics/" element={<Topics/>}/>*/}
-                            {/*<Route path="/search_letters/:search_term" element={<SearchLetters/>}/>*/}
+                            <Route path="/search_letters/:search_term" element={<SearchLetters/>}/>
                             {/*<Route path="/get_content/" element={<Content/>}/>*/}
                             {/*<Route path="/about/" element={<About/>}/>*/}
                         </Routes>
