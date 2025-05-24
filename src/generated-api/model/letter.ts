@@ -52,18 +52,6 @@ export interface Letter {
     'localDate'?: string;
     /**
      * 
-     * @type {Person}
-     * @memberof Letter
-     */
-    'sender'?: Person;
-    /**
-     * 
-     * @type {Person}
-     * @memberof Letter
-     */
-    'recipient'?: Person;
-    /**
-     * 
      * @type {number}
      * @memberof Letter
      */
@@ -73,25 +61,25 @@ export interface Letter {
      * @type {Array<Person>}
      * @memberof Letter
      */
-    'senders'?: Array<Person>;
+    'senders': Array<Person>;
     /**
      * 
      * @type {Array<Person>}
      * @memberof Letter
      */
-    'recipients'?: Array<Person>;
+    'recipients': Array<Person>;
     /**
      * 
      * @type {Array<MyLocation>}
      * @memberof Letter
      */
-    'sender_location'?: Array<MyLocation>;
+    'sender_location': Array<MyLocation>;
     /**
      * 
      * @type {Array<MyLocation>}
      * @memberof Letter
      */
-    'recipient_location'?: Array<MyLocation>;
+    'recipient_location': Array<MyLocation>;
     /**
      * 
      * @type {string}

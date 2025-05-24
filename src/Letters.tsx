@@ -77,6 +77,10 @@ function Letters() {
         return <Navigate to={search_letters}/>
     }
 
+    function navigateTo(location: string){
+        navigate(location);
+    }
+
     // if (gotoletter) {
     //     return <Navigate to={'/get_letter_details/' + number + '/0/'}/>
     // }
@@ -144,7 +148,7 @@ function Letters() {
             recipientLocation = recipientLocation.slice(0, -2);
 
             return (
-                <tr onClick={() => navigate(letterLink)} key={i}>
+                <tr onClick={() => navigateTo(letterLink)}>
                     <td className='text-nowrap'>{letter.number}</td>
                     <td className='text-nowrap'>{letter.date}</td>
                     <td>{senderName}</td>

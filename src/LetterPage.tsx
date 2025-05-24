@@ -27,35 +27,39 @@ import type {CommentFormProps} from "./interface/CommentFormProps.tsx";
 import strings from "./strings.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import Util from "./service/Util.tsx";
+import {MyPopup} from "./MyPopup.tsx";
 
 const letterApi = new LettersApi(apiConfig)
 const imageApi = new ImagesApi(apiConfig)
 const adminLetterApi = new AdminLetterApi(apiConfig)
 
-function Letter() {
+function LetterPage() {
+    const location = useLocation()
+    const params = location.pathname.substring(1).split('/')
+    const number = params[1]
 
-
-    const [letter, setLetter] = useState<Letter>({})
-    const [lettertext, setLettertext] = useState('')
-    const [letterNumber, setLetterNumber] = useState('')
+    const [letter, setLetter] = useState<Letter>({
+        collectie: undefined,
+        comment: "",
+        date: "",
+        id: 0,
+        localDate: "",
+        number: 0,
+        senders: [],
+        recipients: [],
+        recipient_location: [],
+        sender_location: [],
+        remarks: "",
+         text: undefined
+    })
     const [showEdit, setShowEdit] = useState(false)
-    const [senders, setSenders] = useState<Person[]>([])
-    const [recipients, setRecipients] = useState<Person[]>([])
     const [imageData, setImageData] = useState<string[]>([])
-    const [sender_locations, setSender_locations] = useState<MyLocation[]>([])
-    const [recipient_locations, setRecipient_locations] = useState<MyLocation[]>([])
     const [edit_letter, setEdit_letter] = useState(false)
     const [delete_letter, setDelete_letter] = useState(false)
+    const [showError, setShowError] = useState(false)
+    const [error, setError] = useState<string>()
     // const [goSearch, setGoSearch] = useState(false)
     // const [search_term, setSearch_term] = useState('')
-
-    const location = useLocation()
-
-    const params = location.pathname.split('/')
-    const number = params[4]
-
-    setLetterNumber(number)
-
 
     language()
 
@@ -66,29 +70,15 @@ function Letter() {
         letterApi.getLetter(request).then((response) => {
             if (response.data.letter !== undefined) {
                 setLetter(response.data.letter)
-                if (response.data.letter.text?.text_string !== undefined) {
-                    setLettertext(response.data.letter.text.text_string)
-                }
-                if (response.data.letter.senders !== undefined) {
-                    setSenders(response.data.letter.senders)
-                }
-                if (response.data.letter.recipients !== undefined) {
-                    setRecipients(response.data.letter.recipients)
-                }
-                if (response.data.letter.sender_location !== undefined) {
-                    setSender_locations(response.data.letter.sender_location)
-                }
-                if (response.data.letter.recipient_location !== undefined) {
-                    setRecipient_locations(response.data.letter.recipient_location)
-                }
                 getLetterImages(number);
             }
 
         }).catch((error) => {
             console.log(error)
+            setShowError(true)
+            setError(error.toString())
         })
-    })
-
+    }, [])
 
     function toggleEditDone() {
         setShowEdit(false)
@@ -107,28 +97,29 @@ function Letter() {
     }
 
     function forward() {
-        next(letterNumber)
+        next()
     }
 
     function back() {
-        previous(letterNumber)
+        previous()
     }
 
-    function next(number: string) {
+    function next() {
         const request: LetterRequest = {
-            'number': parseInt(number)
+            'number': letter.number
         }
         letterApi.getNextLetter(request).then((response) => {
-            if (response.data.letter != null)
+            if (response.data.letter != null) {
                 setLetter(response.data.letter)
+            }
         }).catch((error) => {
             console.log(error)
         })
     }
 
-    function previous(number: string) {
+    function previous() {
         const request: LetterRequest = {
-            'number': parseInt(number)
+            'number': letter.number
         }
         letterApi.getPreviousLetter(request).then((response) => {
             if (response.data.letter != null) {
@@ -165,16 +156,16 @@ function Letter() {
     const listItems = imageData.map((d) => (
         <div className='letter_image ml-4 mt-5'><img alt="original letter" src={`data:image/jpeg;base64,${d}`}/>
         </div>));
-    const senderList = senders.map((s: Person) =>
+    const senderList = letter.senders.map((s: Person) =>
         <span><Link to={`/get_person_details/${s.id}`}
                     className='linkStyle'>{s.nick_name} {s.tussenvoegsel} {s.last_name} </Link> </span>);
-    const recipientList = recipients.map((r: Person) => <span><Link
+    const recipientList = letter.recipients.map((r: Person) => <span><Link
         to={`/get_person_details/${r.id}`}
         className='linkStyle'>{r.nick_name} {r.tussenvoegsel} {r.last_name} </Link> </span>);
 
-    const senderLocationList = sender_locations.map((s: MyLocation) => <span><Link
+    const senderLocationList = letter.sender_location.map((s: MyLocation) => <span><Link
         to={`/get_location_details/${s.id}`} className='linkStyle'>{s.location_name} </Link> </span>);
-    const recipientLocationList = recipient_locations.map((s: MyLocation) => <span><Link
+    const recipientLocationList = letter.recipient_location.map((s: MyLocation) => <span><Link
         to={`/get_location_details/${s.id}`} className='linkStyle'>{s.location_name} </Link> </span>);
 
     if (letter != null) {
@@ -190,8 +181,15 @@ function Letter() {
     }
 
     return (
-
         <>
+            <div>
+                {showError ?
+                    <div className='alert alert-danger' role='alert'>
+                        <MyPopup errorText={error}/>
+                    </div>
+                    : null
+                }
+            </div>
             <div className='container mt-3'>
                 {
                     showEdit ? null : (
@@ -255,9 +253,7 @@ function Letter() {
                         <div>
                             <div>
                                 <CommentForm
-                                    letterNumber={letter.number}
-                                    text={letter.remarks}
-                                    date={letter.date}
+                                    letter={letter}
                                     toggleEditDone={toggleEditDone}
                                     setLetter={setLetter}
                                 />
@@ -315,112 +311,103 @@ function Letter() {
                 </div>
 
                 <div className='letter'>
-                    <div dangerouslySetInnerHTML={{__html: lettertext}}/>
-                </div>
-                <div className='textpage mt-5 ml-5'>
-                    {letter.text != null && Util.isNotEmpty(letter.text.text_string) ?
-                        <div>
-                            {/* TODO: this needs to change when others than myself get access to data entry */}
-                            <p>
-                                {letter.text.text_string === undefined ? '' :
-                                    <div dangerouslySetInnerHTML={{__html: letter.text.text_string.substring(0, 300)}}/>
-                                }
-                            </p>
-                            {letter.text.text_string !== undefined && letter.text.text_string.length > 300 ?
-                                <p>
-                                    <Link to={linkTo} className='mt-5 mb-5'> Meer </Link>
-                                </p>
-                                : null}
-                        </div> : null}
-                    <div className='remark'>
-                        {strings.remarks}
+                    {letter.text != null && letter.text.text_string != null ?
+                        <div
+                            dangerouslySetInnerHTML={{__html: letter.text != null && letter.text.text_string != null ? letter.text.text_string : ''}}/>
+                        : null}
+                    <div className='textpage mt-5 ml-5'>
+                        {letter.text != null && Util.isNotEmpty(letter.text.text_string) ?
+                            <div>
+                                {/* TODO: this needs to change when others than myself get access to data entry */}
+
+                                    {letter.text.text_string === undefined ? '' :
+                                        <div
+                                            dangerouslySetInnerHTML={{__html: letter.text.text_string.substring(0, 300)}}/>
+                                    }
+
+                                {letter.text.text_string !== undefined && letter.text.text_string.length > 300 ?
+                                    <p>
+                                        <Link to={linkTo} className='mt-5 mb-5'> {strings.meer} </Link>
+                                    </p>
+                                    : null}
+                            </div> : null}
+                        <div className='remark'>
+                            {strings.remarks}
+                        </div>
+
                     </div>
 
-                </div>
 
+                    {isAdmin() === "true" ?
+                        <div className='mb-5 mt-5 ml-5'>
+                            <Link to={linkToEditText}>
+                                Edit tekst
+                            </Link>
+                        </div>
+                        : null}
 
-                {isAdmin() === "true" ?
-                    <div className='mb-5 mt-5 ml-5'>
-                        <Link to={linkToEditText}>
-                            Edit tekst
-                        </Link>
+                    <div className='list_of_letters'>
+                        {listItems}
                     </div>
-                    : null}
-
-                <div className='list_of_letters'>
-                    {listItems}
                 </div>
             </div>
         </>
     )
-}
 
+    function CommentForm({letter, toggleEditDone, setLetter}: CommentFormProps) {
 
-function CommentForm({letterNumber, text, date, toggleEditDone, setLetter}: CommentFormProps) {
+        const [text, setText] = useState(letter.text != null ? letter.text.text_string : '');
+        const [date, setDate] = useState(letter.date);
 
-    const [letter, _setLetter] = useState<Letter>({});
-    const [_text, setText] = useState(text);
-    const [_date, setDate] = useState(date);
-
-    useEffect(() => {
-        const request: LetterRequest = {
-            number: letterNumber
+        function handleChange(event: { target: { value: string; }; }) {
+            setText(event.target.value);
         }
-        letterApi.getLetter(request).then(() => {
-            _setLetter(letter)
-        }).catch((error) => {
-            console.log(error)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }, [])
 
+        function handleDateChange(event: { target: { value: string; }; }) {
+            setDate(event.target.value);
+        }
 
-    function handleChange(event: { target: { value: any; }; }) {
-        setText(event.target.value);
-    }
+        function handleSubmit() {
+            const request: LetterRequest =
+                {
+                    comment: text,
+                    date: date
+                }
 
-    function handleDateChange(event: { target: { value: any; }; }) {
-        setDate(event.target.value);
-    }
+            adminLetterApi.updateLetterComment(request).then(response => {
+                if (response.data.letter != null) {
+                    setLetter(response.data.letter)
+                }
+                toggleEditDone()
+            }).catch(error => {
+                console.log(error)
+            })
+        }
 
-    function handleSubmit() {
-        const request: LetterRequest = {comment: _text}
-        adminLetterApi.updateLetterComment(request).then(response => {
-            if (response.data.letter != null) {
-                setLetter(response.data.letter)
-            }
-            toggleEditDone()
-        }).catch(error => {
-            console.log(error)
-        })
-    }
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="status"></label>
-                <textarea
-                    id="text"
-                    value={_text}
-                    className="form-control  mb-5"
-                    onChange={handleChange}/>
-                <label htmlFor="status">Datum</label>
+        return (
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label htmlFor="status"></label>
+                    <textarea
+                        id="text"
+                        value={text}
+                        className="form-control  mb-5"
+                        onChange={handleChange}/>
+                    <label htmlFor="status">Datum</label>
+                    <input
+                        type="text"
+                        id="date"
+                        value={date}
+                        className="form-control "
+                        onChange={handleDateChange}/>
+                </div>
                 <input
-                    type="text"
-                    id="date"
-                    value={_date}
-                    className="form-control "
-                    onChange={handleDateChange}/>
-            </div>
-            <input
-                type="submit"
-                className="btn btn-outline-success mybutton"
-                value="Submit"
-            />
-        </form>
-    );
+                    type="submit"
+                    className="btn btn-outline-success mybutton"
+                    value="Submit"
+                />
+            </form>
+        );
+    }
 }
-
-
-export default Letter
+export default LetterPage

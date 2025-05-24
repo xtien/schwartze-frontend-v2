@@ -1,9 +1,7 @@
-import type Letter from "../Letter";
+import type {Letter} from "../generated-api";
 
 export interface CommentFormProps {
-    letterNumber: number | undefined,
-    text: string | undefined,
-    date: string |  undefined,
+    letter: Letter,
     toggleEditDone: () => void
     setLetter: (letter: Letter) => void;
 }
