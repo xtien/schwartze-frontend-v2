@@ -10,6 +10,7 @@ import LetterPage from "./LetterPage.tsx";
 import TextPage from "./TextPage.tsx";
 import People from "./People.tsx";
 import PersonPage from "./PersonPage.tsx";
+import LocationPage from "./LocationPage.tsx";
 
 function App() {
 
@@ -143,7 +144,7 @@ function App() {
                             {/*<Route path="/add_location/" element={<AddLocation/>}/>*/}
                             {/*<Route path="/combine_person/:id" element={<CombinePerson/>}/>*/}
                             {/*<Route path="/combine_location/:id" element={<CombineLocation/>}/>*/}
-                            {/*<Route path="/get_location_details/:id" element={<Location/>}/>*/}
+                            <Route path="/get_location_details/:id" element={<LocationPage/>}/>
                             {/*<Route path="/get_letters_for_location/:id" element={<LettersForLocation/>}/>*/}
                             <Route path="/get_person_details/:id" element={<PersonPage/>}/>
                             <Route path="/get_letter_details/:number/:pagenumber" element={<LetterPage/>}/>
