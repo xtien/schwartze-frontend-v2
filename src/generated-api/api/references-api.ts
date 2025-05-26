@@ -76,9 +76,9 @@ export const ReferencesApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPerson: async (getReferencesRequest: GetReferencesRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getReferences: async (getReferencesRequest: GetReferencesRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getReferencesRequest' is not null or undefined
-            assertParamExists('getPerson', 'getReferencesRequest', getReferencesRequest)
+            assertParamExists('getReferences', 'getReferencesRequest', getReferencesRequest)
             const localVarPath = `/getReferences/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -133,10 +133,10 @@ export const ReferencesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPerson(getReferencesRequest: GetReferencesRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReferencesResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPerson(getReferencesRequest, options);
+        async getReferences(getReferencesRequest: GetReferencesRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReferencesResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getReferences(getReferencesRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ReferencesApi.getPerson']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['ReferencesApi.getReferences']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -164,8 +164,8 @@ export const ReferencesApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPerson(getReferencesRequest: GetReferencesRequest, options?: RawAxiosRequestConfig): AxiosPromise<ReferencesResult> {
-            return localVarFp.getPerson(getReferencesRequest, options).then((request) => request(axios, basePath));
+        getReferences(getReferencesRequest: GetReferencesRequest, options?: RawAxiosRequestConfig): AxiosPromise<ReferencesResult> {
+            return localVarFp.getReferences(getReferencesRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -195,8 +195,8 @@ export class ReferencesApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof ReferencesApi
      */
-    public getPerson(getReferencesRequest: GetReferencesRequest, options?: RawAxiosRequestConfig) {
-        return ReferencesApiFp(this.configuration).getPerson(getReferencesRequest, options).then((request) => request(this.axios, this.basePath));
+    public getReferences(getReferencesRequest: GetReferencesRequest, options?: RawAxiosRequestConfig) {
+        return ReferencesApiFp(this.configuration).getReferences(getReferencesRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

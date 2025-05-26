@@ -22,9 +22,36 @@
 export interface PeopleRequest {
     /**
      * 
+     * @type {number}
+     * @memberof PeopleRequest
+     */
+    'startNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PeopleRequest
+     */
+    'totalNumber'?: number;
+    /**
+     * 
      * @type {Array<number>}
      * @memberof PeopleRequest
      */
     'ids'?: Array<number>;
+    /**
+     * 
+     * @type {string}
+     * @memberof PeopleRequest
+     */
+    'orderBy'?: PeopleRequestOrderByEnum;
 }
+
+export const PeopleRequestOrderByEnum = {
+    Name: 'NAME',
+    Number: 'NUMBER',
+    FirstName: 'FIRST_NAME'
+} as const;
+
+export type PeopleRequestOrderByEnum = typeof PeopleRequestOrderByEnum[keyof typeof PeopleRequestOrderByEnum];
+
 

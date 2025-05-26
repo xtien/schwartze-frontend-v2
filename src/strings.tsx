@@ -54,6 +54,9 @@ const strings = new LocalizedStrings({
         more_about_site: "Meer over de site",
         siteVersion: "Site Versie",
         aboutChristine: "About Christine",
+        name: "Naam",
+        comment: "Opmerkingen",
+        personLettersText: "Brieven"
     },
     en:{
         about: "About",
@@ -102,6 +105,9 @@ const strings = new LocalizedStrings({
         more_about_site: "Meer over de site",
         siteVersion: "Site Version",
         aboutChristine: "About Christine",
+        name: "Name",
+        comment: "Comments",
+        personLettersText: "Letters"
     },
     fr: {
         about: "À propos",
@@ -150,6 +156,8 @@ const strings = new LocalizedStrings({
         more_about_site: "Plus sur le site",
         siteVersion: "Version Site",
         aboutChristine: "About Christine",
+        name: "Nom",
+        comment: "Commentaires"
     },
     de: {
         titel:"Tante Thérèses Nichte",
@@ -198,6 +206,8 @@ const strings = new LocalizedStrings({
         more_about_site: "Mehr über die site",
         siteVersion: "Site-Version",
         aboutChristine: "About Christine",
+        name: "Name",
+        comment: "Kommentare"
     },
     es: {
         about: "Acerca de",
@@ -246,6 +256,8 @@ const strings = new LocalizedStrings({
         more_about_site: "Más sobre el sitio",
         siteVersion: "Versión del sitio",
         aboutChristine: "Acerca de Christine",
+        name: "Nombre",
+        comment: "Comentarios"
     }
 });
 export default strings;

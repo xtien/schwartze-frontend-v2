@@ -41,6 +41,41 @@ export const AdminPersonApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * 
+         * @param {DeletePersonRequest} deletePersonRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deletePerson: async (deletePersonRequest: DeletePersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deletePersonRequest' is not null or undefined
+            assertParamExists('deletePerson', 'deletePersonRequest', deletePersonRequest)
+            const localVarPath = `/admin/deletePerson/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deletePersonRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {CombinePersonRequest} combinePersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -68,41 +103,6 @@ export const AdminPersonApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(combinePersonRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {DeletePersonRequest} deletePersonRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPerson2: async (deletePersonRequest: DeletePersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'deletePersonRequest' is not null or undefined
-            assertParamExists('getPerson2', 'deletePersonRequest', deletePersonRequest)
-            const localVarPath = `/admin/deletePerson/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(deletePersonRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -146,13 +146,48 @@ export const AdminPersonApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @param {AddPersonRequest} addPersonRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updatePerson: async (addPersonRequest: AddPersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addPersonRequest' is not null or undefined
+            assertParamExists('updatePerson', 'addPersonRequest', addPersonRequest)
+            const localVarPath = `/admin/updatePerson/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(addPersonRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {UpdatePersonRequest} updatePersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePerson: async (updatePersonRequest: UpdatePersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updatePersonDetails: async (updatePersonRequest: UpdatePersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'updatePersonRequest' is not null or undefined
-            assertParamExists('updatePerson', 'updatePersonRequest', updatePersonRequest)
+            assertParamExists('updatePersonDetails', 'updatePersonRequest', updatePersonRequest)
             const localVarPath = `/admin/updatePersonDetails/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -179,41 +214,6 @@ export const AdminPersonApiAxiosParamCreator = function (configuration?: Configu
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {AddPersonRequest} addPersonRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updatePerson1: async (addPersonRequest: AddPersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'addPersonRequest' is not null or undefined
-            assertParamExists('updatePerson1', 'addPersonRequest', addPersonRequest)
-            const localVarPath = `/admin/addPerson/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(addPersonRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -226,6 +226,18 @@ export const AdminPersonApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {DeletePersonRequest} deletePersonRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deletePerson(deletePersonRequest: DeletePersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deletePerson(deletePersonRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AdminPersonApi.deletePerson']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {CombinePersonRequest} combinePersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -234,18 +246,6 @@ export const AdminPersonApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCombinePerson(combinePersonRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AdminPersonApi.getCombinePerson']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {DeletePersonRequest} deletePersonRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getPerson2(deletePersonRequest: DeletePersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPerson2(deletePersonRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminPersonApi.getPerson2']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -262,26 +262,26 @@ export const AdminPersonApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {UpdatePersonRequest} updatePersonRequest 
+         * @param {AddPersonRequest} addPersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePerson(updatePersonRequest: UpdatePersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePerson(updatePersonRequest, options);
+        async updatePerson(addPersonRequest: AddPersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePerson(addPersonRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AdminPersonApi.updatePerson']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {AddPersonRequest} addPersonRequest 
+         * @param {UpdatePersonRequest} updatePersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePerson1(addPersonRequest: AddPersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePerson1(addPersonRequest, options);
+        async updatePersonDetails(updatePersonRequest: UpdatePersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updatePersonDetails(updatePersonRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminPersonApi.updatePerson1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AdminPersonApi.updatePersonDetails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -296,21 +296,21 @@ export const AdminPersonApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * 
+         * @param {DeletePersonRequest} deletePersonRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deletePerson(deletePersonRequest: DeletePersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
+            return localVarFp.deletePerson(deletePersonRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {CombinePersonRequest} combinePersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getCombinePerson(combinePersonRequest: CombinePersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<CombinePersonResult> {
             return localVarFp.getCombinePerson(combinePersonRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {DeletePersonRequest} deletePersonRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPerson2(deletePersonRequest: DeletePersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
-            return localVarFp.getPerson2(deletePersonRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -323,21 +323,21 @@ export const AdminPersonApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
-         * @param {UpdatePersonRequest} updatePersonRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updatePerson(updatePersonRequest: UpdatePersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
-            return localVarFp.updatePerson(updatePersonRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {AddPersonRequest} addPersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePerson1(addPersonRequest: AddPersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
-            return localVarFp.updatePerson1(addPersonRequest, options).then((request) => request(axios, basePath));
+        updatePerson(addPersonRequest: AddPersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
+            return localVarFp.updatePerson(addPersonRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdatePersonRequest} updatePersonRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updatePersonDetails(updatePersonRequest: UpdatePersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
+            return localVarFp.updatePersonDetails(updatePersonRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -351,6 +351,17 @@ export const AdminPersonApiFactory = function (configuration?: Configuration, ba
 export class AdminPersonApi extends BaseAPI {
     /**
      * 
+     * @param {DeletePersonRequest} deletePersonRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPersonApi
+     */
+    public deletePerson(deletePersonRequest: DeletePersonRequest, options?: RawAxiosRequestConfig) {
+        return AdminPersonApiFp(this.configuration).deletePerson(deletePersonRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {CombinePersonRequest} combinePersonRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -358,17 +369,6 @@ export class AdminPersonApi extends BaseAPI {
      */
     public getCombinePerson(combinePersonRequest: CombinePersonRequest, options?: RawAxiosRequestConfig) {
         return AdminPersonApiFp(this.configuration).getCombinePerson(combinePersonRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {DeletePersonRequest} deletePersonRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AdminPersonApi
-     */
-    public getPerson2(deletePersonRequest: DeletePersonRequest, options?: RawAxiosRequestConfig) {
-        return AdminPersonApiFp(this.configuration).getPerson2(deletePersonRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -384,24 +384,24 @@ export class AdminPersonApi extends BaseAPI {
 
     /**
      * 
-     * @param {UpdatePersonRequest} updatePersonRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AdminPersonApi
-     */
-    public updatePerson(updatePersonRequest: UpdatePersonRequest, options?: RawAxiosRequestConfig) {
-        return AdminPersonApiFp(this.configuration).updatePerson(updatePersonRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {AddPersonRequest} addPersonRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AdminPersonApi
      */
-    public updatePerson1(addPersonRequest: AddPersonRequest, options?: RawAxiosRequestConfig) {
-        return AdminPersonApiFp(this.configuration).updatePerson1(addPersonRequest, options).then((request) => request(this.axios, this.basePath));
+    public updatePerson(addPersonRequest: AddPersonRequest, options?: RawAxiosRequestConfig) {
+        return AdminPersonApiFp(this.configuration).updatePerson(addPersonRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UpdatePersonRequest} updatePersonRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPersonApi
+     */
+    public updatePersonDetails(updatePersonRequest: UpdatePersonRequest, options?: RawAxiosRequestConfig) {
+        return AdminPersonApiFp(this.configuration).updatePersonDetails(updatePersonRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -8,56 +8,111 @@
 import * as React from 'react'
 import {Navigate, useLocation, useNavigate} from "react-router";
 import language from "./language";
-import {type Letter, LettersApi, type LettersRequest} from "./generated-api";
+import {
+    type GetPersonRequest,
+    type Letter,
+    LettersApi,
+    type LettersRequest,
+    LettersRequestOrderByEnum, LettersRequestToFromEnum, type Person, PersonApi,
+    type PersonLettersRequest, PersonLettersRequestToFromEnum, type PersonResult
+} from "./generated-api";
 import strings from "./strings.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import {apiConfig} from "./config.tsx";
-import {useRef} from "react";
+import {useState} from "react";
+import type {AxiosResponse} from "axios";
 
 const lettersApi = new LettersApi(apiConfig);
+const personApi = new PersonApi(apiConfig);
 
 function Letters() {
 
-    const initialized = useRef(false)
+    const location = useLocation()
+    const params = location.pathname.substring(1).split('/')
+    const id = params[1]
+    const toFromString = params[2]
 
     const navigate = useNavigate();
+    const [person, setPerson] = useState<Person>()
     const [letters, setLetters] = React.useState<Letter[]>([]);
-    const [orderBy, setOrderBy] = React.useState<string>();
+    const [orderBy, setOrderBy] = React.useState<LettersRequestOrderByEnum>();
+    const [toFrom] = React.useState<LettersRequestToFromEnum>(toFromString === 'to' ? LettersRequestToFromEnum.To : LettersRequestToFromEnum.From);
     const [search_term, setSearchTerm] = React.useState('');
     const [go_search, setGoSearch] = React.useState(false);
-    const [pageNumber, setPageNumber] = React.useState(0);
-    const [number, setNumber] = React.useState(0);
-
-    const location = useLocation();
-    const num = location.pathname.split('/')[4];
-    if (num != null) {
-        setPageNumber(parseInt(num))
-    }
 
     language()
 
     React.useEffect(() => {
-        if (letters === undefined || letters.length === 0) {
-            initialized.current = true
-            const request = {}
-            setOrderBy('number')
-            lettersApi.getLetters1(request).then((response) => {
+
+        function getPerson(id: string) {
+            const personRequest: GetPersonRequest = {
+                id: parseInt(id),
+            }
+            personApi.getPerson(personRequest).then((response: AxiosResponse<PersonResult, any>) => {
+                    if (response.data.person != null) {
+                        setPerson(response.data.person)
+                    }
+                }
+            ).catch((error: any) => {
+                console.log(error)
+            })
+        }
+
+        if (id != null && toFromString != null) {
+            getPerson(id)
+            const request: PersonLettersRequest = {
+                id: parseInt(id),
+                toFrom: toFrom
+            }
+
+            lettersApi.getLettersForPerson(request).then((response) => {
                 if (response.data.letters != null) {
                     setLetters(response.data.letters!)
                 }
             }).catch(error => {
                 console.log(error)
             })
+        } else {
+            if (letters === undefined || letters.length === 0) {
+                const request: LettersRequest = {}
+                setOrderBy(orderBy)
+                lettersApi.getLetters(request).then((response) => {
+                    if (response.data.letters != null) {
+                        setLetters(response.data.letters!)
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
         }
     }, [])
+
+    function createFullName(person: Person): string {
+        let name = '';
+        name += person.nick_name != null ? person.nick_name + ' ' : '';
+        name += person.tussenvoegsel != null ? person.tussenvoegsel + ' ' : '';
+        name += person.last_name != null ? person.last_name : '';
+        return name;
+    }
+
 
     function handleSearchTermChange(event: { target: { value: string }; }) {
         setSearchTerm(event.target.value);
     }
 
-    function handleletternumber(event: { target: { value: string }; }) {
-        setNumber(parseInt(event.target.value));
+    function handleListOrder(event: { target: { value: string }; }) {
+        setOrderBy(orderBy === LettersRequestOrderByEnum.Date ? LettersRequestOrderByEnum.Number : LettersRequestOrderByEnum.Date)
+        const request = {
+            'number': parseInt(event.target.value)
+        }
+        lettersApi.getLetter(request).then((response) => {
+            if (response.data.letter != null) {
+                setLetters([response.data.letter])
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     function handleSearchSubmit() {
@@ -77,7 +132,7 @@ function Letters() {
         return <Navigate to={search_letters}/>
     }
 
-    function navigateTo(location: string){
+    function navigateTo(location: string) {
         navigate(location);
     }
 
@@ -86,40 +141,35 @@ function Letters() {
     // }
 
     function sort() {
-        const request: LettersRequest = {}
-
-        if (orderBy == 'number') {
-            lettersApi.getLettersByDate(request)
-                .then((response) => {
-                    if (response.data.letters != null) {
-                        setLetters(response.data.letters);
-                    }
-                }).catch(error => {
-                console.log(error)
-            })
-        } else {
-            lettersApi.getLetters(request)
-                .then((response) => {
-                    if (response.data.letters != null) {
-                        setLetters(response.data.letters);
-                    }
-                }).catch(error => {
-                console.log(error)
-            })
+        const request: LettersRequest = {
+            orderBy: orderBy
         }
-        setOrderBy(orderBy === 'date' ? 'number' : 'date')
+
+
+        lettersApi.getLetters(request)
+            .then((response) => {
+                if (response.data.letters != null) {
+                    setLetters(response.data.letters);
+                }
+            }).catch(error => {
+            console.log(error)
+        })
+
+        setOrderBy(orderBy === LettersRequestOrderByEnum.Date ? LettersRequestOrderByEnum.Number : LettersRequestOrderByEnum.Date)
     }
 
     function renderLetters() {
-        return letters.map(function (letter, i) {
+        return letters.map(function (letter) {
             const letterLink = '/get_letter_details/' + letter.number?.toString() + '/0';
             const senders = letter.senders;
             let senderName = '';
             if (senders != undefined && senders.length > 0) {
-                senders.map(function (sender, i) {
-                    senderName += sender.nick_name + ' ' + sender.last_name + ', '
+                senders.map(function (sender) {
+                    const fullName: string = createFullName(sender);
+                    senderName += fullName
+                    ', '
                 })
-                senderName = senderName.slice(0, -2);
+                senderName = senderName.slice(0, -1);
             }
 
             const recipients = letter.recipients;
@@ -165,11 +215,14 @@ function Letters() {
     return (
         <div className='container'>
             <div className="row">
+                <div className='mt-3 m-lg-5'>
+                    { person != null ? ( strings.personLettersText + " " + (toFrom === PersonLettersRequestToFromEnum.From ? strings.from : strings.to) + ' ' + createFullName(person) ): ''}
+                </div>
                 <div className='col-sm-3'>
                     <button
                         className="btn btn-outline-secondary mybutton mt-3"
                         onClick={sort}>
-                        {orderBy === 'date' ? op_nummer : op_datum}
+                        {orderBy === LettersRequestOrderByEnum.Date ? op_nummer : op_datum}
                     </button>
                 </div>
 
@@ -179,7 +232,7 @@ function Letters() {
                             type="input"
                             id="nr"
                             placeholder={strings.naar_nummer}
-                            onChange={handleletternumber}
+                            onChange={handleListOrder}
                             className="form-control w-75"
                         />
                     </form>

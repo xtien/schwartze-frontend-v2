@@ -8,6 +8,8 @@ import Letters from "./Letters.tsx";
 import SearchLetters from "./SearchLetters.tsx";
 import LetterPage from "./LetterPage.tsx";
 import TextPage from "./TextPage.tsx";
+import People from "./People.tsx";
+import PersonPage from "./PersonPage.tsx";
 
 function App() {
 
@@ -143,15 +145,14 @@ function App() {
                             {/*<Route path="/combine_location/:id" element={<CombineLocation/>}/>*/}
                             {/*<Route path="/get_location_details/:id" element={<Location/>}/>*/}
                             {/*<Route path="/get_letters_for_location/:id" element={<LettersForLocation/>}/>*/}
-                            {/*<Route path="/get_person_details/:id" element={<Person/>}/>*/}
+                            <Route path="/get_person_details/:id" element={<PersonPage/>}/>
                             <Route path="/get_letter_details/:number/:pagenumber" element={<LetterPage/>}/>
-                            {/*<Route path="/get_letters_from_person/:id" element={<PersonFromLetters/>}/>*/}
-                            {/*<Route path="/get_letters_to_person/:id" element={<PersonToLetters/>}/>*/}
+                            <Route path="/get_letters_for_person/:id/:tofrom" element={<Letters/>}/>
                             <Route path="/get_text/:entity/:id" element={<TextPage/>}/>
                             {/*<Route path="/get_page/:chapterNumber/:pageNumber" element={<Page/>}/>*/}
                             {/*<Route path="/edit_text/:type/:id" element={<TextEdit/>}/>*/}
                             {/*<Route path="/get_locations/" element={<Locations/>}/>*/}
-                            {/*<Route path="/get_people/" element={<People/>}/>*/}
+                            <Route path="/get_people/" element={<People/>}/>
                             {/*<Route path="/references/" element={<References/>}/>*/}
                             {/*<Route path="/topics/" element={<Topics/>}/>*/}
                             <Route path="/search_letters/:search_term" element={<SearchLetters/>}/>

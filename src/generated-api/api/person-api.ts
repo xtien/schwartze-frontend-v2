@@ -24,8 +24,6 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 // @ts-ignore
 import type { GetPersonRequest } from '../model';
 // @ts-ignore
-import type { LocationRequest } from '../model';
-// @ts-ignore
 import type { PeopleRequest } from '../model';
 // @ts-ignore
 import type { PeopleResult } from '../model';
@@ -48,6 +46,41 @@ export const PersonApiAxiosParamCreator = function (configuration?: Configuratio
         getPeople: async (peopleRequest: PeopleRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'peopleRequest' is not null or undefined
             assertParamExists('getPeople', 'peopleRequest', peopleRequest)
+            const localVarPath = `/getPeople/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(peopleRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {PeopleRequest} peopleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPeopleDetails: async (peopleRequest: PeopleRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'peopleRequest' is not null or undefined
+            assertParamExists('getPeopleDetails', 'peopleRequest', peopleRequest)
             const localVarPath = `/getPeopleDetails/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -76,83 +109,13 @@ export const PersonApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
-         * @param {LocationRequest} locationRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPeople1: async (locationRequest: LocationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'locationRequest' is not null or undefined
-            assertParamExists('getPeople1', 'locationRequest', locationRequest)
-            const localVarPath = `/getPeople/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(locationRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {LocationRequest} locationRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPeopleByLastName: async (locationRequest: LocationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'locationRequest' is not null or undefined
-            assertParamExists('getPeopleByLastName', 'locationRequest', locationRequest)
-            const localVarPath = `/getPeopleByLastname/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(locationRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {GetPersonRequest} getPersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPerson1: async (getPersonRequest: GetPersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getPerson: async (getPersonRequest: GetPersonRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getPersonRequest' is not null or undefined
-            assertParamExists('getPerson1', 'getPersonRequest', getPersonRequest)
+            assertParamExists('getPerson', 'getPersonRequest', getPersonRequest)
             const localVarPath = `/getPerson/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -238,26 +201,14 @@ export const PersonApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {LocationRequest} locationRequest 
+         * @param {PeopleRequest} peopleRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPeople1(locationRequest: LocationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PeopleResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPeople1(locationRequest, options);
+        async getPeopleDetails(peopleRequest: PeopleRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PeopleResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPeopleDetails(peopleRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PersonApi.getPeople1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {LocationRequest} locationRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getPeopleByLastName(locationRequest: LocationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PeopleResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPeopleByLastName(locationRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PersonApi.getPeopleByLastName']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PersonApi.getPeopleDetails']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -266,10 +217,10 @@ export const PersonApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPerson1(getPersonRequest: GetPersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getPerson1(getPersonRequest, options);
+        async getPerson(getPersonRequest: GetPersonRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PersonResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPerson(getPersonRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PersonApi.getPerson1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['PersonApi.getPerson']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -305,21 +256,12 @@ export const PersonApiFactory = function (configuration?: Configuration, basePat
         },
         /**
          * 
-         * @param {LocationRequest} locationRequest 
+         * @param {PeopleRequest} peopleRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPeople1(locationRequest: LocationRequest, options?: RawAxiosRequestConfig): AxiosPromise<PeopleResult> {
-            return localVarFp.getPeople1(locationRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {LocationRequest} locationRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getPeopleByLastName(locationRequest: LocationRequest, options?: RawAxiosRequestConfig): AxiosPromise<PeopleResult> {
-            return localVarFp.getPeopleByLastName(locationRequest, options).then((request) => request(axios, basePath));
+        getPeopleDetails(peopleRequest: PeopleRequest, options?: RawAxiosRequestConfig): AxiosPromise<PeopleResult> {
+            return localVarFp.getPeopleDetails(peopleRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -327,8 +269,8 @@ export const PersonApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPerson1(getPersonRequest: GetPersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
-            return localVarFp.getPerson1(getPersonRequest, options).then((request) => request(axios, basePath));
+        getPerson(getPersonRequest: GetPersonRequest, options?: RawAxiosRequestConfig): AxiosPromise<PersonResult> {
+            return localVarFp.getPerson(getPersonRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -362,24 +304,13 @@ export class PersonApi extends BaseAPI {
 
     /**
      * 
-     * @param {LocationRequest} locationRequest 
+     * @param {PeopleRequest} peopleRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PersonApi
      */
-    public getPeople1(locationRequest: LocationRequest, options?: RawAxiosRequestConfig) {
-        return PersonApiFp(this.configuration).getPeople1(locationRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {LocationRequest} locationRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PersonApi
-     */
-    public getPeopleByLastName(locationRequest: LocationRequest, options?: RawAxiosRequestConfig) {
-        return PersonApiFp(this.configuration).getPeopleByLastName(locationRequest, options).then((request) => request(this.axios, this.basePath));
+    public getPeopleDetails(peopleRequest: PeopleRequest, options?: RawAxiosRequestConfig) {
+        return PersonApiFp(this.configuration).getPeopleDetails(peopleRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -389,8 +320,8 @@ export class PersonApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof PersonApi
      */
-    public getPerson1(getPersonRequest: GetPersonRequest, options?: RawAxiosRequestConfig) {
-        return PersonApiFp(this.configuration).getPerson1(getPersonRequest, options).then((request) => request(this.axios, this.basePath));
+    public getPerson(getPersonRequest: GetPersonRequest, options?: RawAxiosRequestConfig) {
+        return PersonApiFp(this.configuration).getPerson(getPersonRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -9,18 +9,8 @@ import {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 import './css/bootstrap.css'
 import language from "./language";
-import {
-    type Letter,
-    type MyLocation,
-    type Person,
-    type Subject,
-    TextApi,
-    type TextRequest,
-    type TextResult
-} from "./generated-api";
+import {TextApi, type TextRequest, type TextResult} from "./generated-api";
 import {apiConfig} from "./config";
-
-import {type Text} from "./generated-api";
 import strings from "./strings.tsx";
 import {MyPopup} from "./MyPopup.tsx";
 
@@ -43,6 +33,7 @@ function TextPage() {
     language()
 
     useEffect(() => {
+        setShowError(false)
         const request: TextRequest = {
             location_id: entity === 'location' ? id : undefined,
             person_id: entity === 'person' ? id : undefined,
@@ -78,6 +69,7 @@ function TextPage() {
 
             }).catch((error) => {
             setErrorMessage(error.toString());
+            setShowError(true)
             console.log(error)
         })
     }, [])
@@ -108,7 +100,7 @@ function TextPage() {
                     <div>
                         {textResult?.person != null ?
                             <h3><Link className='mb-5'
-                                      to={link}> {textResult.person.nick_name} {(textResult.person.tussenvoegsel != null ? (textResult.person.tussenvoegsel + ' ') : '')} {person.last_name}</Link>
+                                      to={link}> {textResult.person.nick_name} {(textResult.person.tussenvoegsel != null ? (textResult.person.tussenvoegsel + ' ') : '')} {textResult.person.last_name}</Link>
                             </h3>
                             : null
                         }

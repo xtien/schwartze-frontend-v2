@@ -22,21 +22,35 @@
 export interface LettersRequest {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof LettersRequest
      */
-    'requestCode'?: number;
+    'orderBy'?: LettersRequestOrderByEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof LettersRequest
+     */
+    'toFrom'?: LettersRequestToFromEnum;
     /**
      * 
      * @type {number}
      * @memberof LettersRequest
      */
-    'fromId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof LettersRequest
-     */
-    'toId'?: number;
+    'id'?: number;
 }
+
+export const LettersRequestOrderByEnum = {
+    Date: 'DATE',
+    Number: 'NUMBER'
+} as const;
+
+export type LettersRequestOrderByEnum = typeof LettersRequestOrderByEnum[keyof typeof LettersRequestOrderByEnum];
+export const LettersRequestToFromEnum = {
+    To: 'TO',
+    From: 'FROM'
+} as const;
+
+export type LettersRequestToFromEnum = typeof LettersRequestToFromEnum[keyof typeof LettersRequestToFromEnum];
+
 

@@ -76,48 +76,13 @@ export const LettersApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {LocationLettersRequest} locationLettersRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLetters: async (locationLettersRequest: LocationLettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'locationLettersRequest' is not null or undefined
-            assertParamExists('getLetters', 'locationLettersRequest', locationLettersRequest)
-            const localVarPath = `/getLettersForLocation/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(locationLettersRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {LettersRequest} lettersRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLetters1: async (lettersRequest: LettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getLetters: async (lettersRequest: LettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'lettersRequest' is not null or undefined
-            assertParamExists('getLetters1', 'lettersRequest', lettersRequest)
+            assertParamExists('getLetters', 'lettersRequest', lettersRequest)
             const localVarPath = `/getLetters/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -146,14 +111,14 @@ export const LettersApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {LettersRequest} lettersRequest 
+         * @param {LocationLettersRequest} locationLettersRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLettersByDate: async (lettersRequest: LettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'lettersRequest' is not null or undefined
-            assertParamExists('getLettersByDate', 'lettersRequest', lettersRequest)
-            const localVarPath = `/getLettersByDate/`;
+        getLettersForLocation: async (locationLettersRequest: LocationLettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'locationLettersRequest' is not null or undefined
+            assertParamExists('getLettersForLocation', 'locationLettersRequest', locationLettersRequest)
+            const localVarPath = `/getLettersForLocation/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -172,7 +137,7 @@ export const LettersApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(lettersRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(locationLettersRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -185,10 +150,10 @@ export const LettersApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLettersFrom: async (personLettersRequest: PersonLettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getLettersForPerson: async (personLettersRequest: PersonLettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'personLettersRequest' is not null or undefined
-            assertParamExists('getLettersFrom', 'personLettersRequest', personLettersRequest)
-            const localVarPath = `/getLettersFromPerson/`;
+            assertParamExists('getLettersForPerson', 'personLettersRequest', personLettersRequest)
+            const localVarPath = `/getLettersForPerson/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -208,41 +173,6 @@ export const LettersApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(personLettersRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {LettersRequest} lettersRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLettersTo: async (lettersRequest: LettersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'lettersRequest' is not null or undefined
-            assertParamExists('getLettersTo', 'lettersRequest', lettersRequest)
-            const localVarPath = `/getLettersToPerson/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(lettersRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -343,38 +273,26 @@ export const LettersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {LocationLettersRequest} locationLettersRequest 
+         * @param {LettersRequest} lettersRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLetters(locationLettersRequest: LocationLettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLetters(locationLettersRequest, options);
+        async getLetters(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLetters(lettersRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LettersApi.getLetters']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {LettersRequest} lettersRequest 
+         * @param {LocationLettersRequest} locationLettersRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLetters1(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLetters1(lettersRequest, options);
+        async getLettersForLocation(locationLettersRequest: LocationLettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLettersForLocation(locationLettersRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['LettersApi.getLetters1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {LettersRequest} lettersRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getLettersByDate(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLettersByDate(lettersRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['LettersApi.getLettersByDate']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['LettersApi.getLettersForLocation']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -383,22 +301,10 @@ export const LettersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLettersFrom(personLettersRequest: PersonLettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLettersFrom(personLettersRequest, options);
+        async getLettersForPerson(personLettersRequest: PersonLettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLettersForPerson(personLettersRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['LettersApi.getLettersFrom']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {LettersRequest} lettersRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getLettersTo(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LettersResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLettersTo(lettersRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['LettersApi.getLettersTo']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['LettersApi.getLettersForPerson']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -446,30 +352,21 @@ export const LettersApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {LettersRequest} lettersRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLetters(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
+            return localVarFp.getLetters(lettersRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {LocationLettersRequest} locationLettersRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLetters(locationLettersRequest: LocationLettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
-            return localVarFp.getLetters(locationLettersRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {LettersRequest} lettersRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLetters1(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
-            return localVarFp.getLetters1(lettersRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {LettersRequest} lettersRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLettersByDate(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
-            return localVarFp.getLettersByDate(lettersRequest, options).then((request) => request(axios, basePath));
+        getLettersForLocation(locationLettersRequest: LocationLettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
+            return localVarFp.getLettersForLocation(locationLettersRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -477,17 +374,8 @@ export const LettersApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLettersFrom(personLettersRequest: PersonLettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
-            return localVarFp.getLettersFrom(personLettersRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {LettersRequest} lettersRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLettersTo(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
-            return localVarFp.getLettersTo(lettersRequest, options).then((request) => request(axios, basePath));
+        getLettersForPerson(personLettersRequest: PersonLettersRequest, options?: RawAxiosRequestConfig): AxiosPromise<LettersResult> {
+            return localVarFp.getLettersForPerson(personLettersRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -530,35 +418,24 @@ export class LettersApi extends BaseAPI {
 
     /**
      * 
+     * @param {LettersRequest} lettersRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LettersApi
+     */
+    public getLetters(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig) {
+        return LettersApiFp(this.configuration).getLetters(lettersRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {LocationLettersRequest} locationLettersRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LettersApi
      */
-    public getLetters(locationLettersRequest: LocationLettersRequest, options?: RawAxiosRequestConfig) {
-        return LettersApiFp(this.configuration).getLetters(locationLettersRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {LettersRequest} lettersRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LettersApi
-     */
-    public getLetters1(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig) {
-        return LettersApiFp(this.configuration).getLetters1(lettersRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {LettersRequest} lettersRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LettersApi
-     */
-    public getLettersByDate(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig) {
-        return LettersApiFp(this.configuration).getLettersByDate(lettersRequest, options).then((request) => request(this.axios, this.basePath));
+    public getLettersForLocation(locationLettersRequest: LocationLettersRequest, options?: RawAxiosRequestConfig) {
+        return LettersApiFp(this.configuration).getLettersForLocation(locationLettersRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -568,19 +445,8 @@ export class LettersApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof LettersApi
      */
-    public getLettersFrom(personLettersRequest: PersonLettersRequest, options?: RawAxiosRequestConfig) {
-        return LettersApiFp(this.configuration).getLettersFrom(personLettersRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {LettersRequest} lettersRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LettersApi
-     */
-    public getLettersTo(lettersRequest: LettersRequest, options?: RawAxiosRequestConfig) {
-        return LettersApiFp(this.configuration).getLettersTo(lettersRequest, options).then((request) => request(this.axios, this.basePath));
+    public getLettersForPerson(personLettersRequest: PersonLettersRequest, options?: RawAxiosRequestConfig) {
+        return LettersApiFp(this.configuration).getLettersForPerson(personLettersRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

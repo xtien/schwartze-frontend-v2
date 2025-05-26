@@ -28,15 +28,23 @@ export interface PersonLettersRequest {
     'requestCode'?: number;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof PersonLettersRequest
      */
-    'fromId'?: number;
+    'toFrom'?: PersonLettersRequestToFromEnum;
     /**
      * 
      * @type {number}
      * @memberof PersonLettersRequest
      */
-    'toId'?: number;
+    'id'?: number;
 }
+
+export const PersonLettersRequestToFromEnum = {
+    To: 'TO',
+    From: 'FROM'
+} as const;
+
+export type PersonLettersRequestToFromEnum = typeof PersonLettersRequestToFromEnum[keyof typeof PersonLettersRequestToFromEnum];
+
 
