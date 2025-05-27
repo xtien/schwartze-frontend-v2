@@ -8,7 +8,6 @@
 import {useEffect, useState} from 'react'
 import './App.css'
 import './css/bootstrap.css'
-import axios from "axios";
 import {Link, Navigate} from "react-router-dom";
 import Util from './service/Util';
 import strings from './strings.js'
@@ -27,6 +26,7 @@ import {apiConfig} from "./config.tsx";
 import type {LinkEditProps} from './interface/LinkEditProps.tsx';
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {EditPersonFormProps} from "./interface/EditPersonFormProps.tsx";
+import type {EditPersonLinkFormProps} from "./interface/EditPersonLinkFormProps.tsx";
 
 const personApi = new PersonApi(apiConfig)
 const adminLinksApi = new AdminLinksApi(apiConfig)
@@ -38,16 +38,16 @@ function PersonPage() {
     const params = location.pathname.split('/')
     const id: string = params[2]
 
-    const [data, setData] = useState({})
-    const [showEdit, setShowEdit] = useState(false)
+   const [showEdit, setShowEdit] = useState(false)
     const [showLinkEdit, setShowLinkEdit] = useState(false)
-    const [showTextEdit, setShowTextEdit] = useState(false)
-    const [text_id, setTextId] = useState('')
+ //   const [showTextEdit, setShowTextEdit] = useState(false)
+ //   const [text_id, setTextId] = useState('')
     const [person, setPerson] = useState<Person>({})
     const [textString, setTextString] = useState('')
     const [combine, setCombine] = useState<boolean>(false)
     const [deleted, setDeleted] = useState(false)
     const [linkEdit, setLinkEdit] = useState<LinkEditProps>()
+    const [link_id, setLinkId] = useState<number>(0)
 
     language()
 
@@ -68,21 +68,20 @@ function PersonPage() {
         })
     }
 
-    function toggleEditDoneParam(person) {
+    function toggleEditDoneParam(person: { id: string; }) {
         setShowEdit(false)
         getPerson(person.id)
     }
-
 
     function toggleEditDone() {
         setShowEdit(false)
     }
 
-    function edit(event) {
+    function edit() {
         setShowEdit(true)
     }
 
-    function link(event) {
+    function link() {
         setShowLinkEdit(true)
     }
 
@@ -188,16 +187,16 @@ function PersonPage() {
                                         <div>
                                             <button
                                                 className="btn btn-outline-success mybutton ml-2 mt-2"
-                                                onClick={edit_link.bind(this, link.id)}
+                                                onClick={() => edit_link(link.id!)}
                                             >
-                                                Edit
+                                                {strings.edit}
                                             </button>
                                             &nbsp;&nbsp;
                                             <button
                                                 className="btn btn-outline-danger mybutton ml-2 mt-2"
-                                                onClick={delete_link.bind(this, link.id)}
+                                                onClick={() => delete_link(link.id!)}
                                             >
-                                                Delete
+                                                {strings.delete}
                                             </button>
                                         </div>
                                         : null
@@ -301,21 +300,8 @@ function PersonPage() {
                     )}
                     {showEdit ? (
                         <EditPersonForm
-                            comment={person.comment}
-                            links={person.links}
-                            id={person.id}
-                            nick_name={person.nick_name}
-                            full_name={person.full_name}
-                            tussenvoegsel={person.tussenvoegsel}
-                            last_name={person.last_name}
-                            date_of_birth={person.date_of_birth}
-                            date_of_death={person.date_of_death}
-                            place_of_birth={person.place_of_birth}
-                            place_of_death={person.place_of_death}
-                            image_url={person.image_url}
-                            image_caption={person.image_caption}
                             person={person}
-                            toggleEditDoneParam={toggleEditDone}
+                            setPerson={setPerson}
                             toggleEditDone={toggleEditDone}
                         />
                     ) : null
@@ -325,12 +311,10 @@ function PersonPage() {
 
                         <div className="mt-5">
                             {showLinkEdit ? (
-                                    <EditLinkForm
-                                        person_id={person.id}
-                                        link_id={link_id}
-                                        link_name={link_name}
-                                        link_url={link_url}
-                                        setPerson={this.setPerson}
+                                    <EditPersonLinkForm
+                                        person={person}
+                                        linkId={link_id}
+                                        setPerson={setPerson}
                                     />
                                 )
                                 :
@@ -339,7 +323,7 @@ function PersonPage() {
                                     <tr>
                                         <td>
                                             <div>
-                                                <form onSubmit={this.add_link} className='ml-5 mb-5'>
+                                                <form onSubmit={add_link} className='ml-5 mb-5'>
                                                     <input
                                                         type="submit"
                                                         className="btn btn-outline-success mybutton"
@@ -350,7 +334,7 @@ function PersonPage() {
                                             </div>
                                         </td>
                                         <td>
-                                            <form onSubmit={this.combine} className="ml-5 mb-5">
+                                            <form onSubmit={() => combine} className="ml-5 mb-5">
                                                 <input
                                                     type="submit"
                                                     className="btn btn-outline-success mybutton ml-5"
@@ -359,7 +343,7 @@ function PersonPage() {
                                             </form>
                                         </td>
                                         <td>
-                                            <form onSubmit={this.delete} className="ml-5 mb-5">
+                                            <form onSubmit={() => deletePerson} className="ml-5 mb-5">
                                                 <input
                                                     type="submit"
                                                     className="btn btn-outline-danger mybutton"
@@ -461,7 +445,7 @@ function EditPersonForm({person, toggleEditDone, setPerson}: EditPersonFormProps
     }
 
 
-    if(editDone){
+    if (editDone) {
         setEditDone(false);
     }
     if (cancel) {
@@ -612,56 +596,59 @@ function EditPersonForm({person, toggleEditDone, setPerson}: EditPersonFormProps
 }
 
 
-function EditLinkForm() {
+function EditPersonLinkForm({}: EditPersonLinkFormProps) {
 
     const [person, setPerson] = useState<Person>();
+    const [link_id, setLinkId] = useState<number>();
+    const [link_name, setLinkName] = useState<string>();
+    const [link_url, setLinkUrl] = useState<string>();
+    const [linkEditDone, setLinkEditDone] = useState<boolean>(false);
 
 
     function handleLinkSubmit(event) {
         event.preventDefault();
 
-        let postData = {
-            person_id: person_id,
-            link_id: this.state.link_id,
-            link_name: this.state.link_name,
-            link_url: this.state.link_url,
+        let request = {
+            person_id: person!.id,
+            link_id: link_id,
+            link_name: link_name,
+            link_url: link_url,
         };
 
-        axios.post(process.env.REACT_APP_API_URL + '/admin/edit_link/',
-            postData,
-            AuthenticationService.getAxiosConfig()
-        )
-            .then(response => {
-                    this.props.setPerson(response.data.person)
-                }
-            )
+        adminLinksApi.editLink(request).then(response => {
+            if (response.data.person != null) {
+                setPerson(response.data.person)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
-    function handleNameChange(event) {
-        this.setState({link_name: event.target.value});
+    function handleNameChange(event: { target: { value: string }}) {
+        setLinkName(event.target.value);
     }
 
-    function handleUrlChange(event) {
-        this.setState({link_url: event.target.value});
-    }
+    function handleUrlChange(event: { target: { value: string }}) {
+        setLinkUrl(event.target.value);
+      }
 
 
-    const redirectTo = '/getperson_details/' + person_id;
+    const redirectTo = '/getperson_details/' + person!.id;
 
-    if (this.state.linkEditDone === true) {
+    if (linkEditDone === true) {
         return <Navigate to={redirectTo}/>
     }
 
     return (
-        <form onSubmit={this.handleLinkSubmit}>
+        <form onSubmit={handleLinkSubmit}>
             <div className="form-group mt-3 mt-5">
                 <label htmlFor="status">Link naam</label>
                 <input
                     type="text"
                     className="form-control"
                     id="link_name"
-                    value={this.state.link_name}
-                    onChange={this.handleNameChange}
+                    value={link_name}
+                    onChange={handleNameChange}
                 />
             </div>
             <div className="form-group mt-3">
@@ -670,8 +657,8 @@ function EditLinkForm() {
                     type="text"
                     className="form-control"
                     id="link_url"
-                    value={this.state.link_url}
-                    onChange={this.handleUrlChange}
+                    value={link_url}
+                    onChange={handleUrlChange}
                 />
             </div>
             <table className='mt-5'>
@@ -683,12 +670,6 @@ function EditLinkForm() {
                             className="btn btn-outline-success mybutton"
                             value="Submit"
                         />
-                    </td>
-                    <td>
-                        <Navigate to={redirectTo}
-                                  className="btn btn-outline-danger mybutton ml-5">
-                            Cancel
-                        </Navigate>
                     </td>
                 </tr>
                 </tbody>

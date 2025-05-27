@@ -58,6 +58,8 @@ const strings = new LocalizedStrings({
         comment: "Opmerkingen",
         personLettersText: "Brieven",
         locationLettersText: "Brieven van en naar ",
+        delete: "Delete",
+        edit: "Edit",
     },
     en:{
         about: "About",
@@ -109,7 +111,9 @@ const strings = new LocalizedStrings({
         name: "Name",
         comment: "Comments",
         personLettersText: "Letters",
-        locationLettersText: "Letters to and from"
+        locationLettersText: "Letters to and from",
+        delete: "Delete",
+        edit: "Edit",
     },
     fr: {
         about: "À propos",

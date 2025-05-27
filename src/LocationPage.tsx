@@ -22,7 +22,7 @@ import {
 import {apiConfig} from "./config.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {JSX} from "react/jsx-runtime";
-import type {EditLinkFormProps} from "./interface/EditLinkFormProps.tsx";
+import type {EditLocationLinkFormProps} from "./interface/EditLocationLinkFormProps.tsx";
 import type {EditNameFormProps} from "./interface/EditNameFormProps.tsx";
 
 const locationApi = new LocationApi(apiConfig)
@@ -215,7 +215,7 @@ function LocationPage() {
                                     ) : null}
 
                                     {showLinkEdit ? (
-                                            <EditLinkForm
+                                            <EditLocationLinkForm
                                                 location={location}
                                                 linkId={link_id}
                                                 setLocation={setLocation}
@@ -349,7 +349,7 @@ function EditNameForm({location}: EditNameFormProps) {
 }
 
 
-function EditLinkForm({location, linkId}: EditLinkFormProps) {
+function EditLocationLinkForm({location, linkId}: EditLocationLinkFormProps) {
 
     const [linkName, setLinkName] = useState<string>('')
     const [linkUrl, setLinkUrl] = useState<string>('')

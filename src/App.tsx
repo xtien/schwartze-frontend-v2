@@ -12,6 +12,9 @@ import People from "./People.tsx";
 import PersonPage from "./PersonPage.tsx";
 import LocationPage from "./LocationPage.tsx";
 import Locations from "./Locations.tsx";
+import ReferencesPage from "./ReferencesPage.tsx";
+import Topics from "./Topics.tsx";
+import {About} from "./About.tsx";
 
 function App() {
 
@@ -155,11 +158,11 @@ function App() {
                             {/*<Route path="/edit_text/:type/:id" element={<TextEdit/>}/>*/}
                             <Route path="/get_locations/" element={<Locations/>}/>
                             <Route path="/get_people/" element={<People/>}/>
-                            {/*<Route path="/references/" element={<References/>}/>*/}
-                            {/*<Route path="/topics/" element={<Topics/>}/>*/}
+                            <Route path="/references/" element={<ReferencesPage/>}/>
+                            <Route path="/topics/" element={<Topics/>}/>
                             <Route path="/search_letters/:search_term" element={<SearchLetters/>}/>
                             {/*<Route path="/get_content/" element={<Content/>}/>*/}
-                            {/*<Route path="/about/" element={<About/>}/>*/}
+                            <Route path="/about/" element={<About/>}/>
                         </Routes>
                     </div>
                 </div>

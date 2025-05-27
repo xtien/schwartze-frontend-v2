@@ -22,12 +22,13 @@ function Locations() {
 
         const request: LocationRequest = {}
 
-        locationApi.getLocations(request).then((response) => {
-                if (response.data.locations != null) {
-                    setLocations(response.data.locations);
+        locationApi.getLocations(request)
+            .then((response) => {
+                    if (response.data.locations != null) {
+                        setLocations(response.data.locations);
+                    }
                 }
-            }
-        ).catch(error => {
+            ).catch(error => {
             console.log(error)
         })
     }, [])
@@ -55,7 +56,7 @@ function Locations() {
                         <th>Number</th>
                         <th>Name</th>
                         <th>Comments</th>
-                      </tr>
+                    </tr>
                     </thead>
                     <tbody>
                     {renderLocations()}

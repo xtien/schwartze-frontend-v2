@@ -72,9 +72,9 @@ export const AdminLinksApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        editLink1: async (editLinkRequest: EditLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        editLink: async (editLinkRequest: EditLinkRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'editLinkRequest' is not null or undefined
-            assertParamExists('editLink1', 'editLinkRequest', editLinkRequest)
+            assertParamExists('editLink', 'editLinkRequest', editLinkRequest)
             const localVarPath = `/admin/editLink/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -129,10 +129,10 @@ export const AdminLinksApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async editLink1(editLinkRequest: EditLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EditLinkResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.editLink1(editLinkRequest, options);
+        async editLink(editLinkRequest: EditLinkRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EditLinkResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.editLink(editLinkRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminLinksApi.editLink1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AdminLinksApi.editLink']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -160,8 +160,8 @@ export const AdminLinksApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        editLink1(editLinkRequest: EditLinkRequest, options?: RawAxiosRequestConfig): AxiosPromise<EditLinkResult> {
-            return localVarFp.editLink1(editLinkRequest, options).then((request) => request(axios, basePath));
+        editLink(editLinkRequest: EditLinkRequest, options?: RawAxiosRequestConfig): AxiosPromise<EditLinkResult> {
+            return localVarFp.editLink(editLinkRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -191,8 +191,8 @@ export class AdminLinksApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AdminLinksApi
      */
-    public editLink1(editLinkRequest: EditLinkRequest, options?: RawAxiosRequestConfig) {
-        return AdminLinksApiFp(this.configuration).editLink1(editLinkRequest, options).then((request) => request(this.axios, this.basePath));
+    public editLink(editLinkRequest: EditLinkRequest, options?: RawAxiosRequestConfig) {
+        return AdminLinksApiFp(this.configuration).editLink(editLinkRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

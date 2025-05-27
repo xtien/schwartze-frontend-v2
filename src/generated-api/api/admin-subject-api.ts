@@ -72,9 +72,9 @@ export const AdminSubjectApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSubject: async (subjectRequest: SubjectRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        removeSubject: async (subjectRequest: SubjectRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'subjectRequest' is not null or undefined
-            assertParamExists('updateSubject', 'subjectRequest', subjectRequest)
+            assertParamExists('removeSubject', 'subjectRequest', subjectRequest)
             const localVarPath = `/admin/removeSubject/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -129,10 +129,10 @@ export const AdminSubjectApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubjectsResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateSubject(subjectRequest, options);
+        async removeSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubjectsResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removeSubject(subjectRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminSubjectApi.updateSubject']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AdminSubjectApi.removeSubject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -160,8 +160,8 @@ export const AdminSubjectApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): AxiosPromise<SubjectsResult> {
-            return localVarFp.updateSubject(subjectRequest, options).then((request) => request(axios, basePath));
+        removeSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): AxiosPromise<SubjectsResult> {
+            return localVarFp.removeSubject(subjectRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -191,8 +191,8 @@ export class AdminSubjectApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AdminSubjectApi
      */
-    public updateSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig) {
-        return AdminSubjectApiFp(this.configuration).updateSubject(subjectRequest, options).then((request) => request(this.axios, this.basePath));
+    public removeSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig) {
+        return AdminSubjectApiFp(this.configuration).removeSubject(subjectRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
