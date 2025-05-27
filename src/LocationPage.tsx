@@ -31,7 +31,6 @@ const adminLinksApi = new AdminLinksApi(apiConfig)
 
 function LocationPage() {
 
-
     const _location = useLocation()
     const id = _location.pathname.split('/')[2]
 
@@ -41,7 +40,6 @@ function LocationPage() {
     const [combine, setCombine] = useState<boolean>(false)
     const [link_id] = useState('')
    const [deleted, setDeleted] = useState<boolean>(false)
-
 
     language()
 
@@ -92,7 +90,6 @@ function LocationPage() {
                 console.log(error)
             })
     }
-
 
     function add_link() {
         setShowLinkEdit(true)

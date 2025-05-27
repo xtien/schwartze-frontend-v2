@@ -5,72 +5,65 @@
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-import React, {Component} from 'react'
-import axios from "axios";
-import {Link} from "react-router-dom";
-import ReactTable from "react-table-6";
-import AuthenticationService from "../../schwartze-new-frontend/schwartze-frontend/src/service/AuthenticationService";
+import React, {useState} from 'react'
+import {LocationApi, type LocationRequest, type MyLocation} from "./generated-api";
+import {apiConfig} from "./config.tsx";
+import Table from "react-bootstrap/Table";
+import {useNavigate} from "react-router";
 
-class Locations extends Component {
+const locationApi = new LocationApi(apiConfig)
 
-    constructor() {
-        super()
+function Locations() {
 
-        this.state = {
-            resultCode: -1,
-            data: ['a', 'b'],
-            locations: [{}]
-        }
+    const [locations, setLocations] = useState<MyLocation[]>([])
+    const navigate = useNavigate()
 
-        let postData = {
-            requestCode: 0
-        };
+    React.useEffect(() => {
 
-        axios.post(process.env.REACT_APP_API_URL + '/get_locations/',
-            postData,
-            AuthenticationService.getAxiosConfig()
-        )
-            .then(response =>
-                this.setState({
-                    resultCode: response.data.resultCode,
-                    locations: response.data.locations
-                })
+        const request: LocationRequest = {}
+
+        locationApi.getLocations(request).then((response) => {
+                if (response.data.locations != null) {
+                    setLocations(response.data.locations);
+                }
+            }
+        ).catch(error => {
+            console.log(error)
+        })
+    }, [])
+
+
+    function renderLocations() {
+        return locations.map(function (location) {
+            const locationLink = '/get_location_details/' + location.id?.toString();
+            return (
+                <tr onClick={() => navigate(locationLink)}>
+                    <td className='text-nowrap'>{location.id}</td>
+                    <td className='text-nowrap'>{location.name}</td>
+                    <td>{location.comment?.substring(0, 50)}</td>
+                </tr>
             )
+        })
     }
 
-    render() {
-
-        const columns = [{
-            accessor: 'id',
-            width: 40
-        }, {
-            id: 'name',
-            accessor: data => {
-                const id = data.id;
-                const name = data.location_name;
-                const linkto = '/get_location_details/' + id;
-                let result = <Link to={linkto} className='linkStyle'>{name}</Link>
-                return result;
-            },
-            width: 300,
-            className: 'text'
-        }, {
-             accessor: 'comment'
-        }]
-
-        return (
-            <div className='container mt5'>
-                <div className= 'locations-container'>
-               <ReactTable
-                    data={this.state.locations}
-                    columns={columns}
-                />
-            </div></div>
-        )
-
-
-
-    }
+    return (
+        <div className='container mt5'>
+            <div className='locations-container'>
+                <Table>
+                    <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Name</th>
+                        <th>Comments</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {renderLocations()}
+                    </tbody>
+                </Table>
+            </div>
+        </div>
+    )
 }
 
 export default Locations

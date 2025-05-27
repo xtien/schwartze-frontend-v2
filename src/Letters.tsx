@@ -13,8 +13,16 @@ import {
     type Letter,
     LettersApi,
     type LettersRequest,
-    LettersRequestOrderByEnum, LettersRequestToFromEnum, type Person, PersonApi,
-    type PersonLettersRequest, PersonLettersRequestToFromEnum, type PersonResult
+    LettersRequestOrderByEnum,
+    LettersRequestToFromEnum,
+    LocationApi, type LocationLettersRequest,
+    type LocationRequest,
+    type MyLocation,
+    type Person,
+    PersonApi,
+    type PersonLettersRequest,
+    PersonLettersRequestToFromEnum,
+    type PersonResult
 } from "./generated-api";
 import strings from "./strings.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,17 +33,21 @@ import type {AxiosResponse} from "axios";
 
 const lettersApi = new LettersApi(apiConfig);
 const personApi = new PersonApi(apiConfig);
+const locationApi = new LocationApi(apiConfig);
 
 function Letters() {
 
     const location = useLocation()
     const params = location.pathname.substring(1).split('/')
     const id = params[1]
+    const urlPart = params[0]
+    const personOrLocation = urlPart.includes('person') ? 'person' : 'location'
     const toFromString = params[2]
 
     const navigate = useNavigate();
     const [person, setPerson] = useState<Person>()
     const [letters, setLetters] = React.useState<Letter[]>([]);
+    const [myLocation, setMyLocation] = useState<MyLocation>()
     const [orderBy, setOrderBy] = React.useState<LettersRequestOrderByEnum>();
     const [toFrom] = React.useState<LettersRequestToFromEnum>(toFromString === 'to' ? LettersRequestToFromEnum.To : LettersRequestToFromEnum.From);
     const [search_term, setSearchTerm] = React.useState('');
@@ -45,46 +57,76 @@ function Letters() {
 
     React.useEffect(() => {
 
-        function getPerson(id: string) {
-            const personRequest: GetPersonRequest = {
-                id: parseInt(id),
-            }
-            personApi.getPerson(personRequest).then((response: AxiosResponse<PersonResult, any>) => {
-                    if (response.data.person != null) {
-                        setPerson(response.data.person)
+        if (personOrLocation === 'person') {
+            function getPerson(id: string) {
+                const personRequest: GetPersonRequest = {
+                    id: parseInt(id),
+                }
+                personApi.getPerson(personRequest).then((response: AxiosResponse<PersonResult, any>) => {
+                        if (response.data.person != null) {
+                            setPerson(response.data.person)
+                        }
                     }
-                }
-            ).catch((error: any) => {
-                console.log(error)
-            })
-        }
-
-        if (id != null && toFromString != null) {
-            getPerson(id)
-            const request: PersonLettersRequest = {
-                id: parseInt(id),
-                toFrom: toFrom
+                ).catch((error: any) => {
+                    console.log(error)
+                })
             }
 
-            lettersApi.getLettersForPerson(request).then((response) => {
-                if (response.data.letters != null) {
-                    setLetters(response.data.letters!)
+            if (id != null && toFromString != null) {
+                getPerson(id)
+                const request: PersonLettersRequest = {
+                    id: parseInt(id),
+                    toFrom: toFrom
                 }
-            }).catch(error => {
-                console.log(error)
-            })
-        } else {
-            if (letters === undefined || letters.length === 0) {
-                const request: LettersRequest = {}
-                setOrderBy(orderBy)
-                lettersApi.getLetters(request).then((response) => {
+
+                lettersApi.getLettersForPerson(request).then((response) => {
                     if (response.data.letters != null) {
                         setLetters(response.data.letters!)
                     }
                 }).catch(error => {
                     console.log(error)
                 })
+            } else {
+                if (letters === undefined || letters.length === 0) {
+                    const request: LettersRequest = {}
+                    setOrderBy(orderBy)
+                    lettersApi.getLetters(request).then((response) => {
+                        if (response.data.letters != null) {
+                            setLetters(response.data.letters!)
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                }
             }
+        } else {
+            function getLocation(id: string) {
+                const locationRequest: LocationRequest = {
+                    id: parseInt(id),
+                }
+                locationApi.getLocation(locationRequest).then(
+                    (response) => {
+                        if (response.data.location != null) {
+                            setMyLocation(response.data.location)
+                        }
+                    }
+                ).catch(
+                    (error) => {
+                        console.log(error)
+                    }
+                )
+            }
+
+            getLocation(id)
+            const request: LocationLettersRequest = {
+                location_id: parseInt(id),
+            }
+            lettersApi.getLettersForLocation(request).then((response) => {
+                if (response.data.letters != null) {
+                    setLetters(response.data.letters!)
+                }
+            })
+
         }
     }, [])
 
@@ -144,7 +186,6 @@ function Letters() {
         const request: LettersRequest = {
             orderBy: orderBy
         }
-
 
         lettersApi.getLetters(request)
             .then((response) => {
@@ -207,7 +248,6 @@ function Letters() {
                     <td>{recipientLocation}</td>
                     <td>{letter.comment?.substring(0, 30)}</td>
                 </tr>
-
             )
         });
     }
@@ -216,7 +256,9 @@ function Letters() {
         <div className='container'>
             <div className="row">
                 <div className='mt-3 m-lg-5'>
-                    { person != null ? ( strings.personLettersText + " " + (toFrom === PersonLettersRequestToFromEnum.From ? strings.from : strings.to) + ' ' + createFullName(person) ): ''}
+                    {person != null ? (strings.personLettersText + " " + (toFrom === PersonLettersRequestToFromEnum.From ? strings.from : strings.to) + ' ' + createFullName(person)) : ''}
+                    {myLocation != null ? (strings.locationLettersText + ' ' + myLocation.name) : ''}
+
                 </div>
                 <div className='col-sm-3'>
                     <button
@@ -256,9 +298,7 @@ function Letters() {
                         <th>Date</th>
                         <th>Sender</th>
                         <th>Sender Location</th>
-                        <th>Recipient
-                        </th
-                        >
+                        <th>Recipient</th>
                         <th>Recipient Location</th>
                     </tr>
                     </thead>
