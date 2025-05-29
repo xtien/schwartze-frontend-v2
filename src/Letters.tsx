@@ -15,8 +15,7 @@ import {
     type LettersRequest,
     LettersRequestOrderByEnum,
     LettersRequestToFromEnum,
-    LocationApi, type LocationLettersRequest,
-    type LocationRequest,
+    type LocationLettersRequest,
     type MyLocation,
     type Person,
     PersonApi,
@@ -33,7 +32,6 @@ import type {AxiosResponse} from "axios";
 
 const lettersApi = new LettersApi(apiConfig);
 const personApi = new PersonApi(apiConfig);
-const locationApi = new LocationApi(apiConfig);
 
 function Letters() {
 
@@ -41,13 +39,13 @@ function Letters() {
     const params = location.pathname.substring(1).split('/')
     const id = params[1]
     const urlPart = params[0]
-    const personOrLocation = urlPart.includes('person') ? 'person' : 'location'
+    const personOrLocation = urlPart.includes('person') ? 'person' : urlPart.includes('location') ? 'location' : ''
     const toFromString = params[2]
 
     const navigate = useNavigate();
     const [person, setPerson] = useState<Person>()
     const [letters, setLetters] = React.useState<Letter[]>([]);
-    const [myLocation, setMyLocation] = useState<MyLocation>()
+    const [myLocation] = useState<MyLocation>()
     const [orderBy, setOrderBy] = React.useState<LettersRequestOrderByEnum>();
     const [toFrom] = React.useState<LettersRequestToFromEnum>(toFromString === 'to' ? LettersRequestToFromEnum.To : LettersRequestToFromEnum.From);
     const [search_term, setSearchTerm] = React.useState('');
@@ -86,28 +84,17 @@ function Letters() {
                 }).catch(error => {
                     console.log(error)
                 })
-            } else {
-                if (letters === undefined || letters.length === 0) {
-                    const request: LettersRequest = {}
-                    setOrderBy(orderBy)
-                    lettersApi.getLetters(request).then((response) => {
+            }
+        } else if (personOrLocation === 'location') {
+
+            function getLocation(id: string) {
+                const request: LocationLettersRequest = {
+                    location_id: parseInt(id),
+                }
+                lettersApi.getLettersForLocation(request).then(
+                    (response) => {
                         if (response.data.letters != null) {
                             setLetters(response.data.letters!)
-                        }
-                    }).catch(error => {
-                        console.log(error)
-                    })
-                }
-            }
-        } else {
-            function getLocation(id: string) {
-                const locationRequest: LocationRequest = {
-                    id: parseInt(id),
-                }
-                locationApi.getLocation(locationRequest).then(
-                    (response) => {
-                        if (response.data.location != null) {
-                            setMyLocation(response.data.location)
                         }
                     }
                 ).catch(
@@ -118,17 +105,19 @@ function Letters() {
             }
 
             getLocation(id)
-            const request: LocationLettersRequest = {
-                location_id: parseInt(id),
-            }
-            lettersApi.getLettersForLocation(request).then((response) => {
-                if (response.data.letters != null) {
-                    setLetters(response.data.letters!)
-                }
-            })
 
+        } else {
+                const request: LettersRequest = {}
+                setOrderBy(orderBy)
+                lettersApi.getLetters(request).then((response) => {
+                    if (response.data.letters != null) {
+                        setLetters(response.data.letters!)
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
         }
-    }, [])
+    }, [personOrLocation, id, toFromString, urlPart])
 
     function createFullName(person: Person): string {
         let name = '';

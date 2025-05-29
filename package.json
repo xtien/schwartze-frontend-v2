@@ -21,7 +21,8 @@
     "react-router": "^7.5.3",
     "react-router-dom": "^7.5.3",
     "reactjs-alert": "^2.5.2",
-    "reactstrap": "^9.2.3"
+    "reactstrap": "^9.2.3",
+    "universal-cookie": "^8.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",

@@ -15,6 +15,8 @@ import Locations from "./Locations.tsx";
 import ReferencesPage from "./ReferencesPage.tsx";
 import Topics from "./Topics.tsx";
 import {About} from "./About.tsx";
+import PagePage from "./PagePage.tsx";
+import Content from "./Content.tsx";
 
 function App() {
 
@@ -154,14 +156,14 @@ function App() {
                             <Route path="/get_letter_details/:number/:pagenumber" element={<LetterPage/>}/>
                             <Route path="/get_letters_for_person/:id/:tofrom" element={<Letters/>}/>
                             <Route path="/get_text/:entity/:id" element={<TextPage/>}/>
-                            {/*<Route path="/get_page/:chapterNumber/:pageNumber" element={<Page/>}/>*/}
+                            <Route path="/get_page/:chapterNumber/:pageNumber" element={<PagePage/>}/>
                             {/*<Route path="/edit_text/:type/:id" element={<TextEdit/>}/>*/}
                             <Route path="/get_locations/" element={<Locations/>}/>
                             <Route path="/get_people/" element={<People/>}/>
                             <Route path="/references/" element={<ReferencesPage/>}/>
                             <Route path="/topics/" element={<Topics/>}/>
                             <Route path="/search_letters/:search_term" element={<SearchLetters/>}/>
-                            {/*<Route path="/get_content/" element={<Content/>}/>*/}
+                            <Route path="/get_content/" element={<Content/>}/>
                             <Route path="/about/" element={<About/>}/>
                         </Routes>
                     </div>
