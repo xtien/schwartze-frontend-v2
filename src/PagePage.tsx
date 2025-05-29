@@ -22,7 +22,6 @@ import type {
     Page, PageReference,
     PageReferenceRequest,
     PageReferenceTypeEnum,
-    PageRequest,
     PageTextRequest
 } from "./generated-api";
 import {isAdmin} from "./service/AuthenticationService.tsx";
@@ -96,12 +95,12 @@ function PagePage() {
         )
     }
 
-    function delete_link(reference_id) {
+    function delete_link(reference_id: PageReference | undefined) {
 
-        const request: PageRequest = {
-            language: lang,
-            page_number: pageNumber,
-            chapter_number: chapterNumber
+        const request: PageReferenceRequest = {
+           page_number: pageNumber,
+            chapter_number: chapterNumber,
+            reference: reference_id
         }
 
         adminPageApi.removePageReference(request).then(response => {
@@ -243,7 +242,7 @@ function PagePage() {
                     {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
-                                    delete_link(reference.id)
+                                    delete_link(reference)
                                 }}> del
                         </button> : ''}
                 </div>)
@@ -254,7 +253,7 @@ function PagePage() {
                     {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
-                                    delete_link(reference.id)
+                                    delete_link(reference)
                                 }}> del
                         </button> : ''}
                 </div>)
@@ -265,7 +264,7 @@ function PagePage() {
                     {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
-                                    delete_link(reference.id)
+                                    delete_link(reference)
                                 }}> del
                         </button> : ''}
                 </div>)
@@ -276,7 +275,7 @@ function PagePage() {
                     {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
-                                    delete_link(reference.id)
+                                    delete_link(reference)
                                 }}> del
                         </button> : ''}
                 </div>)
@@ -286,7 +285,7 @@ function PagePage() {
                     {isAdmin() === "true" ?
                         <button type="button" className='btn btn-link mb-1'
                                 onClick={() => {
-                                    delete_link(reference.id)
+                                    delete_link(reference)
                                 }}> del
                         </button> : ''}
                 </div>)
@@ -564,7 +563,7 @@ function EditReferenceForm({
 
     const [description, setDescription] = useState<string>(reference_description)
     const [type, setType] = useState<PageReferenceTypeEnum>(reference_type)
-    const [page, _setPage] = useState<Page>()
+    const [_setPage] = useState<Page>()
     const [_key, setKey] = useState<string>(key)
     const [cancel, setCancel] = useState<boolean>(false)
     const [editDone, setEditDone] = useState<boolean>(false)
@@ -617,7 +616,7 @@ function EditReferenceForm({
 
     if (editDone === true) {
         setEditDone(false)
-        toggleEditDoneParam(page);
+        toggleEditDoneParam();
     }
     if (cancel === true) {
         setEditDone(true)
