@@ -17,6 +17,7 @@ import Topics from "./Topics.tsx";
 import {About} from "./About.tsx";
 import PagePage from "./PagePage.tsx";
 import Content from "./Content.tsx";
+import Login from "./Login.tsx";
 
 function App() {
 
@@ -140,7 +141,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Landing/>}/>
                             {/*<Route path="/admin/" element={<Admin/>}/>*/}
-                            {/*<Route path="/login/" element={<Login/>}/>*/}
+                            <Route path="/login/" element={<Login/>}/>
                             {/*<Route path="/signup/" element={<Signup/>}/>*/}
                             <Route path="/get_letters/:page" element={<Letters/>}/>
                             {/*<Route path="/add_person/" element={<AddPerson/>}/>*/}

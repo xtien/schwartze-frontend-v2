@@ -1,6 +1,5 @@
-import axios from 'axios'
-
-const API_URL = import.meta.env.REACT_APP_API_URL
+import {Configuration} from "../generated-api";
+import axios from "axios";
 
 export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 export const VISITOR = 'visitor'
@@ -8,15 +7,12 @@ export const ADMIN = 'admin'
 export const AUTH1 = 'auth1'
 export const AUTH2 = 'auth2'
 
-export function executeLogin(username:string, password: string) {
-    return axios.get(`${API_URL}/user/login`,
-        {
-            headers: {
-                authorization: createBasicAuthToken(username, password)
-            }
-        }
-    )
-}
+
+export const apiConfig = new Configuration(
+    {
+        basePath: import.meta.env.VITE_API_URL,
+    }
+)
 
 export function setAuthorities(authorities: string | string[]) {
     if (authorities.includes("READ_PRIVILEGE")) {
@@ -37,11 +33,11 @@ export function setAuth(username: string, password: string) {
 }
 
 export function getAuth1() {
-    return sessionStorage.getItem(AUTH1)?? ''
+    return sessionStorage.getItem(AUTH1) ?? ''
 }
 
 export function getAuth2() {
-    return sessionStorage.getItem(AUTH2)?? ''
+    return sessionStorage.getItem(AUTH2) ?? ''
 }
 
 export function getAuth() {
@@ -59,7 +55,7 @@ export function getAxiosConfig() {
     }
 }
 
-export function createBasicAuthToken(username: string, password:string) {
+export function createBasicAuthToken(username: string, password: string) {
     if (username === null || password === null) {
         return null;
     } else {
@@ -69,8 +65,19 @@ export function createBasicAuthToken(username: string, password:string) {
 
 export function registerSuccessfulLogin(username: string, password: string) {
     sessionStorage.setItem(USER_NAME_SESSION_ATTRIBUTE_NAME, username)
-    setupAxiosInterceptors(createBasicAuthToken(username, password)?? '')
+    setupAxiosInterceptors(createBasicAuthToken(username, password))
     setAuth(username, password)
+}
+
+export function setupAxiosInterceptors(token: string | null) {
+    axios.interceptors.request.use(
+        (config) => {
+            if (isUserLoggedIn()) {
+                config.headers.authorization = token
+            }
+            return config
+        }
+    )
 }
 
 export function logout() {
@@ -97,15 +104,14 @@ export function getLoggedInUserName() {
     }
 }
 
-export function setupAxiosInterceptors(token: string) {
-    axios.interceptors.request.use(
-        (config) => {
-            if (isUserLoggedIn()) {
-                config.headers.authorization = token
+export function executeLogin(username: string, password: string) {
+    const url = import.meta.env.VITE_API_URL + '/user/login'
+    return axios.get(url,
+        {
+            headers: {
+                authorization: createBasicAuthToken(username, password)
             }
-            return config
         }
     )
 }
-
 
