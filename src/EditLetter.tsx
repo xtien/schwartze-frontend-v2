@@ -5,46 +5,57 @@
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-import React, {Component, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import './App.css'
-import axios from "axios";
 import './css/bootstrap.css'
-import AuthenticationService from '../../schwartze-new-frontend/schwartze-frontend/src/service/AuthenticationService';
-import {Navigate, useLocation} from "react-router";
-import {AdminLetterApi, type Letter, type MyLocation, type Person} from "./generated-api";
+import {Navigate, useLocation, useNavigate} from "react-router";
+import {
+    AdminLetterApi, AdminLocationApi,
+    AdminPersonApi,
+    type Letter,
+    type LetterRequest, type LocationsRequest,
+    type MyLocation, type PeopleRequest,
+    type Person
+} from "./generated-api";
 import {apiConfig} from "./config.tsx";
 
 const letterApi = new AdminLetterApi(apiConfig)
+const adminLocationApi = new AdminLocationApi(apiConfig)
+const adminPersonApi = new AdminPersonApi(apiConfig)
 
 function EditLetter() {
 
     const location = useLocation()
     const params = location.pathname.split('/')
     const number = params[2]
+    const navigate = useNavigate()
 
     const [letter, setLetter] = useState<Letter>()
     const [senders, setSenders] = useState<Array<Person>>()
     const [recipients, setRecipients] = useState<Array<Person>>()
-    const [sender_location, setSenderLocation] = useState<MyLocation>()
-    const [recipient_location, setRecipientLocation] = useState<MyLocation>()
+    const [senderLocations, setSenderLocations] = useState<Array<MyLocation>>()
+    const [recipientLocations, setRecipientLocations] = useState<Array<MyLocation>>()
+    const [senderLocationId, setSenderLocationId] = useState<number>()
+    const [recipientLocationId, setRecipientLocationId] = useState<number>()
     const [recipientsString, setRecipientsString] = useState<string>()
     const [sendersString, setSendersString] = useState<string>()
     const [errorMessage, setErrorMessage] = useState<string>()
     const [editDone, setEditDone] = useState<boolean>(false)
-
+    const [date, setDate] = useState<string>()
 
     useEffect(() => {
-        let postData = {
-            number: number
+        let postData: LetterRequest = {
+            number: parseInt(number)
         };
 
         letterApi.updateLetter(postData).then(response => {
             if (response.data.letter != null) {
                 setLetter(response.data.letter)
+                setDate(response.data.letter.date)
                 setSenders(response.data.letter.senders)
                 setRecipients(response.data.letter.recipients)
-                setSenderLocation(response.data.letter.sender_location[0])
-                setRecipientLocation(response.data.letter.recipient_location[0])
+                setSenderLocationId(response.data.letter.sender_location[0].id)
+                setRecipientLocationId(response.data.letter.recipient_location[0].id)
                 setRecipientsString(response.data.letter.recipients.map((r) => r.id).join(','))
                 setSendersString(response.data.letter.senders.map((r) => r.id).join(','))
             }
@@ -52,89 +63,90 @@ function EditLetter() {
 
     }, []);
 
-
-    function handleSenderId(event: { target: { value: string; }; }) {
-        setSendersString(event.target.value)
-    }
-
-    function handleSenderLocation(event: { target: { value: MyLocation; }; }) {
-        setSenderLocation(event.target.value)
-
-    }
-
-    function handleRecipientId(event: { target: { value: string; }; }) {
-        const value = event.target.value;
-
-        this.setState(prevState => ({
-            recipientsString: value
-        }))
-    }
-
-    function handleRecipientLocation(event: { target: { value: MyLocation; }; }) {
-        const value = event.target.value;
-        this.setState(prevState => ({
-            recipient_location: {
-                ...prevState.recipient_location,
-                id: value
-            }
-        }))
-    }
-
-    function handleDate(event) {
-        const value = event.target.value;
-        this.setState(prevState => ({
-            letter: {
-                ...prevState.letter,
-                date: value
-            }
-        }))
-    }
-
-    function handleSubmit(event) {
-
-        let x
-        let sendersList = []
-        let splitSenders = sendersString.replace(/ /g, '').replace(/(^,)|(,$)/g, "").split(',')
-        for (x in splitSenders) {
-            sendersList.push(
-                {
-                    id: splitSenders[x]
-                }
-            )
+    function getPeopleFromIdsString(idsString: string, func: (people: Array<Person>) => void) {
+        const ids = idsString.replace(' ', '').split(',')
+        const numbers = ids.map((id) => parseInt(id))
+        const request: PeopleRequest = {
+            ids: numbers
         }
-        let y
-        let recipientList = []
-        let splitRecipients = recipientsString.replace(' ', '').replace(/(^,)|(,$)/g, '').split(',')
-        for (y in splitRecipients) {
-            recipientList.push(
-                {
-                    id: splitRecipients[y]
-                }
-            )
-        }
-
-        let updated_letter = letter;
-        updated_letter.senders = sendersList;
-        updated_letter.recipients = recipientList;
-        updated_letter.sender_location = [sender_location];
-        updated_letter.recipient_location = [recipient_location];
-
-        let postData = {
-            letter: updated_letter
-        };
-
-        letterApi.updateLetter(postData).then(response => {
-            if (response.data.letter != null) {
-                setLetter(response.data.letter)
-                setSenders(response.data.letter.senders)
-                setRecipients(response.data.letter.recipients)
-                setSenderLocation(response.data.letter.sender_location[0])
-                setRecipientLocation(response.data.letter.recipient_location[0])
-                setRecipientsString(response.data.letter.recipients.map((r) => r.id).join(','))
-                setSendersString(response.data.letter.senders.map((r) => r.id).join(','))
+        adminPersonApi.getPersonsForIds(request).then(response => {
+            if (response.data.people != null) {
+                func(response.data.people)
             }
         })
+    }
 
+    function getLocationsFromIdsString(idsString: string, func: (location: Array<MyLocation>) => void) {
+        const ids = idsString.replace(' ', '').split(',')
+        const numbers = ids.map((id) => parseInt(id))
+        const request: LocationsRequest = {
+            ids: numbers
+        }
+        adminLocationApi.getLocationsForIds(request).then(response => {
+            if (response.data.locations != null) {
+                func(response.data.locations)
+            }
+        })
+    }
+
+    function handleSenderIds(event: { target: { value: string; }; }) {
+        getPeopleFromIdsString(event.target.value, setRecipients)
+    }
+
+    function handleSenderLocationIds(event: { target: { value: string; }; }) {
+        getLocationsFromIdsString(event.target.value,setSenderLocations)
+    }
+
+
+    function handleRecipientIds(event: { target: { value: string; }; }) {
+        getPeopleFromIdsString(event.target.value, setSenders)
+    }
+
+    function handleRecipientLocationId(event: { target: { value: string; }; }) {
+        getLocationsFromIdsString(event.target.value ,setRecipientLocations)
+    }
+
+    function handleDate(event: { target: { value: string; }; }) {
+        setDate(event.target.value);
+    }
+
+    function handleSubmit() {
+
+        if (letter != null) {
+            let updated_letter = letter;
+            if (senders != null) {
+                updated_letter.senders = senders;
+            }
+            if (recipients != null) {
+                updated_letter.recipients = recipients;
+            }
+            if(senderLocations != null) {
+                updated_letter.sender_location = senderLocations;
+            }
+            if(recipientLocations != null) {
+                updated_letter.recipient_location = recipientLocations;
+            }
+
+            let postData = {
+                letter: updated_letter
+            };
+
+            letterApi.updateLetter(postData).then(response => {
+                if (response.data.letter != null) {
+                    setLetter(response.data.letter)
+                    setSenders(response.data.letter.senders)
+                    setRecipients(response.data.letter.recipients)
+                    setSenderLocationId(response.data.letter.sender_location[0].id)
+                    setRecipientLocationId(response.data.letter.recipient_location[0].id)
+                    setRecipientsString(response.data.letter.recipients.map((r) => r.id).join(','))
+                    setSendersString(response.data.letter.senders.map((r) => r.id).join(','))
+                }
+                setEditDone(true)
+            }).catch(error => {
+                console.log(error)
+                setErrorMessage(error)
+            })
+        }
 
     }
 
@@ -142,23 +154,23 @@ function EditLetter() {
         return <Navigate to={'/get_letter_details/' + letter.number + '/0'}></Navigate>
     }
 
-    const date = letter != null ? letter.date : '';
-
-    let senderList = []
-    if (this.state != null && senders != null) {
-        senderList = senders.map((r) => <span>
-                {r.nick_name} {r.tussenvoegsel} {r.last_name} </span>);
-    } else {
-        senderList = '';
+    let senderListString = ''
+    if (senders != null) {
+        for (var s of senders) {
+            senderListString += s.nick_name + ' ' + s.tussenvoegsel + ' ' + s.last_name + ', ';
+        }
     }
 
 
-    let recipientList = []
-    if (this.state != null && recipients != null) {
-        recipientList = recipients.map((r) => <span>
-                {r.nick_name} {r.tussenvoegsel} {r.last_name} </span>);
-    } else {
-        recipientList = '';
+    let recipientListString = ''
+    if (recipients != null) {
+        for (var r of recipients) {
+            recipientListString += r.nick_name + ' ' + r.tussenvoegsel + ' ' + r.last_name + ', ';
+        }
+    }
+
+    function cancel() {
+        navigate('get_letter_details/' + number + '/0')
     }
 
     return (
@@ -197,7 +209,7 @@ function EditLetter() {
                                         Afzender:
                                     </td>
                                     <td>
-                                        {senderList} in {sender_location != null ? sender_location.name : ''}
+                                        {senderListString} in {senderLocationId != null ? senderLocationId.toString() : ''}
                                     </td>
                                 </tr>
                                 <tr>
@@ -210,7 +222,7 @@ function EditLetter() {
                                             className='form-control  mt-1 w-25'
                                             id="senderId"
                                             value={sendersString}
-                                            onChange={handleSenderId}
+                                            onChange={handleSenderIds}
                                         />
                                     </td>
                                 </tr>
@@ -221,8 +233,8 @@ function EditLetter() {
                                             type="text"
                                             className='form-control  mt-1 w-25'
                                             id="sender_location.id"
-                                            value={sender_location != null ? sender_location.id : ''}
-                                            onChange={handleSenderLocation}
+                                            value={senderLocationId != null ? senderLocationId.toString() : ''}
+                                            onChange={handleSenderLocationIds}
                                         />
                                     </td>
                                 </tr>
@@ -238,7 +250,7 @@ function EditLetter() {
                                         Ontvanger
                                     </td>
                                     <td>
-                                        {recipientList} in {recipient_location != null ? recipient_location.name : ''}
+                                        {recipientListString} in {recipientLocationId != null ? recipientLocationId.toString() : ''}
                                     </td>
                                 </tr>
                                 <tr>
@@ -249,7 +261,7 @@ function EditLetter() {
                                             className='form-control  mt-1 w-25'
                                             id="recipientid"
                                             value={recipientsString}
-                                            onChange={handleRecipientId}
+                                            onChange={handleRecipientIds}
                                         />
                                     </td>
                                 </tr>
@@ -260,8 +272,8 @@ function EditLetter() {
                                             type="text"
                                             className='form-control  mt-1 w-25'
                                             id="recipient_location.id"
-                                            value={recipient_location != null ? recipient_location.id : ''}
-                                            onChange={handleRecipientLocation}
+                                            value={recipientLocationId != null ? recipientLocationId.toString() : ''}
+                                            onChange={handleRecipientLocationId}
                                         />
                                     </td>
                                 </tr>
@@ -273,12 +285,17 @@ function EditLetter() {
                             className="btn btn-outline-success mybutton"
                             value="Submit"
                         />
+                        <input
+                            type="submit"
+                            className="btn btn-outline-info mybutton"
+                            value="Cancel"
+                            onClick={() => cancel}
+                        />
                     </form>
                 </div>
             </div>
         </div>
     )
 }
-
 
 export default EditLetter

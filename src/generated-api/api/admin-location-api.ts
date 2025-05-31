@@ -38,6 +38,10 @@ import type { LocationResult } from '../model';
 // @ts-ignore
 import type { LocationUpdateRequest } from '../model';
 // @ts-ignore
+import type { LocationsRequest } from '../model';
+// @ts-ignore
+import type { LocationsResult } from '../model';
+// @ts-ignore
 import type { UpdateLocationRequest } from '../model';
 /**
  * AdminLocationApi - axios parameter creator
@@ -144,6 +148,41 @@ export const AdminLocationApiAxiosParamCreator = function (configuration?: Confi
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(combineLocationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {LocationsRequest} locationsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLocationsForIds: async (locationsRequest: LocationsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'locationsRequest' is not null or undefined
+            assertParamExists('getLocationsForIds', 'locationsRequest', locationsRequest)
+            const localVarPath = `/admin/getLocationsForIds/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(locationsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -303,6 +342,18 @@ export const AdminLocationApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {LocationsRequest} locationsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getLocationsForIds(locationsRequest: LocationsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LocationsResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLocationsForIds(locationsRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AdminLocationApi.getLocationsForIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {CombineLocationRequest} combineLocationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -376,6 +427,15 @@ export const AdminLocationApiFactory = function (configuration?: Configuration, 
         },
         /**
          * 
+         * @param {LocationsRequest} locationsRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLocationsForIds(locationsRequest: LocationsRequest, options?: RawAxiosRequestConfig): AxiosPromise<LocationsResult> {
+            return localVarFp.getLocationsForIds(locationsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {CombineLocationRequest} combineLocationRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -442,6 +502,17 @@ export class AdminLocationApi extends BaseAPI {
      */
     public getCombinePerson1(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig) {
         return AdminLocationApiFp(this.configuration).getCombinePerson1(combineLocationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {LocationsRequest} locationsRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminLocationApi
+     */
+    public getLocationsForIds(locationsRequest: LocationsRequest, options?: RawAxiosRequestConfig) {
+        return AdminLocationApiFp(this.configuration).getLocationsForIds(locationsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

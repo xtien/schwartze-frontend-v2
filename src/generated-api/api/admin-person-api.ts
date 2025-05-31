@@ -30,6 +30,10 @@ import type { CombinePersonResult } from '../model';
 // @ts-ignore
 import type { DeletePersonRequest } from '../model';
 // @ts-ignore
+import type { PeopleRequest } from '../model';
+// @ts-ignore
+import type { PeopleResult } from '../model';
+// @ts-ignore
 import type { PersonResult } from '../model';
 // @ts-ignore
 import type { UpdatePersonRequest } from '../model';
@@ -103,6 +107,41 @@ export const AdminPersonApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(combinePersonRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {PeopleRequest} peopleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPersonsForIds: async (peopleRequest: PeopleRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'peopleRequest' is not null or undefined
+            assertParamExists('getPersonsForIds', 'peopleRequest', peopleRequest)
+            const localVarPath = `/admin/getPersonsForIds/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(peopleRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -250,6 +289,18 @@ export const AdminPersonApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {PeopleRequest} peopleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getPersonsForIds(peopleRequest: PeopleRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PeopleResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getPersonsForIds(peopleRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['AdminPersonApi.getPersonsForIds']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {CombinePersonRequest} combinePersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -314,6 +365,15 @@ export const AdminPersonApiFactory = function (configuration?: Configuration, ba
         },
         /**
          * 
+         * @param {PeopleRequest} peopleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPersonsForIds(peopleRequest: PeopleRequest, options?: RawAxiosRequestConfig): AxiosPromise<PeopleResult> {
+            return localVarFp.getPersonsForIds(peopleRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {CombinePersonRequest} combinePersonRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -369,6 +429,17 @@ export class AdminPersonApi extends BaseAPI {
      */
     public getCombinePerson(combinePersonRequest: CombinePersonRequest, options?: RawAxiosRequestConfig) {
         return AdminPersonApiFp(this.configuration).getCombinePerson(combinePersonRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {PeopleRequest} peopleRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminPersonApi
+     */
+    public getPersonsForIds(peopleRequest: PeopleRequest, options?: RawAxiosRequestConfig) {
+        return AdminPersonApiFp(this.configuration).getPersonsForIds(peopleRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

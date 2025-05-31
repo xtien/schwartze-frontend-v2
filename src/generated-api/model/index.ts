@@ -36,6 +36,7 @@ export * from './location-letters-request';
 export * from './location-request';
 export * from './location-result';
 export * from './location-update-request';
+export * from './locations-request';
 export * from './locations-result';
 export * from './login-result';
 export * from './logout-request';

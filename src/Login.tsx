@@ -54,7 +54,6 @@ function Login() {
 
     return (
         <div>
-            <div>Auth: {authenticated ? 'true' : 'false'}</div>
             <form onSubmit={handleLinkSubmit}>
                 <div className="row mt-5">
                     <div className='col-sm-2 mb-2'>

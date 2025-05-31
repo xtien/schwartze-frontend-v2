@@ -124,11 +124,11 @@ function App() {
                                             </p>
                                             {/* Admin should only be visible after login. toggle enables Login.js
                                                to render App.js by setting its state  */}
-                                            {isAdmin() === 'true' ?
-                                                <p className='navbar-nav textStyle'><Link to={'/admin/'}
-                                                                                          className='linkStyle'>{strings.admin}</Link>
-                                                </p>
-                                                : null}
+                                            {/*{isAdmin() === 'true' ?*/}
+                                            {/*    <p className='navbar-nav textStyle'><Link to={'/admin/'}*/}
+                                            {/*                                              className='linkStyle'>{strings.admin}</Link>*/}
+                                            {/*    </p>*/}
+                                            {/*    : null}*/}
                                             <p className='navbar-nav textStyle'><Link to='/about/'
                                                                                       className='linkStyle'>{strings.about}</Link>
                                             </p>
