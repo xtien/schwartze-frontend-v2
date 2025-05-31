@@ -35,7 +35,7 @@ export const AdminLuceneApiAxiosParamCreator = function (configuration?: Configu
          * @throws {RequiredError}
          */
         createIndex: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/admin/indexFiles/`;
+            const localVarPath = `/admin/createIndex/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;

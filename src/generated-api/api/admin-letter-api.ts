@@ -41,48 +41,13 @@ export const AdminLetterApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * 
-         * @param {DeleteLetterRequest} deleteLetterRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        addLetter: async (deleteLetterRequest: DeleteLetterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'deleteLetterRequest' is not null or undefined
-            assertParamExists('addLetter', 'deleteLetterRequest', deleteLetterRequest)
-            const localVarPath = `/admin/deleteLetter/`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(deleteLetterRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {AddLetterRequest} addLetterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addLetter1: async (addLetterRequest: AddLetterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addLetter: async (addLetterRequest: AddLetterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'addLetterRequest' is not null or undefined
-            assertParamExists('addLetter1', 'addLetterRequest', addLetterRequest)
+            assertParamExists('addLetter', 'addLetterRequest', addLetterRequest)
             const localVarPath = `/admin/addLetter/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -103,6 +68,41 @@ export const AdminLetterApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(addLetterRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {DeleteLetterRequest} deleteLetterRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteLetter: async (deleteLetterRequest: DeleteLetterRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'deleteLetterRequest' is not null or undefined
+            assertParamExists('deleteLetter', 'deleteLetterRequest', deleteLetterRequest)
+            const localVarPath = `/admin/deleteLetter/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(deleteLetterRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -191,26 +191,26 @@ export const AdminLetterApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {DeleteLetterRequest} deleteLetterRequest 
+         * @param {AddLetterRequest} addLetterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addLetter(deleteLetterRequest: DeleteLetterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteLetterResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addLetter(deleteLetterRequest, options);
+        async addLetter(addLetterRequest: AddLetterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddLetterResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addLetter(addLetterRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['AdminLetterApi.addLetter']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
-         * @param {AddLetterRequest} addLetterRequest 
+         * @param {DeleteLetterRequest} deleteLetterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addLetter1(addLetterRequest: AddLetterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddLetterResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addLetter1(addLetterRequest, options);
+        async deleteLetter(deleteLetterRequest: DeleteLetterRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteLetterResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteLetter(deleteLetterRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminLetterApi.addLetter1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AdminLetterApi.deleteLetter']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -249,21 +249,21 @@ export const AdminLetterApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * 
-         * @param {DeleteLetterRequest} deleteLetterRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        addLetter(deleteLetterRequest: DeleteLetterRequest, options?: RawAxiosRequestConfig): AxiosPromise<DeleteLetterResult> {
-            return localVarFp.addLetter(deleteLetterRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {AddLetterRequest} addLetterRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addLetter1(addLetterRequest: AddLetterRequest, options?: RawAxiosRequestConfig): AxiosPromise<AddLetterResult> {
-            return localVarFp.addLetter1(addLetterRequest, options).then((request) => request(axios, basePath));
+        addLetter(addLetterRequest: AddLetterRequest, options?: RawAxiosRequestConfig): AxiosPromise<AddLetterResult> {
+            return localVarFp.addLetter(addLetterRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {DeleteLetterRequest} deleteLetterRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteLetter(deleteLetterRequest: DeleteLetterRequest, options?: RawAxiosRequestConfig): AxiosPromise<DeleteLetterResult> {
+            return localVarFp.deleteLetter(deleteLetterRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -295,24 +295,24 @@ export const AdminLetterApiFactory = function (configuration?: Configuration, ba
 export class AdminLetterApi extends BaseAPI {
     /**
      * 
-     * @param {DeleteLetterRequest} deleteLetterRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AdminLetterApi
-     */
-    public addLetter(deleteLetterRequest: DeleteLetterRequest, options?: RawAxiosRequestConfig) {
-        return AdminLetterApiFp(this.configuration).addLetter(deleteLetterRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {AddLetterRequest} addLetterRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AdminLetterApi
      */
-    public addLetter1(addLetterRequest: AddLetterRequest, options?: RawAxiosRequestConfig) {
-        return AdminLetterApiFp(this.configuration).addLetter1(addLetterRequest, options).then((request) => request(this.axios, this.basePath));
+    public addLetter(addLetterRequest: AddLetterRequest, options?: RawAxiosRequestConfig) {
+        return AdminLetterApiFp(this.configuration).addLetter(addLetterRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {DeleteLetterRequest} deleteLetterRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminLetterApi
+     */
+    public deleteLetter(deleteLetterRequest: DeleteLetterRequest, options?: RawAxiosRequestConfig) {
+        return AdminLetterApiFp(this.configuration).deleteLetter(deleteLetterRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

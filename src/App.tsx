@@ -18,6 +18,12 @@ import {About} from "./About.tsx";
 import PagePage from "./PagePage.tsx";
 import Content from "./Content.tsx";
 import Login from "./Login.tsx";
+import Admin from "./Admin.tsx";
+import AddPerson from "./AddPerson.tsx";
+import AddLetter from "./AddLetter.tsx";
+import AddLocation from "./AddLocation.tsx";
+import EditLetter from "./EditLetter.tsx";
+import DeleteLetter from "./DeleteLetter.tsx";
 
 function App() {
 
@@ -140,15 +146,15 @@ function App() {
                     <div className='content-container'>
                         <Routes>
                             <Route path="/" element={<Landing/>}/>
-                            {/*<Route path="/admin/" element={<Admin/>}/>*/}
+                            <Route path="/admin/" element={<Admin/>}/>
                             <Route path="/login/" element={<Login/>}/>
                             {/*<Route path="/signup/" element={<Signup/>}/>*/}
                             <Route path="/get_letters/:page" element={<Letters/>}/>
-                            {/*<Route path="/add_person/" element={<AddPerson/>}/>*/}
-                            {/*<Route path="/add_letter/" element={<AddLetter/>}/>*/}
-                            {/*<Route path="/edit_letter/:number" element={<EditLetter/>}/>*/}
-                            {/*<Route path="/delete_letter/:number" element={<DeleteLetter/>}/>*/}
-                            {/*<Route path="/add_location/" element={<AddLocation/>}/>*/}
+                            <Route path="/add_person/" element={<AddPerson/>}/>
+                            <Route path="/add_letter/" element={<AddLetter/>}/>
+                            <Route path="/edit_letter/:number" element={<EditLetter/>}/>
+                            <Route path="/delete_letter/:number" element={<DeleteLetter/>}/>
+                            <Route path="/add_location/" element={<AddLocation/>}/>
                             {/*<Route path="/combine_person/:id" element={<CombinePerson/>}/>*/}
                             {/*<Route path="/combine_location/:id" element={<CombineLocation/>}/>*/}
                             <Route path="/get_location_details/:id" element={<LocationPage/>}/>

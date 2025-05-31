@@ -62,6 +62,11 @@ const strings = new LocalizedStrings({
         edit: "Edit",
         password: "Password",
         username: "Username",
+        addLetter: "Brief toevoegen",
+        addLocation: "Locatie toevoegen",
+        indexLetters: "Indexeer brieven",
+        addPerson: "Persoon toevoegen",
+        text: "Tekst"
     },
     en:{
         about: "About",
@@ -118,6 +123,11 @@ const strings = new LocalizedStrings({
         edit: "Edit",
         password: "Password",
         username: "Username",
+        addLetter: "Add letter",
+        addLocation: "Add location",
+        indexLetters: "Index letters",
+        addPerson: "Add person",
+        text: "Text"
     },
     fr: {
         about: "À propos",
