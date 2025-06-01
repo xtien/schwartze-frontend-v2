@@ -13,13 +13,14 @@ import {
     AdminLetterApi, AdminLocationApi,
     AdminPersonApi,
     type Letter,
-    type LetterRequest, type LocationsRequest,
+    type LetterRequest, LettersApi, type LocationsRequest,
     type MyLocation, type PeopleRequest,
     type Person
 } from "./generated-api";
 import {apiConfig} from "./config.tsx";
 
-const letterApi = new AdminLetterApi(apiConfig)
+const letterApi = new LettersApi(apiConfig)
+const adminLetterApi = new AdminLetterApi(apiConfig)
 const adminLocationApi = new AdminLocationApi(apiConfig)
 const adminPersonApi = new AdminPersonApi(apiConfig)
 
@@ -36,7 +37,9 @@ function EditLetter() {
     const [senderLocations, setSenderLocations] = useState<Array<MyLocation>>()
     const [recipientLocations, setRecipientLocations] = useState<Array<MyLocation>>()
     const [senderLocationId, setSenderLocationId] = useState<number>()
+    const [senderLocationString, setSenderLocationString] = useState<string>()
     const [recipientLocationId, setRecipientLocationId] = useState<number>()
+    const [recipientLocationString, setRecipientLocationString] = useState<string>()
     const [recipientsString, setRecipientsString] = useState<string>()
     const [sendersString, setSendersString] = useState<string>()
     const [errorMessage, setErrorMessage] = useState<string>()
@@ -48,20 +51,49 @@ function EditLetter() {
             number: parseInt(number)
         };
 
-        letterApi.updateLetter(postData).then(response => {
+        letterApi.getLetter(postData).then(response => {
             if (response.data.letter != null) {
-                setLetter(response.data.letter)
-                setDate(response.data.letter.date)
-                setSenders(response.data.letter.senders)
-                setRecipients(response.data.letter.recipients)
-                setSenderLocationId(response.data.letter.sender_location[0].id)
-                setRecipientLocationId(response.data.letter.recipient_location[0].id)
-                setRecipientsString(response.data.letter.recipients.map((r) => r.id).join(','))
-                setSendersString(response.data.letter.senders.map((r) => r.id).join(','))
+                doSetLetter(response.data.letter)
+
             }
         })
 
     }, []);
+
+    function doSetLetter(letter: Letter) {
+        setLetter(letter)
+        setDate(letter.date)
+        setSenders(letter.senders)
+        setRecipients(letter.recipients)
+        setSenderLocationId(letter.sender_location[0].id)
+        setRecipientLocationId(letter.recipient_location[0].id)
+        setRecipientsString(letter.recipients.map((r) => r.id).join(','))
+        setSendersString(letter.senders.map((r) => r.id).join(','))
+        if (letter.sender_location != null && letter.sender_location.length > 0) {
+            setLocationStrings(letter)
+        }
+    }
+
+    function setLocationStrings(letter: Letter) {
+        if (letter != null) {
+            if (letter.sender_location != null && letter.sender_location.length > 0) {
+                var senderLocationString = ''
+                for (var l of letter.sender_location) {
+                    senderLocationString += l.name + ', '
+                }
+                setSenderLocationString(senderLocationString.substring(0, senderLocationString.length - 2))
+            }
+            if (letter.recipient_location != null && letter.recipient_location.length > 0) {
+                var recipientLocationString = ''
+                for (var l of letter.sender_location) {
+                    recipientLocationString += l.name + ', '
+                }
+                setRecipientLocationString(recipientLocationString.substring(0, recipientLocationString.length - 2))
+            }
+        } else {
+            return ''
+        }
+    }
 
     function getPeopleFromIdsString(idsString: string, func: (people: Array<Person>) => void) {
         const ids = idsString.replace(' ', '').split(',')
@@ -94,7 +126,7 @@ function EditLetter() {
     }
 
     function handleSenderLocationIds(event: { target: { value: string; }; }) {
-        getLocationsFromIdsString(event.target.value,setSenderLocations)
+        getLocationsFromIdsString(event.target.value, setSenderLocations)
     }
 
 
@@ -103,7 +135,7 @@ function EditLetter() {
     }
 
     function handleRecipientLocationId(event: { target: { value: string; }; }) {
-        getLocationsFromIdsString(event.target.value ,setRecipientLocations)
+        getLocationsFromIdsString(event.target.value, setRecipientLocations)
     }
 
     function handleDate(event: { target: { value: string; }; }) {
@@ -120,10 +152,10 @@ function EditLetter() {
             if (recipients != null) {
                 updated_letter.recipients = recipients;
             }
-            if(senderLocations != null) {
+            if (senderLocations != null) {
                 updated_letter.sender_location = senderLocations;
             }
-            if(recipientLocations != null) {
+            if (recipientLocations != null) {
                 updated_letter.recipient_location = recipientLocations;
             }
 
@@ -131,15 +163,9 @@ function EditLetter() {
                 letter: updated_letter
             };
 
-            letterApi.updateLetter(postData).then(response => {
+            adminLetterApi.updateLetter(postData).then(response => {
                 if (response.data.letter != null) {
-                    setLetter(response.data.letter)
-                    setSenders(response.data.letter.senders)
-                    setRecipients(response.data.letter.recipients)
-                    setSenderLocationId(response.data.letter.sender_location[0].id)
-                    setRecipientLocationId(response.data.letter.recipient_location[0].id)
-                    setRecipientsString(response.data.letter.recipients.map((r) => r.id).join(','))
-                    setSendersString(response.data.letter.senders.map((r) => r.id).join(','))
+                    doSetLetter(response.data.letter)
                 }
                 setEditDone(true)
             }).catch(error => {
@@ -157,16 +183,20 @@ function EditLetter() {
     let senderListString = ''
     if (senders != null) {
         for (var s of senders) {
-            senderListString += s.nick_name + ' ' + s.tussenvoegsel + ' ' + s.last_name + ', ';
+            senderListString += personToString(s);
         }
     }
 
 
     let recipientListString = ''
     if (recipients != null) {
-        for (var r of recipients) {
-            recipientListString += r.nick_name + ' ' + r.tussenvoegsel + ' ' + r.last_name + ', ';
+        for (const r of recipients) {
+            recipientListString += personToString(r);
         }
+    }
+
+    function personToString(p: Person) {
+        return (p.nick_name ?? '') + ' ' + (p.tussenvoegsel ?? '') + ' ' + (p.last_name ?? '') + ', ';
     }
 
     function cancel() {
@@ -209,7 +239,7 @@ function EditLetter() {
                                         Afzender:
                                     </td>
                                     <td>
-                                        {senderListString} in {senderLocationId != null ? senderLocationId.toString() : ''}
+                                        {senderListString} in {senderLocationId != null ? senderLocationString : ''}
                                     </td>
                                 </tr>
                                 <tr>
@@ -250,7 +280,7 @@ function EditLetter() {
                                         Ontvanger
                                     </td>
                                     <td>
-                                        {recipientListString} in {recipientLocationId != null ? recipientLocationId.toString() : ''}
+                                        {recipientListString} in {recipientLocationId != null ? recipientLocationString : ''}
                                     </td>
                                 </tr>
                                 <tr>
