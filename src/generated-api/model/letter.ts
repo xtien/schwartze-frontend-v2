@@ -73,13 +73,13 @@ export interface Letter {
      * @type {Array<MyLocation>}
      * @memberof Letter
      */
-    'sender_location': Array<MyLocation>;
+    'sender_locations': Array<MyLocation>;
     /**
      * 
      * @type {Array<MyLocation>}
      * @memberof Letter
      */
-    'recipient_location': Array<MyLocation>;
+    'recipient_locations': Array<MyLocation>;
     /**
      * 
      * @type {string}

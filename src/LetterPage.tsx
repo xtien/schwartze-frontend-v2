@@ -47,8 +47,8 @@ function LetterPage() {
         number: 0,
         senders: [],
         recipients: [],
-        recipient_location: [],
-        sender_location: [],
+        recipient_locations: [],
+        sender_locations: [],
         remarks: "",
          text: undefined
     })
@@ -163,9 +163,9 @@ function LetterPage() {
         to={`/get_person_details/${r.id}`}
         className='linkStyle'>{r.nick_name} {r.tussenvoegsel} {r.last_name} </Link> </span>);
 
-    const senderLocationList = letter.sender_location.map((s: MyLocation) => <span><Link
+    const senderLocationList = letter.sender_locations.map((s: MyLocation) => <span><Link
         to={`/get_location_details/${s.id}`} className='linkStyle'>{s.location_name} </Link> </span>);
-    const recipientLocationList = letter.recipient_location.map((s: MyLocation) => <span><Link
+    const recipientLocationList = letter.recipient_locations.map((s: MyLocation) => <span><Link
         to={`/get_location_details/${s.id}`} className='linkStyle'>{s.location_name} </Link> </span>);
 
     if (letter != null) {
@@ -210,7 +210,7 @@ function LetterPage() {
                                                 <button
                                                     className="btn btn-outline-success mybutton"
                                                     onClick={editComment}>
-                                                    Edit commentaarregel
+                                                    {strings.editCommentLine}
                                                 </button> : null}
                                     </div>
                                 </div>
@@ -221,7 +221,7 @@ function LetterPage() {
                                                 <button
                                                     className="btn btn-outline-warning mybutton ml-2"
                                                     onClick={editLetter}>
-                                                    Edit afzender/ontvanger
+                                                    {strings.editsenderRecipient}
                                                 </button> : null}
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@ function LetterPage() {
                                                 <button
                                                     className="btn btn-outline-warning mybutton ml-2"
                                                     onClick={deleteLetter}>
-                                                    Delete brief
+                                                    {strings.deleteLetter}
                                                 </button> : null}
                                     </div>
                                 </div>
@@ -279,7 +279,7 @@ function LetterPage() {
                             <tr>
                                 <td width="80">
                                     <div className='mb-3'>
-                                        Collectie:
+                                        {strings.collection}
                                     </div>
                                 </td>
                                 <td colSpan={2}>
@@ -341,7 +341,7 @@ function LetterPage() {
                     {isAdmin() === "true" ?
                         <div className='mb-5 mt-5 ml-5'>
                             <Link to={linkToEditText}>
-                                Edit tekst
+                                {strings.editText}
                             </Link>
                         </div>
                         : null}
