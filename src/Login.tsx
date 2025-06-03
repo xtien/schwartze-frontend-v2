@@ -21,7 +21,6 @@ function Login() {
 
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [authenticated, setAuthenticated] = useState(false);
 
     function handleLinkSubmit(event: { preventDefault: () => void; }) {
         event.preventDefault();
@@ -36,7 +35,6 @@ function Login() {
             .then(response => {
                 registerSuccessfulLogin(username, password);
                 setAuthorities(response.data.authorities);
-                setAuthenticated(true);
                 navigate('/get_letters/0');
             })
             .catch(error => {

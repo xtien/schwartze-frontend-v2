@@ -11,7 +11,7 @@ import './css/bootstrap.css'
 import {Navigate} from "react-router-dom";
 import strings from "./strings.tsx";
 import {AdminLocationApi} from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 
 const adminLocationApi = new AdminLocationApi(apiConfig)
 

@@ -15,7 +15,7 @@ import arrow_left from "./images/arrow_left.png";
 import {Link} from "react-router-dom";
 import strings from "./strings";
 import language from './language'
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import {AdminPageApi, HomeTextApi, PageApi} from './generated-api/api.ts';
 import {useLocation} from "react-router";
 import type {

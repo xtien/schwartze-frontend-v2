@@ -10,17 +10,20 @@ import {Link} from "react-router-dom";
 import './css/bootstrap.css'
 import language from "./language";
 import {TextApi, type TextRequest, type TextResult} from "./generated-api";
-import {apiConfig} from "./config";
 import strings from "./strings.tsx";
 import {MyPopup} from "./MyPopup.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
+import {useLocation} from "react-router";
 
 const textApi = new TextApi(apiConfig)
 
 function TextPage() {
 
-    const params = window.location.href.split('/')
-    const _entity = params[4]
-    const _id = params[5]
+    const location = useLocation()
+    const params = location.pathname.split('/')
+
+    const _entity = params[2]
+    const _id = params[3]
 
     const [entity] = useState<string>(_entity);
     const [id] = useState<number>(parseInt(_id));

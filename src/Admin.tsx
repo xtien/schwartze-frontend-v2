@@ -8,7 +8,7 @@
 import  {useState} from 'react'
 import './css/bootstrap.css'
 import {isAdmin, logout} from "./service/AuthenticationService.tsx";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import {AdminLuceneApi, UserApi} from "./generated-api";
 import {useNavigate} from "react-router";
 import strings from "./strings.tsx";

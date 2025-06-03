@@ -1,5 +1,5 @@
-import {Configuration} from "../generated-api";
 import axios from "axios";
+import {Configuration} from "../generated-api";
 
 export const USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
 export const VISITOR = 'visitor'
@@ -7,12 +7,18 @@ export const ADMIN = 'admin'
 export const AUTH1 = 'auth1'
 export const AUTH2 = 'auth2'
 
+// export const apiConfig : AxiosRequestConfig = {
+//     baseURL: import.meta.env.VITE_API_URL,
+//     headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//         Authorization: createBasicAuthToken(getAuth1(), getAuth2())
+//     }
+// }
 
-export const apiConfig = new Configuration(
-    {
-        basePath: import.meta.env.VITE_API_URL,
-    }
-)
+export const apiConfig = new Configuration({
+    basePath: import.meta.env.VITE_API_URL,
+})
 
 export function setAuthorities(authorities: string | string[]) {
     if (authorities.includes("READ_PRIVILEGE")) {

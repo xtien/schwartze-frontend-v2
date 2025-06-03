@@ -7,7 +7,7 @@
 
 import React, {useState} from 'react'
 import {LocationApi, type LocationRequest, type MyLocation} from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import Table from "react-bootstrap/Table";
 import {useNavigate} from "react-router";
 

@@ -26,7 +26,7 @@ import {
 import strings from "./strings.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import {useState} from "react";
 import type {AxiosResponse} from "axios";
 
@@ -212,16 +212,16 @@ function Letters() {
             }
 
             let senderLocation = '';
-            if (letter.sender_location != null && letter.sender_location.length > 0) {
-                letter.sender_location.map(function (location) {
+            if (letter.sender_locations != null && letter.sender_locations.length > 0) {
+                letter.sender_locations.map(function (location) {
                     senderLocation += location.name + ', '
                 })
             }
             senderLocation = senderLocation.slice(0, -2);
 
             let recipientLocation = '';
-            if (letter.recipient_location != null) {
-                letter.recipient_location.map(function (location) {
+            if (letter.recipient_locations != null) {
+                letter.recipient_locations.map(function (location) {
                     recipientLocation += location.name + ', '
                 })
             }

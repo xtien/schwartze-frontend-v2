@@ -22,7 +22,7 @@ import {
     type MyLocation,
     type Person
 } from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import type {CommentFormProps} from "./interface/CommentFormProps.tsx";
 import strings from "./strings.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
@@ -332,9 +332,8 @@ function LetterPage() {
                                     : null}
                             </div> : null}
                         <div className='remark'>
-                            {strings.remarks}
+                            {letter.comment}
                         </div>
-
                     </div>
 
 
@@ -371,7 +370,7 @@ function LetterPage() {
             const request: LetterRequest =
                 {
                     comment: text,
-                    date: date
+                    date: date, number: letter.number,
                 }
 
             adminLetterApi.updateLetterComment(request).then(response => {

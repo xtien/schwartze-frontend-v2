@@ -10,7 +10,7 @@ import './App.css'
 import './css/bootstrap.css'
 import {useNavigate} from "react-router";
 import {type AddPersonRequest, AdminPersonApi, type Person} from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 
 const adminPersonApi = new AdminPersonApi(apiConfig)
 

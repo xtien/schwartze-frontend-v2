@@ -10,7 +10,7 @@ import {Link, Navigate} from "react-router-dom";
 import strings from './strings.js'
 import language from "./language";
 import {AdminSubjectApi, type Subject, SubjectApi} from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {SubjectEditLinkFormProps} from "./interface/SubjectEditLinkFormProps.tsx";
 

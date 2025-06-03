@@ -1,7 +1,8 @@
-import {AdminPageApi, type PageReferenceRequest, type PageReferenceTypeEnum} from "../generated-api";
+import {AdminPageApi, type PageReferenceRequest, PageReferenceTypeEnum} from "../generated-api";
 import type {EditReferenceProps} from "../interface/EditReferenceProps";
 import {useState} from "react";
-import {toPageReferenceEnum} from "../util/util.enumUtil.tsx";
+import Selector from "../component/Selector.tsx";
+import strings from "../strings.tsx";
 
 const adminPageApi = new AdminPageApi();
 
@@ -20,12 +21,9 @@ export function EditReferenceForm({
     const [description, setDescription] = useState('');
     const [_key, setKey] = useState('');
 
+
     function handleDescriptionChange(event: { target: { value: string; }; }) {
         setDescription(event.target.value);
-    }
-
-    function handleTypeChange(event: { target: { value: string; }; }) {
-        setType(toPageReferenceEnum(event.target.value));
     }
 
     function handleKeyChange(event: { target: { value: string; }; }) {
@@ -40,10 +38,8 @@ export function EditReferenceForm({
     function handleSubmit() {
 
         const postData: PageReferenceRequest = {
-            page_number: pageNumber.toString(),
-            chapter_number: chapterNumber.toString(),
             reference: {
-                key: key,
+                key: _key,
                 type: type,
                 description: description
             }
@@ -62,6 +58,7 @@ export function EditReferenceForm({
     }
 
 
+
     if (editDone === true) {
         setEditDone(false);
         toggleEditDoneParam();
@@ -73,10 +70,13 @@ export function EditReferenceForm({
 
     return (
         <div className='add_reference'>
-            <h5 className='mb-5'> Add page reference</h5>
+            <h5 className='mb-5'>{strings.addPageReferenceTitle}</h5>
+
+            <div className="mb-3">{strings.chapter} {chapterNumber} {strings.page} {pageNumber}</div>
 
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
+
                     <table width="60%" className='mt-2'>
                         <tbody>
                         <tr>
@@ -96,13 +96,12 @@ export function EditReferenceForm({
                         <tbody>
                         <tr>
                             <td width="150px"><label htmlFor="status">Type</label></td>
-                            <td><input
-                                type="text"
-                                className="form-control "
-                                id="description"
-                                value={type}
-                                onChange={handleTypeChange}
-                            /></td>
+                            <td>
+                                <Selector
+                                    enumType={PageReferenceTypeEnum}
+                                    onChange={(selectedType) => setType(selectedType)}
+                                />
+                            </td>
                         </tr>
                         </tbody>
                     </table>

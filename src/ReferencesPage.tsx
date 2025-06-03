@@ -9,7 +9,7 @@ import {useEffect, useState} from 'react'
 import strings from './strings.js'
 import language from "./language";
 import {AdminReferencesApi, type EditReferenceLinkRequest, type References, ReferencesApi} from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {EditReferenceLinkFormProps} from "./interface/EditReferenceLinkFormProps.tsx";
 

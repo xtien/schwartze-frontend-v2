@@ -9,7 +9,7 @@ import strings from "./strings";
 import {Link} from "react-router-dom";
 import language from "./language";
 import {ContentApi, type ContentItem, type ContentRequest} from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 
 const contentApi = new ContentApi(apiConfig)
 

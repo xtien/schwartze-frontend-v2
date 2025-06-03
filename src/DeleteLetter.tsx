@@ -21,9 +21,10 @@ import {
     type MyLocation,
     type Person
 } from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {isAdmin} from "./service/AuthenticationService.tsx";
+import strings from "./strings.tsx";
 
 const adminLetterApi = new AdminLetterApi(apiConfig)
 const letterApi = new LettersApi(apiConfig)
@@ -34,15 +35,13 @@ function DeleteLetter() {
     const navigate = useNavigate()
 
     const params = location.pathname.split('/')
-    const number = params[1]
+    const number = params[2]
 
     const [letter, setLetter] = useState<Letter>()
     const [senders, setSenders] = useState<Array<Person>>()
     const [recipients, setRecipients] = useState<Array<Person>>()
     const [sender_location, setSenderLocation] = useState<MyLocation>()
     const [recipient_location, setRecipientLocation] = useState<MyLocation>()
-    const [recipientsString, setRecipientsString] = useState<string>()
-    const [sendersString, setSendersString] = useState<string>()
     const [errorMessage, setErrorMessage] = useState<string>()
     const [deleted, setDeleted] = useState<boolean>(false)
     const [cancel, setCancel] = useState<boolean>(false)
@@ -54,50 +53,41 @@ function DeleteLetter() {
 
     useEffect(() => {
 
-            letterApi.getLetter(postData).then(response => {
-                if (response.data.letter != null) {
-                    setLetter(response.data.letter)
-                    setSenders(response.data.letter.senders)
-                    setRecipients(response.data.letter.recipients)
-                    setSenderLocation(response.data.letter.sender_location[0])
-                    setRecipientLocation(response.data.letter.recipient_location[0])
-                    setRecipientsString(response.data.letter.recipients.map((r) => r.id).join(','))
-                    setSendersString(response.data.letter.senders.map((r) => r.id).join(','))
+        letterApi.getLetter(postData).then(response => {
+            if (response.data.letter != null) {
+                setLetter(response.data.letter)
+                setSenders(response.data.letter.senders)
+                setRecipients(response.data.letter.recipients)
+                setSenderLocation(response.data.letter.sender_locations[0])
+                setRecipientLocation(response.data.letter.recipient_locations[0])
 
 
-                    let senderIdList: number[] = []
-                    if (senders != null && senders.length > 0) {
-                        senderIdList = senders.map((p) =>
-                            p.id != undefined ? p.id : 0);
-                    }
-                    let senderIds = ''
-                    let id
-                    for (id in senderIdList) {
-                        senderIds += senderIdList[id];
-                    }
-
-                    let recipientIdList: number[] = []
-                    if (recipients != null && recipients.length > 0) {
-                        recipientIdList = recipients.map((r) =>
-                            r.id != undefined ? r.id : 0);
-                    }
-                    let recipientIds = ''
-                    for (id in recipientIdList) {
-                        recipientIds += recipientIdList[id];
-                    }
-
-                    setSendersString(senderIds)
-                    setRecipientsString(recipientIds)
+                let senderIdList: number[] = []
+                if (senders != null && senders.length > 0) {
+                    senderIdList = senders.map((p) =>
+                        p.id != undefined ? p.id : 0);
                 }
-            }).catch(error => {
-                console.log(error)
-            })
-        }
+                let senderIds = ''
+                let id
+                for (id in senderIdList) {
+                    senderIds += senderIdList[id];
+                }
 
-        ,
-        []
-    )
-    ;
+                let recipientIdList: number[] = []
+                if (recipients != null && recipients.length > 0) {
+                    recipientIdList = recipients.map((r) =>
+                        r.id != undefined ? r.id : 0);
+                }
+                let recipientIds = ''
+                for (id in recipientIdList) {
+                    recipientIds += recipientIdList[id];
+                }
+
+             }
+        }).catch(error => {
+            console.log(error)
+        })
+    }, []);
 
 
     function _cancel() {
@@ -116,7 +106,6 @@ function DeleteLetter() {
             console.log(error)
             setErrorMessage(error)
         })
-
 
     }
 
@@ -147,7 +136,6 @@ function DeleteLetter() {
     }
 
 
-
     const errorM = errorMessage;
 
     return (
@@ -158,8 +146,9 @@ function DeleteLetter() {
                         <div>{errorMessage}</div>
                     </div> : null}
 
+                {deleted ? <div className="mb-5"> strings.letterRemoved</div> :null}
                 <div>
-                    <h3>Brief nummer {number} </h3>
+                    <h3>{strings.letterNumber} {number} </h3>
 
                     <div className='form-group mt-5'>
                         <table width="600px">
@@ -167,7 +156,7 @@ function DeleteLetter() {
                             <tr>
                                 <td width="150px">
                                     <div className='mb-5'>
-                                        Datum:
+                                        {strings.date}:
                                     </div>
                                 </td>
                                 <td>
@@ -176,10 +165,10 @@ function DeleteLetter() {
                             </tr>
                             <tr>
                                 <td width="150px">
-                                    Afzender:
+                                    {strings.sender}:
                                 </td>
                                 <td>
-                                    {senderList} in {sender_location != null ?   sender_location.name : ''}
+                                    {senderList} in {sender_location != null ? sender_location.name : ''}
                                 </td>
                             </tr>
 
@@ -192,7 +181,7 @@ function DeleteLetter() {
                             <tbody>
                             <tr>
                                 <td width="150px">
-                                    Ontvanger
+                                    {strings.recipient}:
                                 </td>
                                 <td>
                                     {recipientList} in {recipient_location != null ? recipient_location.name : ''}
@@ -209,7 +198,7 @@ function DeleteLetter() {
                                     <button
                                         className="btn btn-outline-success mybutton"
                                         onClick={_cancel}>
-                                        Cancel
+                                        {strings.cancel}
                                     </button> : null}
                         </div>
                     </td>
@@ -220,7 +209,7 @@ function DeleteLetter() {
                                     <button
                                         className="btn btn-outline-warning mybutton ml-2"
                                         onClick={deleteLetter}>
-                                        Delete
+                                        {strings.delete}
                                     </button> : null}
                         </div>
                     </td>

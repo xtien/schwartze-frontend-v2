@@ -10,7 +10,7 @@ import './App.css';
 import './css/bootstrap.css';
 import {Navigate} from "react-router-dom";
 import {type AddLetterRequest, AdminLetterApi} from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 
 const letterApi = new AdminLetterApi(apiConfig)
 

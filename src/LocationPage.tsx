@@ -19,7 +19,7 @@ import {
     type LocationRequest,
     type MyLocation,
 } from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {JSX} from "react/jsx-runtime";
 import type {EditLocationLinkFormProps} from "./interface/EditLocationLinkFormProps.tsx";

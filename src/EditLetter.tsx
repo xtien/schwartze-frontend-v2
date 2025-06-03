@@ -17,7 +17,7 @@ import {
     type MyLocation, type PeopleRequest,
     type Person
 } from "./generated-api";
-import {apiConfig} from "./config.tsx";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 import strings from "./strings.tsx";
 
 const letterApi = new LettersApi(apiConfig)
@@ -25,17 +25,8 @@ const adminLetterApi = new AdminLetterApi(apiConfig)
 const adminLocationApi = new AdminLocationApi(apiConfig)
 const adminPersonApi = new AdminPersonApi(apiConfig)
 
-function useForceUpdate() {
-    const [, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update state to force render
-    // A function that increment 👆🏻 the previous state like here
-    // is better than directly setting `setValue(value + 1)`
-}
 
 function EditLetter() {
-
-    const forceUpdate = useForceUpdate();
-
 
     const location = useLocation()
     const params = location.pathname.split('/')
@@ -96,10 +87,10 @@ function EditLetter() {
         setSenderLocationIdsString(letter.sender_locations.map((r) => r.id).join(', '))
         setRecipientLocationIdsString(letter.recipient_locations.map((r) => r.id).join(', '))
 
-        setRecipientNamesString(letter.recipients.map((r) => r.last_name).join(', '))
+        setRecipientNamesString(letter.recipients.map((r) => personToString(r)).join(', '))
         setSenderLocationNamesString(letter.sender_locations.map((r) => r.name).join(', '))
         setRecipientLocationNamesString(letter.recipient_locations.map((r) => r.name).join(', '))
-        setSendersNamestring(letter.senders.map((r) => r.last_name).join(','))
+        setSendersNamestring(letter.senders.map((r) => personToString(r)).join(','))
     }
 
     function _setSenders(senders: Array<Person>) {
@@ -194,26 +185,12 @@ function EditLetter() {
         setDate(event.target.value);
     }
 
-    function handleSubmit(event: { preventDefault: () => void; }) {
-        event.preventDefault();
+    function handleSubmit() {
 
         if (letter != null) {
-            let updated_letter = letter;
-            if (senders != null) {
-                updated_letter.senders = senders;
-            }
-            if (recipients != null) {
-                updated_letter.recipients = recipients;
-            }
-            if (senderLocations != null) {
-                updated_letter.sender_locations = senderLocations;
-            }
-            if (recipientLocations != null) {
-                updated_letter.recipient_locations = recipientLocations;
-            }
 
             let postData = {
-                letter: updated_letter
+                letter: letter
             };
 
             adminLetterApi.updateLetter(postData).then(response => {
@@ -240,7 +217,7 @@ function EditLetter() {
 
         if (senders != null) {
             setSendersIdsString(senders.map((r) => r.id).join(','))
-            setSendersNamestring(senders.map((r) => r.last_name).join(','))
+            setSendersNamestring(senders.map((p) => personToString(p)).join(','))
         }
         if (senderLocations != null) {
             setSenderLocationNamesString(senderLocations.map((r) => r.location_name).join(', '))
@@ -249,7 +226,7 @@ function EditLetter() {
 
         if (recipients != null) {
             setRecipientIdsString(recipients.map((r) => r.id).join(', '))
-            setRecipientNamesString(recipients.map((r) => r.last_name).join(', '))
+            setRecipientNamesString(recipients.map((r) =>personToString(r)).join(', '))
         }
 
 
