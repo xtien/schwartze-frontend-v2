@@ -22,9 +22,8 @@ import {
     type Person,
     PersonApi
 } from "./generated-api";
-import {apiConfig} from "./service/AuthenticationService.tsx";
+import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
 import type {LinkEditProps} from './interface/LinkEditProps.tsx';
-import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {EditPersonFormProps} from "./interface/EditPersonFormProps.tsx";
 import type {EditPersonLinkFormProps} from "./interface/EditPersonLinkFormProps.tsx";
 

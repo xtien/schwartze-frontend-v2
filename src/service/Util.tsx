@@ -5,7 +5,7 @@ class Util {
         return string != null && string.length > 0;
     }
 
-    isEmpty(string) {
+    isEmpty(string: string | any[] | null) {
         return string == null || string.length === 0;
     }
 }

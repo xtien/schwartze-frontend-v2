@@ -364,7 +364,7 @@ function EditLocationLinkForm({location, linkId}: EditLocationLinkFormProps) {
             link_url: linkUrl,
         };
 
-        adminLinksApi.editLink1(request).then(response => {
+        adminLinksApi.editLink(request).then(response => {
             if (response.data.location != null) {
                 _setLocation(response.data.location)
             }

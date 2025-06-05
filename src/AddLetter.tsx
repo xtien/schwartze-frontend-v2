@@ -44,8 +44,8 @@ function AddLetter() {
                 date: date,
                 senders: [],
                 recipients: [],
-                sender_location: [],
-                recipient_location: []
+                sender_locations: [],
+                recipient_locations: []
             }
         };
 

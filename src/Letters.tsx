@@ -46,7 +46,7 @@ function Letters() {
     const [person, setPerson] = useState<Person>()
     const [letters, setLetters] = React.useState<Letter[]>([]);
     const [myLocation] = useState<MyLocation>()
-    const [orderBy, setOrderBy] = React.useState<LettersRequestOrderByEnum>();
+    const [orderBy, setOrderBy] = React.useState<LettersRequestOrderByEnum>("NUMBER");
     const [toFrom] = React.useState<LettersRequestToFromEnum>(toFromString === 'to' ? LettersRequestToFromEnum.To : LettersRequestToFromEnum.From);
     const [search_term, setSearchTerm] = React.useState('');
     const [go_search, setGoSearch] = React.useState(false);
@@ -107,15 +107,16 @@ function Letters() {
             getLocation(id)
 
         } else {
-                const request: LettersRequest = {}
-                setOrderBy(orderBy)
-                lettersApi.getLetters(request).then((response) => {
-                    if (response.data.letters != null) {
-                        setLetters(response.data.letters!)
-                    }
-                }).catch(error => {
-                    console.log(error)
-                })
+            const request: LettersRequest = {
+                orderBy: orderBy
+            }
+            lettersApi.getLetters(request).then((response) => {
+                if (response.data.letters != null) {
+                    setLetters(response.data.letters!)
+                }
+            }).catch(error => {
+                console.log(error)
+            })
         }
     }, [personOrLocation, id, toFromString, urlPart])
 
@@ -153,8 +154,6 @@ function Letters() {
     function letterbynumber() {
     }
 
-    const op_nummer = strings.op_nummer;
-    const op_datum = strings.op_datum;
     const search_letters = '/search_letters/' + search_term;
     //   const gotoletter = '/get_letter_details/' + pageNumber + '/0/';
 
@@ -171,7 +170,9 @@ function Letters() {
     //     return <Navigate to={'/get_letter_details/' + number + '/0/'}/>
     // }
 
-    function sort() {
+    function sort(order: LettersRequestOrderByEnum) {
+
+        setOrderBy(order)
         const request: LettersRequest = {
             orderBy: orderBy
         }
@@ -249,12 +250,27 @@ function Letters() {
                     {myLocation != null ? (strings.locationLettersText + ' ' + myLocation.name) : ''}
 
                 </div>
-                <div className='col-sm-3'>
+                <div className='col-sm-7'>
                     <button
-                        className="btn btn-outline-secondary mybutton mt-3"
-                        onClick={sort}>
-                        {orderBy === LettersRequestOrderByEnum.Date ? op_nummer : op_datum}
+                        className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
+                        onClick={() => sort(LettersRequestOrderByEnum.Number)}>
+                        {strings.op_nummer}
                     </button>
+                    <button
+                        className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
+                        onClick={() => sort(LettersRequestOrderByEnum.Date)}>
+                        {strings.op_datum}
+                    </button>
+                    {/*<button*/}
+                    {/*    className="btn btn-outline-secondary mybutton m-lg-3 mt-3"*/}
+                    {/*    onClick={() => sort(LettersRequestOrderByEnum.SenderLastname)}>*/}
+                    {/*    {strings.op_achternaam}*/}
+                    {/*</button>*/}
+                    {/*<button*/}
+                    {/*    className="btn btn-outline-secondary mybutton m-lg-3 mt-3"*/}
+                    {/*    onClick={() => sort(LettersRequestOrderByEnum.SenderFirstname)}>*/}
+                    {/*    {strings.op_voornaam}*/}
+                    {/*</button>*/}
                 </div>
 
                 <div className='col-sm-3'>
