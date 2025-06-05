@@ -185,7 +185,8 @@ function EditLetter() {
         setDate(event.target.value);
     }
 
-    function handleSubmit() {
+    function handleSubmit(event: { preventDefault: () => void;}) {
+        event.preventDefault();
 
         if (letter != null) {
 
