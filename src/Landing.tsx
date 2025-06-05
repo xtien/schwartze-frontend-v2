@@ -29,6 +29,7 @@ import {EditPictureUrlForm} from "./functions/EditPictureUrlForm.tsx";
 import {EditReferenceForm} from "./functions/EditReferenceForm.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
+
 const homeTextApi = new HomeTextApi(apiConfig);
 const pageApi = new PageApi(apiConfig);
 const adminReferencesApi = new AdminReferencesApi(apiConfig);
@@ -117,16 +118,8 @@ function Landing() {
     }
 
     function setPage(page: Page) {
-
         setShowLinkEdit(false);
-        setPage(page);
-
-        const request: PageTextRequest = {
-            page: page.page_number,
-            chapter: page.chapter_number,
-            language: lang
-        }
-        pageApi.getPage(request);
+        setLeftBlockPage(page);
     }
 
     function add_reference() {
@@ -274,7 +267,7 @@ function Landing() {
 
                             <div className='sidebar-picture'>
                                 {picture_url === null ? null :
-                                <div> <img src={picture_url!} width="200" alt=""/></div>
+                                    <div><img src={picture_url!} width="200" alt=""/></div>
                                 }
                                 <div className='picture-caption'>{picture_caption}</div>
                             </div>

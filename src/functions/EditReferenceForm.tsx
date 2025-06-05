@@ -3,8 +3,9 @@ import type {EditReferenceProps} from "../interface/EditReferenceProps";
 import {useState} from "react";
 import Selector from "../component/Selector.tsx";
 import strings from "../strings.tsx";
+import {apiConfig} from "../service/AuthenticationService.tsx";
 
-const adminPageApi = new AdminPageApi();
+const adminPageApi = new AdminPageApi(apiConfig);
 
 export function EditReferenceForm({
                                       pageNumber,
@@ -35,10 +36,14 @@ export function EditReferenceForm({
         setCancel(true);
     }
 
-    function handleSubmit() {
+    function handleSubmit(event: { preventDefault: () => void; }) {
+        event.preventDefault();
 
         const postData: PageReferenceRequest = {
+            page_number: "0",
+            chapter_number: "0",
             reference: {
+                id: 0,
                 key: _key,
                 type: type,
                 description: description
@@ -56,8 +61,6 @@ export function EditReferenceForm({
                 console.log(errror)
             });
     }
-
-
 
     if (editDone === true) {
         setEditDone(false);
