@@ -34,7 +34,6 @@ const homeTextApi = new HomeTextApi(apiConfig);
 const pageApi = new PageApi(apiConfig);
 const adminReferencesApi = new AdminReferencesApi(apiConfig);
 
-
 function Landing() {
 
     const lang = language()
@@ -86,6 +85,11 @@ function Landing() {
                 console.log(error.toString())
             })
 
+        getLeftPage()
+
+    }, []);
+
+    function getLeftPage() {
         const request: PageTextRequest = {
             page: '0',
             chapter: '0',
@@ -98,19 +102,19 @@ function Landing() {
         }).catch((error) => {
             console.log(error)
         })
-    }, []);
+    }
 
     function delete_link(link_id: number) {
 
         const request: RemoveReferenceLinkRequest = {
             type: 'link',
             link_id: link_id
-
         }
 
         adminReferencesApi.removeReferenceLink(request)
             .then((response) => {
-                console.log(response)
+               console.log(response)
+                getLeftPage()
             })
             .catch((error) => {
                 console.log(error)
@@ -349,8 +353,6 @@ function Landing() {
             </div>
         </div>
     )
-
-
 }
 
 export default Landing
