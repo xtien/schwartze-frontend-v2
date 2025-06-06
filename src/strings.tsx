@@ -77,7 +77,9 @@ const strings = new LocalizedStrings({
         preview: "Preview",
         letterNumber: "Briefnummer",
         letterRemoved: "Brief verwijderd",
-        addPageReferenceTitle: "Add Page Reference"
+        addPageReferenceTitle: "Add Page Reference",
+        niet_doen: "Niet doen",
+        combineren: "Combineren",
     },
     en: {
         about: "About",
@@ -152,6 +154,8 @@ const strings = new LocalizedStrings({
         deleteLetter: "Delete brief",
         collection: "Collectie",
         editText: "Edit tekst",
+        niet_doen: "Don't",
+        combineren: "Combine",
     },
     fr: {
         about: "À propos",

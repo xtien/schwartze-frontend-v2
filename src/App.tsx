@@ -24,6 +24,9 @@ import AddLetter from "./AddLetter.tsx";
 import AddLocation from "./AddLocation.tsx";
 import EditLetter from "./EditLetter.tsx";
 import DeleteLetter from "./DeleteLetter.tsx";
+import TextEdit from "./TextEdit.tsx";
+import CombinePerson from "./CombinePerson.tsx";
+import CombineLocation from "./CombineLocation.tsx";
 
 function App() {
 
@@ -155,8 +158,8 @@ function App() {
                             <Route path="/edit_letter/:number" element={<EditLetter/>}/>
                             <Route path="/delete_letter/:number" element={<DeleteLetter/>}/>
                             <Route path="/add_location/" element={<AddLocation/>}/>
-                            {/*<Route path="/combine_person/:id" element={<CombinePerson/>}/>*/}
-                            {/*<Route path="/combine_location/:id" element={<CombineLocation/>}/>*/}
+                            <Route path="/combine_person/:id" element={<CombinePerson/>}/>
+                            <Route path="/combine_location/:id" element={<CombineLocation/>}/>
                             <Route path="/get_location_details/:id" element={<LocationPage/>}/>
                             <Route path="/get_letters_for_location/:id" element={<Letters/>}/>
                             <Route path="/get_person_details/:id" element={<PersonPage/>}/>
@@ -164,7 +167,7 @@ function App() {
                             <Route path="/get_letters_for_person/:id/:tofrom" element={<Letters/>}/>
                             <Route path="/get_text/:entity/:id" element={<TextPage/>}/>
                             <Route path="/get_page/:chapterNumber/:pageNumber" element={<PagePage/>}/>
-                            {/*<Route path="/edit_text/:type/:id" element={<TextEdit/>}/>*/}
+                            <Route path="/edit_text/:type/:id" element={<TextEdit/>}/>
                             <Route path="/get_locations/" element={<Locations/>}/>
                             <Route path="/get_people/" element={<People/>}/>
                             <Route path="/references/" element={<ReferencesPage/>}/>

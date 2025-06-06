@@ -174,7 +174,7 @@ function Letters() {
 
         setOrderBy(order)
         const request: LettersRequest = {
-            orderBy: orderBy
+            orderBy: order
         }
 
         lettersApi.getLetters(request)
@@ -197,10 +197,9 @@ function Letters() {
             if (senders != undefined && senders.length > 0) {
                 senders.map(function (sender) {
                     const fullName: string = createFullName(sender);
-                    senderName += fullName
-                    ', '
+                    senderName += fullName +   ', '
                 })
-                senderName = senderName.slice(0, -1);
+                senderName = senderName.slice(0, -2);
             }
 
             const recipients = letter.recipients;
@@ -261,16 +260,16 @@ function Letters() {
                         onClick={() => sort(LettersRequestOrderByEnum.Date)}>
                         {strings.op_datum}
                     </button>
-                    {/*<button*/}
-                    {/*    className="btn btn-outline-secondary mybutton m-lg-3 mt-3"*/}
-                    {/*    onClick={() => sort(LettersRequestOrderByEnum.SenderLastname)}>*/}
-                    {/*    {strings.op_achternaam}*/}
-                    {/*</button>*/}
-                    {/*<button*/}
-                    {/*    className="btn btn-outline-secondary mybutton m-lg-3 mt-3"*/}
-                    {/*    onClick={() => sort(LettersRequestOrderByEnum.SenderFirstname)}>*/}
-                    {/*    {strings.op_voornaam}*/}
-                    {/*</button>*/}
+                    <button
+                        className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
+                        onClick={() => sort(LettersRequestOrderByEnum.SenderLastname)}>
+                        {strings.op_achternaam}
+                    </button>
+                    <button
+                        className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
+                        onClick={() => sort(LettersRequestOrderByEnum.SenderFirstname)}>
+                        {strings.op_voornaam}
+                    </button>
                 </div>
 
                 <div className='col-sm-3'>

@@ -125,9 +125,9 @@ export const AdminLocationApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCombinePerson1: async (combineLocationRequest: CombineLocationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getCombineLocation: async (combineLocationRequest: CombineLocationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'combineLocationRequest' is not null or undefined
-            assertParamExists('getCombinePerson1', 'combineLocationRequest', combineLocationRequest)
+            assertParamExists('getCombineLocation', 'combineLocationRequest', combineLocationRequest)
             const localVarPath = `/admin/getCombineLocation/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -195,9 +195,9 @@ export const AdminLocationApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putCombinePerson1: async (combineLocationRequest: CombineLocationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        putCombineLocation: async (combineLocationRequest: CombineLocationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'combineLocationRequest' is not null or undefined
-            assertParamExists('putCombinePerson1', 'combineLocationRequest', combineLocationRequest)
+            assertParamExists('putCombineLocation', 'combineLocationRequest', combineLocationRequest)
             const localVarPath = `/admin/putCombineLocation/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -334,10 +334,10 @@ export const AdminLocationApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCombinePerson1(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CombineLocationResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCombinePerson1(combineLocationRequest, options);
+        async getCombineLocation(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CombineLocationResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCombineLocation(combineLocationRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminLocationApi.getCombinePerson1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AdminLocationApi.getCombineLocation']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -358,10 +358,10 @@ export const AdminLocationApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putCombinePerson1(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CombineLocationResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.putCombinePerson1(combineLocationRequest, options);
+        async putCombineLocation(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CombineLocationResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.putCombineLocation(combineLocationRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminLocationApi.putCombinePerson1']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AdminLocationApi.putCombineLocation']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -422,8 +422,8 @@ export const AdminLocationApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCombinePerson1(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): AxiosPromise<CombineLocationResult> {
-            return localVarFp.getCombinePerson1(combineLocationRequest, options).then((request) => request(axios, basePath));
+        getCombineLocation(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): AxiosPromise<CombineLocationResult> {
+            return localVarFp.getCombineLocation(combineLocationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -440,8 +440,8 @@ export const AdminLocationApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putCombinePerson1(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): AxiosPromise<CombineLocationResult> {
-            return localVarFp.putCombinePerson1(combineLocationRequest, options).then((request) => request(axios, basePath));
+        putCombineLocation(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig): AxiosPromise<CombineLocationResult> {
+            return localVarFp.putCombineLocation(combineLocationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -500,8 +500,8 @@ export class AdminLocationApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AdminLocationApi
      */
-    public getCombinePerson1(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig) {
-        return AdminLocationApiFp(this.configuration).getCombinePerson1(combineLocationRequest, options).then((request) => request(this.axios, this.basePath));
+    public getCombineLocation(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig) {
+        return AdminLocationApiFp(this.configuration).getCombineLocation(combineLocationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -522,8 +522,8 @@ export class AdminLocationApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AdminLocationApi
      */
-    public putCombinePerson1(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig) {
-        return AdminLocationApiFp(this.configuration).putCombinePerson1(combineLocationRequest, options).then((request) => request(this.axios, this.basePath));
+    public putCombineLocation(combineLocationRequest: CombineLocationRequest, options?: RawAxiosRequestConfig) {
+        return AdminLocationApiFp(this.configuration).putCombineLocation(combineLocationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

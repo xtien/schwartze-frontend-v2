@@ -12,7 +12,7 @@ import {Link, Navigate} from "react-router-dom";
 import Util from './service/Util';
 import strings from './strings.js'
 import language from "./language";
-import {useLocation} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 import {
     type AddPersonRequest,
     AdminLinksApi,
@@ -33,17 +33,16 @@ const adminPersonApi = new AdminPersonApi(apiConfig)
 
 function PersonPage() {
 
+    const navigate = useNavigate();
+
     const location = useLocation()
     const params = location.pathname.split('/')
     const id: string = params[2]
 
-   const [showEdit, setShowEdit] = useState(false)
+    const [showEdit, setShowEdit] = useState(false)
     const [showLinkEdit, setShowLinkEdit] = useState(false)
- //   const [showTextEdit, setShowTextEdit] = useState(false)
- //   const [text_id, setTextId] = useState('')
     const [person, setPerson] = useState<Person>({})
     const [textString, setTextString] = useState('')
-    const [combine, setCombine] = useState<boolean>(false)
     const [deleted, setDeleted] = useState(false)
     const [linkEdit, setLinkEdit] = useState<LinkEditProps>()
     const [link_id, setLinkId] = useState<number>(0)
@@ -79,11 +78,6 @@ function PersonPage() {
     function edit() {
         setShowEdit(true)
     }
-
-    function link() {
-        setShowLinkEdit(true)
-    }
-
 
     function deletePerson() {
         const request: DeletePersonRequest = {
@@ -160,10 +154,6 @@ function PersonPage() {
                            className='linkStyle'> {strings.brieven_aan} {person.nick_name} </Link>
     }
 
-    if (combine === true) {
-        return <Navigate to={'/combineperson/' + person.id}/>
-    }
-
     if (deleted === true) {
         return <Navigate to={'/get_people/'}/>
     }
@@ -212,6 +202,11 @@ function PersonPage() {
     let fullname = '';
     if (person.full_name != null && person.full_name.length > 0) {
         fullname = '(' + person.full_name + ')'
+    }
+
+    function combine(event: { preventDefault: () => void; }) {
+        event.preventDefault();
+        navigate('/combine_person/' + person.id)
     }
 
     return (
@@ -275,10 +270,10 @@ function PersonPage() {
                                     {person.text != null && Util.isNotEmpty(person.text.text_string) ?
                                         <div>
                                             {/* TODO: this needs to change when others than myself get access to data entry */}
-                                            <p>
+
                                                 <div
                                                     dangerouslySetInnerHTML={{__html: person.text.text_string!.substring(0, 300)}}/>
-                                            </p>
+
                                             {person.text.text_string!.length > 300 ?
                                                 <p>
                                                     <Link to={linkTo} className='mt-5 mb-5'> {strings.meer} </Link>
@@ -333,7 +328,7 @@ function PersonPage() {
                                             </div>
                                         </td>
                                         <td>
-                                            <form onSubmit={() => combine} className="ml-5 mb-5">
+                                            <form onSubmit={combine} className="ml-5 mb-5">
                                                 <input
                                                     type="submit"
                                                     className="btn btn-outline-success mybutton ml-5"
@@ -428,7 +423,8 @@ function EditPersonForm({person, toggleEditDone, setPerson}: EditPersonFormProps
         setCancel(true);
     }
 
-    function handleSubmit() {
+    function handleSubmit(event: { preventDefault: () => void; }) {
+        event.preventDefault();
         let request: AddPersonRequest = {
             person: person
         };
@@ -623,13 +619,13 @@ function EditPersonLinkForm({}: EditPersonLinkFormProps) {
         })
     }
 
-    function handleNameChange(event: { target: { value: string }}) {
+    function handleNameChange(event: { target: { value: string } }) {
         setLinkName(event.target.value);
     }
 
-    function handleUrlChange(event: { target: { value: string }}) {
+    function handleUrlChange(event: { target: { value: string } }) {
         setLinkUrl(event.target.value);
-      }
+    }
 
 
     const redirectTo = '/getperson_details/' + person!.id;

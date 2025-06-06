@@ -50,8 +50,9 @@ function LetterPage() {
         recipient_locations: [],
         sender_locations: [],
         remarks: "",
-         text: undefined
+        text: undefined
     })
+    const [letterText, setLetterText] = useState<string>()
     const [showEdit, setShowEdit] = useState(false)
     const [imageData, setImageData] = useState<string[]>([])
     const [edit_letter, setEdit_letter] = useState(false)
@@ -70,6 +71,7 @@ function LetterPage() {
         letterApi.getLetter(request).then((response) => {
             if (response.data.letter !== undefined) {
                 setLetter(response.data.letter)
+                setLetterText(response.data.lettertext)
                 getLetterImages(number);
             }
 
@@ -311,19 +313,19 @@ function LetterPage() {
                 </div>
 
                 <div className='letter'>
-                    {letter.text != null && letter.text.text_string != null ?
+                    {letterText != null && letterText != null ?
                         <div
-                            dangerouslySetInnerHTML={{__html: letter.text != null && letter.text.text_string != null ? letter.text.text_string : ''}}/>
+                            dangerouslySetInnerHTML={{__html: letterText != null && letterText != null ? letterText : ''}}/>
                         : null}
                     <div className='textpage mt-5 ml-5'>
                         {letter.text != null && Util.isNotEmpty(letter.text.text_string) ?
                             <div>
                                 {/* TODO: this needs to change when others than myself get access to data entry */}
 
-                                    {letter.text.text_string === undefined ? '' :
-                                        <div
-                                            dangerouslySetInnerHTML={{__html: letter.text.text_string.substring(0, 300)}}/>
-                                    }
+                                {letter.text.text_string === undefined ? '' :
+                                    <div
+                                        dangerouslySetInnerHTML={{__html: letter.text.text_string.substring(0, 300)}}/>
+                                }
 
                                 {letter.text.text_string !== undefined && letter.text.text_string.length > 300 ?
                                     <p>
@@ -409,4 +411,5 @@ function LetterPage() {
         );
     }
 }
+
 export default LetterPage
