@@ -27,7 +27,6 @@ import type {CommentFormProps} from "./interface/CommentFormProps.tsx";
 import strings from "./strings.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import Util from "./service/Util.tsx";
-import {MyPopup} from "./MyPopup.tsx";
 
 const letterApi = new LettersApi(apiConfig)
 const imageApi = new ImagesApi(apiConfig)
@@ -184,14 +183,7 @@ function LetterPage() {
 
     return (
         <>
-            <div>
-                {showError ?
-                    <div className='alert alert-danger' role='alert'>
-                        <MyPopup errorText={error}/>
-                    </div>
-                    : null
-                }
-            </div>
+
             <div className='container mt-3'>
                 {
                     showEdit ? null : (

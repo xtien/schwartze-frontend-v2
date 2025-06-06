@@ -38,6 +38,12 @@ export interface PersonLettersRequest {
      * @memberof PersonLettersRequest
      */
     'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonLettersRequest
+     */
+    'orderBy'?: PersonLettersRequestOrderByEnum;
 }
 
 export const PersonLettersRequestToFromEnum = {
@@ -46,5 +52,13 @@ export const PersonLettersRequestToFromEnum = {
 } as const;
 
 export type PersonLettersRequestToFromEnum = typeof PersonLettersRequestToFromEnum[keyof typeof PersonLettersRequestToFromEnum];
+export const PersonLettersRequestOrderByEnum = {
+    Date: 'DATE',
+    Number: 'NUMBER',
+    SenderLastname: 'SENDER_LASTNAME',
+    SenderFirstname: 'SENDER_FIRSTNAME'
+} as const;
+
+export type PersonLettersRequestOrderByEnum = typeof PersonLettersRequestOrderByEnum[keyof typeof PersonLettersRequestOrderByEnum];
 
 

@@ -25,6 +25,8 @@ import {apiConfig} from "./service/AuthenticationService.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import strings from "./strings.tsx";
+import {Modal} from 'react-bootstrap';
+import Button from "react-bootstrap/Button";
 
 const adminLetterApi = new AdminLetterApi(apiConfig)
 const letterApi = new LettersApi(apiConfig)
@@ -43,11 +45,15 @@ function DeleteLetter() {
     const [sender_location, setSenderLocation] = useState<MyLocation>()
     const [recipient_location, setRecipientLocation] = useState<MyLocation>()
     const [errorMessage, setErrorMessage] = useState<string>()
-    const [deleted, setDeleted] = useState<boolean>(false)
     const [cancel, setCancel] = useState<boolean>(false)
+    const [showDialog, setShowDialog] = useState<boolean>(false)
 
+    const handleClose = () => {
+        setShowDialog(false);
+        navigate('/get_letters/0')
+    }
 
-    let postData: LetterRequest = {
+     let postData: LetterRequest = {
         number: parseInt(number)
     };
 
@@ -83,7 +89,7 @@ function DeleteLetter() {
                     recipientIds += recipientIdList[id];
                 }
 
-             }
+            }
         }).catch(error => {
             console.log(error)
         })
@@ -94,14 +100,15 @@ function DeleteLetter() {
         setCancel(true)
     }
 
-    function deleteLetter() {
+    function deleteLetter(event: { preventDefault: () => void; }) {
+        event.preventDefault();
 
         const postData = {
             letter: letter
         };
 
         adminLetterApi.deleteLetter(postData).then(() => {
-            setDeleted(true)
+            setShowDialog(true)
         }).catch(error => {
             console.log(error)
             setErrorMessage(error)
@@ -111,10 +118,6 @@ function DeleteLetter() {
 
     if (cancel === true && letter != null) {
         return <Navigate to={'/get_letter_details/' + letter.number + '/0'}></Navigate>
-    }
-
-    if (deleted === true) {
-        navigate('get-letters')
     }
 
     const date = letter != null ? letter.date : '';
@@ -135,18 +138,24 @@ function DeleteLetter() {
         recipientList = [];
     }
 
-
-    const errorM = errorMessage;
-
     return (
         <div>
             <div>
-                {errorM != null ?
-                    <div className="mb-5">
-                        <div>{errorMessage}</div>
-                    </div> : null}
-
-                {deleted ? <div className="mb-5"> strings.letterRemoved</div> :null}
+                <div>
+                    <div
+                        className="modal show"
+                        style={{display: 'block', position: 'initial'}}
+                    >
+                        <Modal show={showDialog} onHide={handleClose}>
+                            <Modal.Body>{strings.letterRemoved}</Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    {strings.close}
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+                </div>
                 <div>
                     <h3>{strings.letterNumber} {number} </h3>
 
@@ -192,7 +201,7 @@ function DeleteLetter() {
                         </table>
                     </div>
                     <td width="10">
-                        <div className="mt-5">
+                        <div className="m-lg-3 mt-5">
                             {
                                 isAdmin() === "true" ?
                                     <button
@@ -203,7 +212,7 @@ function DeleteLetter() {
                         </div>
                     </td>
                     <td width="1000">
-                        <div className="mt-5 ml-5">
+                        <div className="m-lg-3 mt-5">
                             {
                                 isAdmin() === "true" ?
                                     <button

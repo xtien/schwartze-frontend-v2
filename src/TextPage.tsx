@@ -11,7 +11,6 @@ import './css/bootstrap.css'
 import language from "./language";
 import {TextApi, type TextRequest, type TextResult} from "./generated-api";
 import strings from "./strings.tsx";
-import {MyPopup} from "./MyPopup.tsx";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {useLocation} from "react-router";
 
@@ -89,14 +88,7 @@ function TextPage() {
 
     return (
         <div className='textpage wide mt-5 ml-5'>
-            <div>
-                {showError ?
-                    <div className='alert alert-danger' role='alert'>
-                        <MyPopup errorText={errorMessage}/>
-                    </div>
-                    : null
-                }
-            </div>
+
 
             {link != null ?
                 <div>

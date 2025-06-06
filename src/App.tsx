@@ -164,7 +164,7 @@ function App() {
                             <Route path="/get_letters_for_location/:id" element={<Letters/>}/>
                             <Route path="/get_person_details/:id" element={<PersonPage/>}/>
                             <Route path="/get_letter_details/:number/:pagenumber" element={<LetterPage/>}/>
-                            <Route path="/get_letters_for_person/:id/:tofrom" element={<Letters/>}/>
+                            <Route path="/get_letters_for_person/:id/" element={<Letters/>}/>
                             <Route path="/get_text/:entity/:id" element={<TextPage/>}/>
                             <Route path="/get_page/:chapterNumber/:pageNumber" element={<PagePage/>}/>
                             <Route path="/edit_text/:type/:id" element={<TextEdit/>}/>

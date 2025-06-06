@@ -53,8 +53,7 @@ function Letters() {
 
     language()
 
-    React.useEffect(() => {
-
+    function getLetters(orderBy: LettersRequestOrderByEnum) {
         if (personOrLocation === 'person') {
             function getPerson(id: string) {
                 const personRequest: GetPersonRequest = {
@@ -74,7 +73,8 @@ function Letters() {
                 getPerson(id)
                 const request: PersonLettersRequest = {
                     id: parseInt(id),
-                    toFrom: toFrom
+                    toFrom: toFrom,
+                    orderBy: orderBy
                 }
 
                 lettersApi.getLettersForPerson(request).then((response) => {
@@ -118,7 +118,12 @@ function Letters() {
                 console.log(error)
             })
         }
-    }, [personOrLocation, id, toFromString, urlPart])
+
+    }
+
+    React.useEffect(() => {
+        getLetters(orderBy)
+    }, [personOrLocation, id, toFromString, urlPart, orderBy])
 
     function createFullName(person: Person): string {
         let name = '';
@@ -127,7 +132,6 @@ function Letters() {
         name += person.last_name != null ? person.last_name : '';
         return name;
     }
-
 
     function handleSearchTermChange(event: { target: { value: string }; }) {
         setSearchTerm(event.target.value);
@@ -173,20 +177,7 @@ function Letters() {
     function sort(order: LettersRequestOrderByEnum) {
 
         setOrderBy(order)
-        const request: LettersRequest = {
-            orderBy: order
-        }
-
-        lettersApi.getLetters(request)
-            .then((response) => {
-                if (response.data.letters != null) {
-                    setLetters(response.data.letters);
-                }
-            }).catch(error => {
-            console.log(error)
-        })
-
-        setOrderBy(orderBy === LettersRequestOrderByEnum.Date ? LettersRequestOrderByEnum.Number : LettersRequestOrderByEnum.Date)
+        getLetters(order)
     }
 
     function renderLetters() {
@@ -197,7 +188,7 @@ function Letters() {
             if (senders != undefined && senders.length > 0) {
                 senders.map(function (sender) {
                     const fullName: string = createFullName(sender);
-                    senderName += fullName +   ', '
+                    senderName += fullName + ', '
                 })
                 senderName = senderName.slice(0, -2);
             }
@@ -249,28 +240,31 @@ function Letters() {
                     {myLocation != null ? (strings.locationLettersText + ' ' + myLocation.name) : ''}
 
                 </div>
-                <div className='col-sm-7'>
-                    <button
-                        className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
-                        onClick={() => sort(LettersRequestOrderByEnum.Number)}>
-                        {strings.op_nummer}
-                    </button>
-                    <button
-                        className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
-                        onClick={() => sort(LettersRequestOrderByEnum.Date)}>
-                        {strings.op_datum}
-                    </button>
-                    <button
-                        className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
-                        onClick={() => sort(LettersRequestOrderByEnum.SenderLastname)}>
-                        {strings.op_achternaam}
-                    </button>
-                    <button
-                        className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
-                        onClick={() => sort(LettersRequestOrderByEnum.SenderFirstname)}>
-                        {strings.op_voornaam}
-                    </button>
-                </div>
+                {
+                    letters.length < 10 ? null :
+                        <div className='col-sm-7'>
+                            <button
+                                className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
+                                onClick={() => sort(LettersRequestOrderByEnum.Number)}>
+                                {strings.op_nummer}
+                            </button>
+                            <button
+                                className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
+                                onClick={() => sort(LettersRequestOrderByEnum.Date)}>
+                                {strings.op_datum}
+                            </button>
+                            <button
+                                className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
+                                onClick={() => sort(LettersRequestOrderByEnum.SenderLastname)}>
+                                {strings.op_achternaam}
+                            </button>
+                            <button
+                                className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
+                                onClick={() => sort(LettersRequestOrderByEnum.SenderFirstname)}>
+                                {strings.op_voornaam}
+                            </button>
+                        </div>
+                }
 
                 <div className='col-sm-3'>
                     <form onSubmit={letterbynumber} className='mb-3 mt-3'>

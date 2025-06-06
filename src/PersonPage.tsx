@@ -142,17 +142,9 @@ function PersonPage() {
         linkToEditTextPerson = '/edit_text/person/' + person.id;
     }
 
-    let brievenVan;
-    if (person.brieven_van === true) {
-        brievenVan = <Link
-            to={`/get_letters_for_person/${person.id}/from`}
-            className='linkStyle'> {strings.brieven_van} {person.nick_name} </Link>
-    }
-    let brievenAan;
-    if (person.brieven_aan === true) {
-        brievenAan = <Link to={`/get_letters_for_person/${person.id}/to`}
-                           className='linkStyle'> {strings.brieven_aan} {person.nick_name} </Link>
-    }
+    let brievenVoor = <Link
+        to={`/get_letters_for_person/${person.id}/`}
+        className='linkStyle'> {strings.brieven_van} {person.nick_name} </Link>
 
     if (deleted === true) {
         return <Navigate to={'/get_people/'}/>
@@ -242,9 +234,7 @@ function PersonPage() {
                                 <p>{strings.overleden}: {person.date_of_death} {person.place_of_death === null ? null : 'te'} {person.place_of_death}</p>
                                 <p>{person.comment}</p>
                                 <p className='mt-5'>
-                                    {brievenVan}
-                                </p>
-                                <p>{brievenAan}
+                                    {brievenVoor}
                                 </p>
                                 {
                                     isAdmin() === "true" ?
@@ -271,8 +261,8 @@ function PersonPage() {
                                         <div>
                                             {/* TODO: this needs to change when others than myself get access to data entry */}
 
-                                                <div
-                                                    dangerouslySetInnerHTML={{__html: person.text.text_string!.substring(0, 300)}}/>
+                                            <div
+                                                dangerouslySetInnerHTML={{__html: person.text.text_string!.substring(0, 300)}}/>
 
                                             {person.text.text_string!.length > 300 ?
                                                 <p>
