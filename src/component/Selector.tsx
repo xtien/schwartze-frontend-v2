@@ -8,7 +8,7 @@ interface SelectorProps<T> {
 
 const Selector = <T extends Record<string, string>>({
                                                         value,
-                                                        placeholder = "Select an option",
+                                                        // placeholder,
                                                         enumType,
                                                         onChange,
                                                         labelTransform,
@@ -25,7 +25,7 @@ const Selector = <T extends Record<string, string>>({
 
     return (
         <select value={value} onChange={handleChange} className="select-class">
-            <option value="">{placeholder}</option>
+            {/*<option value="">{placeholder}</option>*/}
             {options.map((option) => (
                 <option key={option.key} value={option.value}>
                     {option.label}

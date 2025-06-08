@@ -27,6 +27,7 @@ import type {
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {EditPageReferenceFormProps} from "./interface/EditPageReferenceFormProps.tsx";
 import type {EditPictureUrlEditFormProps} from "./interface/EditPictureUrlEditFormProps.tsx";
+import Cookies from "universal-cookie";
 
 const pageApi = new PageApi(apiConfig);
 const adminPageApi = new AdminPageApi(apiConfig);
@@ -34,12 +35,20 @@ const homeTextApi = new HomeTextApi(apiConfig)
 
 function PagePage() {
 
+    const cookies = new Cookies();
+    const pNr: string = cookies.get('pageNumber');
+    const cNr: string = cookies.get('chapterNumber');
+
     const lang = language()
 
     const location = useLocation()
     const params = location.pathname.split('/')
-    const _chapterNumber = params[2]
-    const _pageNumber = params[3]
+    let _chapterNumber = params[2]
+    let _pageNumber = params[3]
+    if (_pageNumber === '0' && _chapterNumber === '0') {
+        _pageNumber = pNr
+        _chapterNumber = cNr
+    }
 
     const [text, setText] = useState('')
     const [page, setPage] = useState<Page>()
@@ -56,25 +65,25 @@ function PagePage() {
     const [currentLanguage] = useState(lang)
 
     useEffect(() => {
-            getPage(chapterNumber, pageNumber)
+        getPage(chapterNumber, pageNumber)
 
-            const request: PageTextRequest = {
-                page: pageNumber,
-                chapter: chapterNumber,
-                language: lang
+        const request: PageTextRequest = {
+            page: pageNumber,
+            chapter: chapterNumber,
+            language: lang
+        }
+        pageApi.getPage(request).then(response => {
+            if (response.data.page != null) {
+                setPage(response.data.page)
             }
-            pageApi.getPage(request).then(response => {
-                if (response.data.page != null) {
-                    setPage(response.data.page)
-                }
-                if(response.data.text != null) {
-                    setText(response.data.text)
-                }
-            }).catch(
-                error => {
-                    console.log(error)
-                }
-            )
+            if (response.data.text != null) {
+                setText(response.data.text)
+            }
+        }).catch(
+            error => {
+                console.log(error)
+            }
+        )
     }, [chapterNumber, pageNumber, lang]);
 
     function getPage(chapterNumber: string, pageNumber: string) {
@@ -87,6 +96,9 @@ function PagePage() {
         pageApi.getPage(request).then(response => {
             if (response.data.page != null) {
                 setPage(response.data.page)
+                const cookies = new Cookies();
+                cookies.set('pageNumber', response.data.page.page_number, {path: '/'});
+                cookies.set('chapterNumber', response.data.page.chapter_number, {path: '/'});
             }
         }).catch(
             error => {
@@ -98,7 +110,7 @@ function PagePage() {
     function delete_link(reference_id: PageReference | undefined) {
 
         const request: PageReferenceRequest = {
-           page_number: pageNumber,
+            page_number: pageNumber,
             chapter_number: chapterNumber,
             reference: reference_id
         }
@@ -161,7 +173,7 @@ function PagePage() {
             page: pageNumber
         }
         pageApi.getNextChapter(request).then(response => {
-             if (response.data.page?.page_number != null) {
+            if (response.data.page?.page_number != null) {
                 setPageNumber(response.data.page.page_number)
             }
             if (response.data.page?.chapter_number != null) {
@@ -180,7 +192,7 @@ function PagePage() {
             page: pageNumber
         }
         pageApi.getPreviousChapter(request).then(response => {
-             if (response.data.page?.page_number != null) {
+            if (response.data.page?.page_number != null) {
                 setPageNumber(response.data.page.page_number)
             }
             if (response.data.page?.chapter_number != null) {

@@ -27,26 +27,75 @@ import DeleteLetter from "./DeleteLetter.tsx";
 import TextEdit from "./TextEdit.tsx";
 import CombinePerson from "./CombinePerson.tsx";
 import CombineLocation from "./CombineLocation.tsx";
+import Selector from "./component/Selector.tsx";
+import {LanguageTypeEnum} from "./enum/LanguageTypeEnum.tsx";
+import Cookies from "universal-cookie";
+import {useEffect, useState} from "react";
 
 function App() {
+
+    const [selectedLanguage, setSelectedLanguage] = useState<string>(strings.getLanguage());
+
+    useEffect(() => {
+        const cookies = new Cookies();
+        const lan: string = cookies.get('language');
+        if (lan != null) {
+            console.log("cookie language: " + lan)
+            const l = (stringToEnum(lan));
+            if (l != undefined) {
+                setSelectedLanguage(l);
+            }
+            strings.setLanguage(lan);
+        } else {
+            const l = (stringToEnum(strings.getLanguage()));
+            if (l != undefined) {
+                setSelectedLanguage(l);
+            }
+        }
+    }, [selectedLanguage])
+
+
+    function setLanguage(language: LanguageTypeEnum) {
+        const cookies = new Cookies();
+        cookies.set('language', language, {path: '/'});
+        setSelectedLanguage(language);
+    }
+
+    function stringToEnum(str: string) {
+        switch (str) {
+            case 'NL':
+                return LanguageTypeEnum.Nl;
+            case 'EN':
+                return LanguageTypeEnum.En;
+            case 'DE':
+                return LanguageTypeEnum.De;
+            case 'FR':
+                return LanguageTypeEnum.Fr;
+            case 'ES':
+                return LanguageTypeEnum.Es;
+        }
+    }
+
+    const l = strings.getLanguage()
+    console.log(l)
 
     return (
         <>
             <BrowserRouter>
                 <div className='container'>
-                    <div className="d-block d-sm-none">
+                    <div className="d-block d-sm-none"> {/* large screens */}
                         <h1 className='px-5'>{strings.titel}</h1>
                         <table>
                             <tbody>
                             <tr>
                                 <td>
-                                    <p className='navbar-nav'><Link to='/'
-                                                                    className='linkStyle'>{strings.home}</Link>
+                                    <p className='navbar-nav'>
+                                        <Link to='/' className='linkStyle'>{strings.home}</Link>
                                     </p>
                                 </td>
                                 <td>
-                                    <p className='navbar-nav textStyle'><Link to='/get_letters/0'
-                                                                              className='linkStyle'>{strings.letters}</Link>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/get_letters/0' className='linkStyle'>{strings.letters}</Link>
                                     </p>
                                 </td>
                                 <td>
@@ -57,83 +106,94 @@ function App() {
                             </tr>
                             <tr>
                                 <td>
-                                    <p className='navbar-nav textStyle'><Link to='/get_locations/'
-                                                                              className='linkStyle'>{strings.locations}</Link>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/get_locations/' className='linkStyle'>{strings.locations}</Link>
                                     </p>
                                 </td>
                                 <td>
-                                <p className='navbar-nav textStyle'><Link to='/references/'
-                                                                          className='linkStyle'>{strings.references}</Link>
-                                </p>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/references/' className='linkStyle'>{strings.references}</Link>
+                                    </p>
                                 </td>
                                 <td>
-                                    <p className='navbar-nav textStyle'><Link to='/topics/'
-                                                                              className='linkStyle'>{strings.topics}</Link>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/topics/' className='linkStyle'>{strings.topics}</Link>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <p className='navbar-nav textStyle'><Link to='/get_page/1/1'
-                                                                              className='linkStyle'>{strings.pages}</Link>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/get_page/1/1' className='linkStyle'>{strings.pages}</Link>
                                     </p>
                                 </td>
                                 <td>
                                     {/* Admin should only be visible after login. toggle enables Login.js
                                                to render App.js by setting its state  */}
                                     {isAdmin() === 'true' ?
-                                        <p className='navbar-nav textStyle'><Link to={'/admin/'}
-                                                                                  className='linkStyle'>{strings.admin}</Link>
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to={'/admin/'} className='linkStyle'>{strings.admin}</Link>
                                         </p>
                                         : null}
                                 </td>
                                 <td>
-                                    <p className='navbar-nav textStyle'><Link to='/about/'
-                                                                              className='linkStyle'>{strings.about}</Link>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/about/' className='linkStyle'>{strings.about}</Link>
                                     </p>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div className="d-none d-sm-block">
-                        <div className='jumbotron pb-2 pt-2'>
+                    <div className="d-none d-sm-block">  {/* small screens */}
+                        <div className='jumbotron'>
                             <table width="100%">
                                 <tbody>
                                 <tr>
                                     <td>
-                                        <h1 className='px-5'>{strings.titel}</h1>
+                                        <div className="col float-end">
+                                            <Selector
+                                                enumType={LanguageTypeEnum}
+                                                value={stringToEnum(selectedLanguage)}
+                                                onChange={(selectedType) => setLanguage(selectedType)}>
+                                            </Selector>
+                                        </div>
+                                        <h1 className='px-5'>{strings.titel} {strings.getLanguage()}</h1>
                                         <nav className="navbar navbar-expand-lg navbar-light px-5">
-                                            <p className='navbar-nav'><Link to='/'
-                                                                            className='linkStyle'>{strings.home}</Link>
+                                            <p className='navbar-nav'>
+                                                <Link to='/' className='linkStyle'>{strings.home}</Link>
                                             </p>
-                                            <p className='navbar-nav textStyle'><Link to='/get_letters/0'
-                                                                                      className='linkStyle'>{strings.letters}</Link>
+                                            <p className='navbar-nav textStyle'>
+                                                <Link to='/get_letters/0' className='linkStyle'>{strings.letters}</Link>
                                             </p>
-                                            <p className='navbar-nav textStyle'><Link to='/get_people/'
-                                                                                      className='linkStyle'>{strings.people}</Link>
+                                            <p className='navbar-nav textStyle'>
+                                                <Link to='/get_people/' className='linkStyle'>{strings.people}</Link>
                                             </p>
-                                            <p className='navbar-nav textStyle'><Link to='/get_locations/'
-                                                                                      className='linkStyle'>{strings.locations}</Link>
+                                            <p className='navbar-nav textStyle'>
+                                                <Link to='/get_locations/'
+                                                      className='linkStyle'>{strings.locations}</Link>
                                             </p>
-                                            <p className='navbar-nav textStyle'><Link to='/references/'
-                                                                                      className='linkStyle'>{strings.references}</Link>
+                                            <p className='navbar-nav textStyle'>
+                                                <Link to='/references/'
+                                                      className='linkStyle'>{strings.references}</Link>
                                             </p>
-                                            <p className='navbar-nav textStyle'><Link to='/topics/'
-                                                                                      className='linkStyle'>{strings.topics}</Link>
+                                            <p className='navbar-nav textStyle'>
+                                                <Link to='/topics/' className='linkStyle'>{strings.topics}</Link>
                                             </p>
-                                            <p className='navbar-nav textStyle'><Link to='/get_page/1/1'
-                                                                                      className='linkStyle'>{strings.pages}</Link>
+                                            <p className='navbar-nav textStyle'>
+                                                <Link to='/get_page/1/1' className='linkStyle'>{strings.pages}</Link>
                                             </p>
-                                            {/* Admin should only be visible after login. toggle enables Login.js
-                                               to render App.js by setting its state  */}
-                                            {/*{isAdmin() === 'true' ?*/}
-                                            {/*    <p className='navbar-nav textStyle'><Link to={'/admin/'}*/}
-                                            {/*                                              className='linkStyle'>{strings.admin}</Link>*/}
-                                            {/*    </p>*/}
-                                            {/*    : null}*/}
-                                            <p className='navbar-nav textStyle'><Link to='/about/'
-                                                                                      className='linkStyle'>{strings.about}</Link>
+                                            {/*Admin should only be visible after login. toggle enables Login.js to render App.js by setting its state*/}
+                                            {
+                                                isAdmin() === 'true' ?
+                                                    <p className='navbar-nav textStyle'>
+                                                        <Link to={'/admin/'}
+                                                              className='linkStyle'>{strings.admin}</Link>
+                                                    </p>
+                                                    : null
+                                            }
+                                            <p className='navbar-nav textStyle'>
+                                                <Link to='/about/' className='linkStyle'>{strings.about}</Link>
                                             </p>
 
                                         </nav>
