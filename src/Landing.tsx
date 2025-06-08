@@ -257,9 +257,9 @@ function Landing() {
 
         <div>
             <div className="float-container">
-                <div className="float-child-left">
+                <div className="float-child-left ">
                     <div id="sidebar-wrapper">
-                        <ul className="sidebar-nav mt-5">
+                        <ul className="sidebar-nav ms-5 mt-5">
                             <div>{isAdm === 'true' ?
                                 <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
                                 </p>
@@ -300,7 +300,6 @@ function Landing() {
                     </div>
                 </div>
                 <div className="d-none d-xl-block">
-
                     <div className="float-child-right">
                         <div>
                             {showPictureUrlEdit && leftBlockPage != null ? (
@@ -348,6 +347,22 @@ function Landing() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className="d-xl-none">
+                    <div className="float-child-right">
+                        <div className='textpage'>
+                            {/* TODO: this needs to change when others than myself get access to data entry */}
+
+                            <div dangerouslySetInnerHTML={{__html: pageText}}/>
+                        </div>
+                        <div className='textpage mt-5 '>
+                            <div>
+                                {/* TODO: this needs to change when others than myself get access to data entry */}
+                                <div dangerouslySetInnerHTML={{__html: blogText}}/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

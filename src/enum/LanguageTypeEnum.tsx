@@ -1,9 +1,9 @@
 export const LanguageTypeEnum = {
-    En: 'EN',
-    Nl: 'NL',
-    Es: 'ES',
-    Fr: 'FR',
-    De: 'DE'
+    En: 'en',
+    Nl: 'nl',
+    Es: 'es',
+    Fr: 'fl',
+    De: 'de'
 } as const;
 
 export type LanguageTypeEnum = typeof LanguageTypeEnum[keyof typeof LanguageTypeEnum];

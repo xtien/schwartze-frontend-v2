@@ -47,5 +47,11 @@ export interface LetterRequest {
      * @memberof LetterRequest
      */
     'date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LetterRequest
+     */
+    'language'?: string;
 }
 

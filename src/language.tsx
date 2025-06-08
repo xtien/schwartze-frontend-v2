@@ -1,14 +1,23 @@
 import strings from "./strings.tsx";
+import Cookies from "universal-cookie";
 
-function language(){
+function language() {
 
-    const languages = ['NL', 'EN', 'FR', 'DE', 'ES'];
+    const languages = ['nl', 'en', 'fr', 'de', 'es'];
     let lang = navigator.language.substring(0, 2).toUpperCase();
     if (!languages.includes(lang)) {
-        lang = 'NL'
+        lang = 'nl'
     }
-    strings.setLanguage(lang);
-    return lang;
-}
+
+    const cookies = new Cookies();
+    const cookieLang = cookies.get('language');
+    if (cookieLang) {
+        strings.setLanguage(cookieLang);
+        return cookieLang;
+    } else {
+        strings.setLanguage(lang);
+        return lang;
+    }
+ }
 
 export default language

@@ -61,11 +61,12 @@ function LetterPage() {
     // const [goSearch, setGoSearch] = useState(false)
     // const [search_term, setSearch_term] = useState('')
 
-    language()
+    const lang: string = language()
 
     useEffect(() => {
         const request: LetterRequest = {
             'number': parseInt(number),
+            'language' : lang
         }
         letterApi.getLetter(request).then((response) => {
             if (response.data.letter !== undefined) {
@@ -186,7 +187,12 @@ function LetterPage() {
 
             <div className='container mt-3'>
                 {
-                    showEdit ? null : (
+                    error != null && showError ?
+                        <div className='alert alert-danger' role='alert'></div>
+                        : null
+                }
+
+                { showEdit ? null : (
 
                         <div>
                             <div className="row">

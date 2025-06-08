@@ -54,7 +54,6 @@ function App() {
         }
     }, [selectedLanguage])
 
-
     function setLanguage(language: LanguageTypeEnum) {
         const cookies = new Cookies();
         cookies.set('language', language, {path: '/'});
@@ -63,28 +62,28 @@ function App() {
 
     function stringToEnum(str: string) {
         switch (str) {
-            case 'NL':
+            case 'nl':
                 return LanguageTypeEnum.Nl;
-            case 'EN':
+            case 'en':
                 return LanguageTypeEnum.En;
-            case 'DE':
+            case 'de':
                 return LanguageTypeEnum.De;
-            case 'FR':
+            case 'fr':
                 return LanguageTypeEnum.Fr;
-            case 'ES':
+            case 'es':
                 return LanguageTypeEnum.Es;
         }
     }
 
     const l = strings.getLanguage()
-    console.log(l)
+    console.log('language ' + l)
 
     return (
-        <>
-            <BrowserRouter>
-                <div className='container'>
+        <div>
+             <BrowserRouter>
+                <div className='container-fluid h-auto vh-100 mt-3 '>
                     <div className="d-block d-sm-none"> {/* large screens */}
-                        <h1 className='px-5'>{strings.titel}</h1>
+                        <h1>{strings.titel}</h1>
                         <table>
                             <tbody>
                             <tr>
@@ -146,65 +145,64 @@ function App() {
                         </table>
                     </div>
                     <div className="d-none d-sm-block">  {/* small screens */}
-                        <div className='jumbotron'>
-                            <table width="100%">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <div className="col float-end">
-                                            <Selector
-                                                enumType={LanguageTypeEnum}
-                                                value={stringToEnum(selectedLanguage)}
-                                                onChange={(selectedType) => setLanguage(selectedType)}>
-                                            </Selector>
-                                        </div>
-                                        <h1 className='px-5'>{strings.titel} {strings.getLanguage()}</h1>
-                                        <nav className="navbar navbar-expand-lg navbar-light px-5">
-                                            <p className='navbar-nav'>
-                                                <Link to='/' className='linkStyle'>{strings.home}</Link>
-                                            </p>
-                                            <p className='navbar-nav textStyle'>
-                                                <Link to='/get_letters/0' className='linkStyle'>{strings.letters}</Link>
-                                            </p>
-                                            <p className='navbar-nav textStyle'>
-                                                <Link to='/get_people/' className='linkStyle'>{strings.people}</Link>
-                                            </p>
-                                            <p className='navbar-nav textStyle'>
-                                                <Link to='/get_locations/'
-                                                      className='linkStyle'>{strings.locations}</Link>
-                                            </p>
-                                            <p className='navbar-nav textStyle'>
-                                                <Link to='/references/'
-                                                      className='linkStyle'>{strings.references}</Link>
-                                            </p>
-                                            <p className='navbar-nav textStyle'>
-                                                <Link to='/topics/' className='linkStyle'>{strings.topics}</Link>
-                                            </p>
-                                            <p className='navbar-nav textStyle'>
-                                                <Link to='/get_page/1/1' className='linkStyle'>{strings.pages}</Link>
-                                            </p>
-                                            {/*Admin should only be visible after login. toggle enables Login.js to render App.js by setting its state*/}
-                                            {
-                                                isAdmin() === 'true' ?
-                                                    <p className='navbar-nav textStyle'>
-                                                        <Link to={'/admin/'}
-                                                              className='linkStyle'>{strings.admin}</Link>
-                                                    </p>
-                                                    : null
-                                            }
-                                            <p className='navbar-nav textStyle'>
-                                                <Link to='/about/' className='linkStyle'>{strings.about}</Link>
-                                            </p>
+                        <table width="100%">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div className="position-absolute top-0 end-0 m-lg-3">
+                                        <Selector
+                                            enumType={LanguageTypeEnum}
+                                            value={stringToEnum(selectedLanguage)}
+                                            onChange={(selectedType) => setLanguage(selectedType)}>
+                                        </Selector>
+                                    </div>
+                                    <h1 className='px-5'>{strings.titel}</h1>
+                                    <nav className="navbar navbar-expand-lg navbar-light px-5">
+                                        <p className='navbar-nav'>
+                                            <Link to='/' className='linkStyle'>{strings.home}</Link>
+                                        </p>
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to='/get_letters/0' className='linkStyle'>{strings.letters}</Link>
+                                        </p>
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to='/get_people/' className='linkStyle'>{strings.people}</Link>
+                                        </p>
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to='/get_locations/'
+                                                  className='linkStyle'>{strings.locations}</Link>
+                                        </p>
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to='/references/'
+                                                  className='linkStyle'>{strings.references}</Link>
+                                        </p>
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to='/topics/' className='linkStyle'>{strings.topics}</Link>
+                                        </p>
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to='/get_page/1/1' className='linkStyle'>{strings.pages}</Link>
+                                        </p>
+                                        {/*Admin should only be visible after login. toggle enables Login.js to render App.js by setting its state*/}
+                                        {
+                                            isAdmin() === 'true' ?
+                                                <p className='navbar-nav textStyle'>
+                                                    <Link to={'/admin/'}
+                                                          className='linkStyle'>{strings.admin}</Link>
+                                                </p>
+                                                : null
+                                        }
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to='/about/' className='linkStyle'>{strings.about}</Link>
+                                        </p>
+                                    </nav>
+                                </td>
+                                <td>
+                                    <img src={twitli} className="logo" alt="logo"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr className="hr"/>
 
-                                        </nav>
-                                    </td>
-                                    <td>
-                                        <img src={twitli} className="logo" alt="logo"/>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                     <div className='content-container'>
                         <Routes>
@@ -239,7 +237,7 @@ function App() {
                     </div>
                 </div>
             </BrowserRouter>
-        </>
+        </div>
     )
 }
 

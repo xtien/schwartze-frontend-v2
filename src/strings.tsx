@@ -7,7 +7,7 @@
 import LocalizedStrings from 'react-localization';
 
 const strings = new LocalizedStrings({
-    NL: {
+    nl: {
         about: "About",
         titel: "Het nichtje van tante Thérèse",
         home: "Home",
@@ -87,7 +87,7 @@ const strings = new LocalizedStrings({
         french: "Français",
         selectLanguage: "Taal",
     },
-    EN: {
+    en: {
         about: "About",
         titel: "Aunt Thérèse's niece",
         home: "Home",
@@ -172,7 +172,7 @@ const strings = new LocalizedStrings({
         french: "Français",
         selectLanguage: "Language",
     },
-    FR: {
+    fr: {
         about: "À propos",
         titel: "La nièce de tante Thérèse",
         home: "Accueil",
@@ -252,7 +252,7 @@ const strings = new LocalizedStrings({
         french: "Français",
         selectLanguage: "Langue"
     },
-    DE: {
+    de: {
         about: "Über",
         titel: "Die Nichte von Tante Thérèse",
         home: "Startseite",
@@ -332,7 +332,7 @@ const strings = new LocalizedStrings({
         french: "Französisch",
         selectLanguage: "Sprache"
     },
-    ES: {
+    es: {
         about: "Acerca de",
         titel: "La sobrina de tía Thérèse",
         home: "Inicio",
