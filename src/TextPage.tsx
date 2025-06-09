@@ -29,13 +29,10 @@ function TextPage() {
     const [textResult, setTextResult] = useState<TextResult>();
     const [link, setLink] = useState<string | null>();
     const [subjectLink, setSubjectLink] = useState<string | null>();
-    const [showError, setShowError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('')
 
     language()
 
     useEffect(() => {
-        setShowError(false)
         const request: TextRequest = {
             location_id: entity === 'location' ? id : undefined,
             person_id: entity === 'person' ? id : undefined,
@@ -46,7 +43,6 @@ function TextPage() {
         textApi.getText(request)
             .then((response) => {
                 setTextResult(response.data);
-                setErrorMessage(response.data.error_text ?? '');
 
                 let link = null;
                 let subjectLink = null;
@@ -70,9 +66,7 @@ function TextPage() {
                 setSubjectLink(subjectLink);
 
             }).catch((error) => {
-            setErrorMessage(error.toString());
-            setShowError(true)
-            console.log(error)
+             console.log(error)
         })
     }, [])
 

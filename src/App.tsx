@@ -5,7 +5,6 @@ import {isAdmin} from "./service/AuthenticationService.tsx";
 import twitli from './images/logo.png'
 import Landing from "./Landing.tsx";
 import Letters from "./Letters.tsx";
-import SearchLetters from "./SearchLetters.tsx";
 import LetterPage from "./LetterPage.tsx";
 import TextPage from "./TextPage.tsx";
 import People from "./People.tsx";
@@ -230,7 +229,7 @@ function App() {
                             <Route path="/get_people/" element={<People/>}/>
                             <Route path="/references/" element={<ReferencesPage/>}/>
                             <Route path="/topics/" element={<Topics/>}/>
-                            <Route path="/search_letters/:search_term" element={<SearchLetters/>}/>
+                            <Route path="/search_letters/:search_term" element={<Letters/>}/>
                             <Route path="/get_content/" element={<Content/>}/>
                             <Route path="/about/" element={<About/>}/>
                         </Routes>

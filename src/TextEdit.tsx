@@ -5,251 +5,217 @@
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-import {Component} from 'react'
-import axios from "axios";
-import {Link, Navigate} from "react-router-dom";
 import './css/bootstrap.css'
 import strings from './strings.js'
-import language from "./language";
+import {Link, useLocation, useNavigate} from "react-router";
+import {useState} from "react";
+import {
+    AdminTextApi,
+    type Letter,
+    type MyLocation,
+    type Person,
+    type Subject,
+    TextApi,
+    type TextRequest
+} from "./generated-api";
+import {apiConfig} from "./service/AuthenticationService.tsx";
 
-class TextEdit extends Component {
+const textApi = new TextApi(apiConfig)
+const adminTextApi = new AdminTextApi(apiConfig)
 
-    constructor(props) {
-        super(props)
+function TextEdit() {
 
-        const params = window.location.href.split('/')
-        const type = params[4]
-        const id = params[5]
-        let subject_id, location_id, person_id, letter_id
+    const _location = useLocation();
+    const params = _location.pathname.split('/')
+    const type = params[2]
+    const id = params[3]
 
+    const navigate = useNavigate()
+
+    const [subjectId, setSubjectId] = useState<string>();
+    const [personId, setPersonId] = useState<string>();
+    const [letterId, setLetterId] = useState<string>();
+    const [text_string, setTextString] = useState<string>();
+    const [title_string, setTitleString] = useState<string>();
+    const [locationId, setLocationId] = useState<string>();
+    const [location, setLocation] = useState<MyLocation>();
+    const [person, setPerson] = useState<Person>()
+    const [letter, setLetter] = useState<Letter>()
+    const [subject, setSubject] = useState<Subject>()
+
+    if (id != null) {
         switch (type) {
             case "subject":
-                subject_id = id
+                setSubjectId(id)
                 break;
             case "location":
-                location_id = id
+                setLocationId(id)
                 break;
             case "person":
-                person_id = id
+                setPersonId(id);
                 break;
             case "letter":
-                letter_id = id
+                setLetterId(id)
                 break;
-            default:
-
         }
+    }
 
-        this.state = {
-            person_id: person_id,
-            location_id: location_id,
-            letter_id: letter_id,
-            subject_id: subject_id,
-            person: {},
-            location: {},
-            letter: {},
-            subject: {},
-            text: {},
-            text_string: '',
-            title_string: '',
-            cancel: false,
+    let request: TextRequest = {
+        location_id: locationId != undefined ? parseInt(locationId) : undefined,
+        person_id: personId != undefined ? parseInt(personId) : undefined,
+        letter_id: letterId != undefined ? parseInt(letterId) : undefined,
+        subject_id: subjectId != undefined ? parseInt(subjectId) : undefined,
+        language: strings.getLanguage()
+    };
+
+    textApi.getText(request).then((response) => {
+        setLocation(response.data.location)
+        if (response.data.location != null && response.data.location.text?.text_string != null) {
+            setTextString(response.data.location.text.text_string)
         }
+        setPerson(response.data.person)
+        if (response.data.person != null && response.data.person.text?.text_string != null) {
+            setTextString(response.data.person.text.text_string)
+        }
+        setSubject(response.data.subject)
+        if (response.data.subject != null && response.data.subject.text?.text_string != null) {
+            setTextString(response.data.subject.text.text_string)
+        }
+        setLetter(response.data.letter)
+        if (response.data.letter != null && response.data.letter.text?.text_string != undefined) {
+            setTextString(response.data.letter.text.text_string)
+        }
+        setTitleString(response.data.subject != null ? response.data.subject.name : '')
+    }).catch((error) => {
+        console.log(error)
+    })
 
-        language()
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
+    function handleTextChange(event: { target: { value: string; }; }) {
+        setTextString(event.target.value);
+    }
 
-        let postData = {
-            location_id: this.state.location_id,
-            person_id: this.state.person_id,
-            letter_id: this.state.letter_id,
-            subject_id: this.state.subject_id,
+    function handleTitleChange(event: { target: { value: string; }; }) {
+        setTitleString(event.target.value);
+    }
+
+    function handleCancel() {
+        navigate(redirectTo)
+    }
+
+    function handleSubmit(event: { preventDefault: () => void; }) {
+        event.preventDefault();
+
+        let request: TextRequest = {
+            location_id: locationId != undefined ? parseInt(locationId) : undefined,
+            person_id: personId != undefined ? parseInt(personId) : undefined,
+            letter_id: letterId != undefined ? parseInt(letterId) : undefined,
+            subject_id: subjectId != undefined ? parseInt(subjectId) : undefined,
+            text_string: text_string,
+            title_string: title_string,
             language: strings.getLanguage()
         };
 
-        axios.post(process.env.REACT_APP_API_URL + '/get_text/',
-            postData,
-            AuthenticationService.getAxiosConfig()
-        )
-            .then(response =>
-                this.setState({
-                    resultCode: response.data.resultCode,
-                    text_string: (response.data.letter != null && response.data.letter.text != null) ? response.data.letter.text.text_string : (
-                        (response.data.location != null && response.data.location.text != null) ? response.data.location.text.text_string : (
-                            (response.data.person != null && response.data.person.text != null) ? response.data.person.text.text_string : (
-                                (response.data.subject != null && response.data.subject.text != null) ? response.data.subject.text.text_string : (
-                                    null
-                                )
-                            )
-                        )
-                    ),
-                    location: response.data.location,
-                    person: response.data.person,
-                    letter: response.data.letter,
-                    subject: response.data.subject,
-                    title_string: (response.data.subject != null) ? response.data.subject.name : ''
-                })
-            )
+        adminTextApi.updateText(request).then(() => {
+            navigate(redirectTo)
+        }).catch((error) => {
+            console.log(error)
+        })
+
+
     }
 
-    handleTextChange(event) {
-        this.setState({text_string: event.target.value});
-    }
 
-    handleTitleChange(event) {
-        this.setState({title_string: event.target.value});
-    }
+    const redirectTo =
+        (letter != null) ? ('/get_letter_details/' + letter.number + '/0') : (
+            (location != null && location.text != null) ? '/get_location_details/' + location.id : (
+                (person != null) ? '/get_person_details/' + person.id : (
+                    '/topics/')));
 
-    handleCancel(event) {
-        event.preventDefault();
 
-        this.setState(
-            {cancel: true}
-        )
-    }
+    return (
+        <div className='container'>
+            <div>
 
-    handleSubmit(event) {
-        event.preventDefault();
-
-        let postData = {
-            location_id: this.state.location_id,
-            person_id: this.state.person_id,
-            letter_id: this.state.letter_id,
-            text_id: this.state.text_id,
-            subject_id: this.state.subject_id,
-            text_string: this.state.text_string,
-            title_string: this.state.title_string,
-            language: strings.getLanguage()
-        };
-
-        axios.post(process.env.REACT_APP_API_URL + '/admin/update_text/',
-            postData,
-            AuthenticationService.getAxiosConfig()
-        )
-            .then(response =>
-                this.setState({
-                    location: response.data.location,
-                    person: response.data.person,
-                    letter: response.data.letter,
-                    editDone: true
-                })
-            )
-            .catch(function (error) {
-                if (error.response) {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                }
-            })
-        ;
-    }
-
-    render() {
-
-        const location = this.state.location;
-        const person = this.state.person;
-        const letter = this.state.letter;
-        const subject = this.state.subject;
-        const redirectTo =
-            (letter != null) ? ('/get_letter_details/' + letter.number + '/0') : (
-                (location != null && location.text != null) ? '/get_location_details/' + location.id : (
-                    (person != null) ? '/get_person_details/' + person.id : (
-                        '/topics/')));
-
-        if (this.state.editDone === true) {
-            return <Navigate to={redirectTo}/>
-        }
-
-        return (
-            <div className='container'>
                 <div>
-                    {
-                        this.state.cancel ?
-                            <Navigate to={redirectTo}/>
-                            :
+                    <div>
+                        {person != null ?
+                            <Link
+                                to={'/get_person_details/' + person.id}>
+                                <h3> {person.nick_name} {(person.tussenvoegsel != null ? (person.tussenvoegsel + ' ') : '')} {person.last_name}</h3>
+                            </Link>
+                            : null
+                        }</div>
+                    <div>
+                        {location != null ?
+                            <Link to={'/get_location_details/' + location.id}>
+                                <h3> {location.location_name}</h3>
+                            </Link>
+                            : null
+                        }
+                    </div>
+                    <div>
+                        {letter != null ?
+                            <Link to={'/get_letter_details/' + letter.number + '/0'}>
+                                <h3> Brief {letter.number}</h3>
+                            </Link>
+                            : null
+                        }
+                    </div>
+                    <div>
+                        {subject != null ?
+                            <Link to={'/get_text/subject/' + subject.id}><h3> {subject.name}</h3>
+                            </Link>
+                            : null
+                        }
+                    </div>
+                    <form onSubmit={handleSubmit} className='mt-5'>
+                        <div className="form-group">
                             <div>
-                                <div>
-                                    {this.state.person != null ?
-                                        <Link
-                                            to={'/get_person_details/' + person.id}>
-                                            <h3> {person.nick_name} {(person.tussenvoegsel != null ? (person.tussenvoegsel + ' ') : '')} {person.last_name}</h3>
-                                        </Link>
-                                        : null
-                                    }</div>
-                                <div>
-                                    {this.state.location != null ?
-                                        <Link to={'/get_location_details/' + location.id}>
-                                            <h3> {location.location_name}</h3>
-                                        </Link>
-                                        : null
-                                    }
-                                </div>
-                                <div>
-                                    {this.state.letter != null ?
-                                        <Link to={'/get_letter_details/' + letter.number + '/0'}>
-                                            <h3> Brief {letter.number}</h3>
-                                        </Link>
-                                        : null
-                                    }
-                                </div>
-                                <div>
-                                    {this.state.subject != null ?
-                                        <Link to={'/get_text/subject/' + subject.id}><h3> {this.state.subject.name}</h3>
-                                        </Link>
-                                        : null
-                                    }
-                                </div>
-                                <form onSubmit={this.handleSubmit} className='mt-5'>
-                                    <div className="form-group">
-                                        <div>
-                                            {this.state.subject != null ?
-                                                <div><textarea
-                                                    type="text"
-                                                    rows="1"
-                                                    id="title_string"
-                                                    value={this.state.title_string}
-                                                    onChange={this.handleTitleChange}
-                                                />npm
-                                                </div>
-                                                : null
-                                            }
-                                        </div>
-                                        <textarea
-                                            type="text"
-                                            className="form-control extratextarea"
-                                            id="text_string"
-                                            value={this.state.text_string}
-                                            onChange={this.handleTextChange}
-                                        />
+                                {subject != null ?
+                                    <div><textarea
+                                        id="title_string"
+                                        value={title_string}
+                                        onChange={handleTitleChange}
+                                    />npm
                                     </div>
-                                    <table className='mt-5'>
-                                        <tr>
-                                            <td>
-                                                <input
-                                                    type="submit"
-                                                    className="btn btn-outline-success mybutton"
-                                                    value="Save"
-                                                />
-                                            </td>
-                                            <td>
-                                                <input
-                                                    type="button"
-                                                    onClick={this.handleCancel}
-                                                    className="btn btn-outline-danger mybutton"
-                                                    value="Cancel"
-                                                />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </form>
+                                    : null
+                                }
                             </div>
-                    }
+                            <textarea
+                                className="form-control extratextarea"
+                                id="text_string"
+                                value={text_string}
+                                onChange={handleTextChange}
+                            />
+                        </div>
+                        <table className='mt-5'>
+                            <body>
+                            <tr>
+                                <td>
+                                    <input
+                                        type="submit"
+                                        className="btn btn-outline-success mybutton"
+                                        value="Save"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="button"
+                                        onClick={handleCancel}
+                                        className="btn btn-outline-danger mybutton"
+                                        value="Cancel"
+                                    />
+                                </td>
+                            </tr>
+                            </body>
+                        </table>
+                    </form>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
+
 
 export default TextEdit

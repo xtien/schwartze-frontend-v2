@@ -1,8 +1,8 @@
 class Util {
 
-    isNotEmpty(string) {
+    isNotEmpty(str: string) {
 
-        return string != null && string.length > 0;
+        return str != null && str.length > 0;
     }
 
     isEmpty(string: string | any[] | null) {

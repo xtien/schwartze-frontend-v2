@@ -37,9 +37,9 @@ export const LuceneSearchApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchIndex: async (searchRequest: SearchRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchLetters: async (searchRequest: SearchRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'searchRequest' is not null or undefined
-            assertParamExists('searchIndex', 'searchRequest', searchRequest)
+            assertParamExists('searchLetters', 'searchRequest', searchRequest)
             const localVarPath = `/searchLetters/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -82,10 +82,10 @@ export const LuceneSearchApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchIndex(searchRequest: SearchRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchIndex(searchRequest, options);
+        async searchLetters(searchRequest: SearchRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchLetters(searchRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['LuceneSearchApi.searchIndex']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['LuceneSearchApi.searchLetters']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -104,8 +104,8 @@ export const LuceneSearchApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchIndex(searchRequest: SearchRequest, options?: RawAxiosRequestConfig): AxiosPromise<SearchResult> {
-            return localVarFp.searchIndex(searchRequest, options).then((request) => request(axios, basePath));
+        searchLetters(searchRequest: SearchRequest, options?: RawAxiosRequestConfig): AxiosPromise<SearchResult> {
+            return localVarFp.searchLetters(searchRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -124,8 +124,8 @@ export class LuceneSearchApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof LuceneSearchApi
      */
-    public searchIndex(searchRequest: SearchRequest, options?: RawAxiosRequestConfig) {
-        return LuceneSearchApiFp(this.configuration).searchIndex(searchRequest, options).then((request) => request(this.axios, this.basePath));
+    public searchLetters(searchRequest: SearchRequest, options?: RawAxiosRequestConfig) {
+        return LuceneSearchApiFp(this.configuration).searchLetters(searchRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

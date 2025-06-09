@@ -15,13 +15,13 @@ import {
     type LettersRequest,
     LettersRequestOrderByEnum,
     LettersRequestToFromEnum,
-    type LocationLettersRequest,
+    type LocationLettersRequest, LuceneSearchApi,
     type MyLocation,
     type Person,
     PersonApi,
     type PersonLettersRequest,
     PersonLettersRequestToFromEnum,
-    type PersonResult
+    type PersonResult, type SearchRequest
 } from "./generated-api";
 import strings from "./strings.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,14 +32,18 @@ import type {AxiosResponse} from "axios";
 
 const lettersApi = new LettersApi(apiConfig);
 const personApi = new PersonApi(apiConfig);
+const searchApi = new LuceneSearchApi(apiConfig)
 
 function Letters() {
 
     const location = useLocation()
     const params = location.pathname.substring(1).split('/')
     const id = params[1]
+    const searchTerm = params[1]
     const urlPart = params[0]
-    const personOrLocation = urlPart.includes('person') ? 'person' : urlPart.includes('location') ? 'location' : ''
+    const isPerson : boolean = urlPart.includes('person') ? true : false
+    const isLocation : boolean = urlPart.includes('location') ? true : false
+    const isSearch : boolean = urlPart.includes('search_letters') ? true : false
     const toFromString = params[2]
 
     const navigate = useNavigate();
@@ -49,12 +53,11 @@ function Letters() {
     const [orderBy, setOrderBy] = React.useState<LettersRequestOrderByEnum>("NUMBER");
     const [toFrom] = React.useState<LettersRequestToFromEnum>(toFromString === 'to' ? LettersRequestToFromEnum.To : LettersRequestToFromEnum.From);
     const [search_term, setSearchTerm] = React.useState('');
-    const [go_search, setGoSearch] = React.useState(false);
 
     language()
 
     function getLetters(orderBy: LettersRequestOrderByEnum) {
-        if (personOrLocation === 'person') {
+        if (isPerson ) {
             function getPerson(id: string) {
                 const personRequest: GetPersonRequest = {
                     id: parseInt(id),
@@ -85,8 +88,7 @@ function Letters() {
                     console.log(error)
                 })
             }
-        } else if (personOrLocation === 'location') {
-
+        } else if (isLocation) {
             function getLocation(id: string) {
                 const request: LocationLettersRequest = {
                     location_id: parseInt(id),
@@ -106,7 +108,20 @@ function Letters() {
 
             getLocation(id)
 
-        } else {
+        } else if(isSearch){
+            let postData: SearchRequest = {
+                search_term: searchTerm,
+            };
+
+            searchApi.searchLetters(postData).then((response) => {
+                if (response.data.letters != null) {
+                    setLetters(response.data.letters)
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+        else         {
             const request: LettersRequest = {
                 orderBy: orderBy
             }
@@ -123,7 +138,7 @@ function Letters() {
 
     React.useEffect(() => {
         getLetters(orderBy)
-    }, [personOrLocation, id, toFromString, urlPart, orderBy])
+    }, [id, toFromString, urlPart, orderBy])
 
     function createFullName(person: Person): string {
         let name = '';
@@ -152,27 +167,15 @@ function Letters() {
     }
 
     function handleSearchSubmit() {
-        setGoSearch(true)
+        navigate('/search_letters/' + search_term)
     }
 
     function letterbynumber() {
     }
 
-    const search_letters = '/search_letters/' + search_term;
-    //   const gotoletter = '/get_letter_details/' + pageNumber + '/0/';
-
-    if (go_search === true) {
-        setGoSearch(false)
-        return <Navigate to={search_letters}/>
-    }
-
     function navigateTo(location: string) {
         navigate(location);
     }
-
-    // if (gotoletter) {
-    //     return <Navigate to={'/get_letter_details/' + number + '/0/'}/>
-    // }
 
     function sort(order: LettersRequestOrderByEnum) {
 

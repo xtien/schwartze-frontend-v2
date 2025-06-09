@@ -8,7 +8,7 @@
 import {useEffect, useState} from 'react'
 import './App.css'
 import './css/bootstrap.css'
-import {Link, Navigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Util from './service/Util';
 import strings from './strings.js'
 import language from "./language";
@@ -26,6 +26,8 @@ import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
 import type {LinkEditProps} from './interface/LinkEditProps.tsx';
 import type {EditPersonFormProps} from "./interface/EditPersonFormProps.tsx";
 import type {EditPersonLinkFormProps} from "./interface/EditPersonLinkFormProps.tsx";
+import {Modal} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 const personApi = new PersonApi(apiConfig)
 const adminLinksApi = new AdminLinksApi(apiConfig)
@@ -42,10 +44,9 @@ function PersonPage() {
     const [showEdit, setShowEdit] = useState(false)
     const [showLinkEdit, setShowLinkEdit] = useState(false)
     const [person, setPerson] = useState<Person>({})
-    const [textString, setTextString] = useState('')
-    const [deleted, setDeleted] = useState(false)
     const [linkEdit, setLinkEdit] = useState<LinkEditProps>()
     const [link_id, setLinkId] = useState<number>(0)
+    const [showDialog, setShowDialog] = useState<boolean>(false)
 
     language()
 
@@ -66,12 +67,7 @@ function PersonPage() {
         })
     }
 
-    function toggleEditDoneParam(person: { id: string; }) {
-        setShowEdit(false)
-        getPerson(person.id)
-    }
-
-    function toggleEditDone() {
+    function setEditDone() {
         setShowEdit(false)
     }
 
@@ -79,14 +75,16 @@ function PersonPage() {
         setShowEdit(true)
     }
 
+    function setCancel() {
+        setShowEdit(false)
+    }
+
     function deletePerson() {
         const request: DeletePersonRequest = {
             id: person!.id
         };
-        adminPersonApi.deletePerson(request).then(response => {
-            if (response.data.person != null) {
-                setPerson(response.data.person)
-            }
+        adminPersonApi.deletePerson(request).then(() => {
+            setShowDialog(true)
         }).catch(error => {
             console.log(error)
         })
@@ -131,10 +129,6 @@ function PersonPage() {
         setShowLinkEdit(true)
     }
 
-    function handleTextChange(event: { target: { value: string } }) {
-        setTextString(event.target.value)
-    }
-
     let linkTo = '';
     let linkToEditTextPerson = '';
     if (person != null) {
@@ -146,15 +140,19 @@ function PersonPage() {
         to={`/get_letters_for_person/${person.id}/`}
         className='linkStyle'> {strings.brieven_van} {person.nick_name} </Link>
 
-    if (deleted === true) {
-        return <Navigate to={'/get_people/'}/>
-    }
-
     let links;
     if (person != null && person.links != null) {
         links = person.links.map(function (link, i) {
             return (
                 <div key={i}>
+                    <Modal show={showDialog} onHide={handleClose}>
+                        <Modal.Body>{strings.letterRemoved}</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                {strings.close}
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                     <table width="100%">
                         <tbody>
                         <tr>
@@ -199,6 +197,15 @@ function PersonPage() {
     function combine(event: { preventDefault: () => void; }) {
         event.preventDefault();
         navigate('/combine_person/' + person.id)
+    }
+
+    function setLinkEditDone() {
+        setShowLinkEdit(false)
+    }
+
+    const handleClose = () => {
+        setShowDialog(false);
+        navigate('/getPeople/0')
     }
 
     return (
@@ -257,7 +264,7 @@ function PersonPage() {
                                 }
 
                                 <div className='textpage mt-5 ml-5'>
-                                    {person.text != null && Util.isNotEmpty(person.text.text_string) ?
+                                    {person.text != null && person.text.text_string != undefined && Util.isNotEmpty(person.text.text_string) ?
                                         <div>
                                             {/* TODO: this needs to change when others than myself get access to data entry */}
 
@@ -286,7 +293,8 @@ function PersonPage() {
                         <EditPersonForm
                             person={person}
                             setPerson={setPerson}
-                            toggleEditDone={toggleEditDone}
+                            setEditDone={setEditDone}
+                            setCancel={setCancel}
                         />
                     ) : null
                     }
@@ -299,6 +307,7 @@ function PersonPage() {
                                         person={person}
                                         linkId={link_id}
                                         setPerson={setPerson}
+                                        setLinkEditDone={setLinkEditDone}
                                     />
                                 )
                                 :
@@ -359,210 +368,222 @@ function PersonPage() {
 }
 
 
-function EditPersonForm({person, toggleEditDone, setPerson}: EditPersonFormProps) {
+function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonFormProps) {
 
-    const [cancel, setCancel] = useState(false);
-    const [editDone, setEditDone] = useState(false);
+    const [nick_name, setNickName] = useState<string>(person.nick_name ?? '')
+    const [full_name, setFullName] = useState<string>(person.full_name ?? '')
+    const [tussenvoegsel, setTussenVoegsel] = useState<string>(person.tussenvoegsel ?? '')
+    const [last_name, setLastName] = useState<string>(person.last_name ?? '')
+    const [date_of_birth, setDoB] = useState<string>(person.date_of_birth ?? '')
+    const [date_of_death, setDoD] = useState<string>(person.date_of_death ?? '')
+    const [place_of_birth, setPoB] = useState<string>(person.place_of_birth ?? '')
+    const [place_of_death, setPoD] = useState<string>(person.place_of_death ?? '')
+    const [comment, setComment] = useState<string>(person.comment ?? '')
+    const [image_url, setImageUrl] = useState<string>(person.image_url ?? '')
+    const [image_caption, setImageCaption] = useState<string>(person.image_caption ?? '')
+
 
     function handlecommentChange(event: { target: { value: string; }; }) {
-        person.comment = event.target.value;
+       setComment(event.target.value);
     }
 
     function handleImageUrlChange(event: { target: { value: string; }; }) {
-        person.image_url = event.target.value;
+        setImageUrl( event.target.value);
     }
 
     function handleImageCaptionChange(event: { target: { value: string; }; }) {
-        person.image_url = event.target.value;
+       setImageCaption(event.target.value);
     }
 
     function handleNickNameChange(event: { target: { value: string; }; }) {
-        person.nick_name = event.target.value;
+        setNickName( event.target.value);
     }
 
     function handleFullNameChange(event: { target: { value: string; }; }) {
-        person.full_name = event.target.value;
+       setFullName( event.target.value);
     }
 
     function handleTussenvoegselChange(event: { target: { value: string; }; }) {
-        person.tussenvoegsel = event.target.value;
+       setTussenVoegsel ( event.target.value);
     }
 
     function handleLastNameChange(event: { target: { value: string; }; }) {
-        person.last_name = event.target.value;
+        setLastName( event.target.value);
     }
 
     function handleDoBChange(event: { target: { value: string; }; }) {
-        person.image_url = event.target.value;
+        setDoB (event.target.value);
     }
 
     function handleDoDChange(event: { target: { value: string; }; }) {
-        person.image_url = event.target.value;
+       setDoD(event.target.value);
     }
 
     function handlePoBChange(event: { target: { value: string; }; }) {
-        person.image_url = event.target.value;
+        setPoB(event.target.value);
     }
 
     function handlePoDChange(event: { target: { value: string; }; }) {
-        person.image_url = event.target.value;
+        setPoD(event.target.value);
     }
 
     function handleCancel() {
-
-        setCancel(true);
+        setCancel();
     }
 
-    function handleSubmit(event: { preventDefault: () => void; }) {
-        event.preventDefault();
+    function handleSubmit() {
         let request: AddPersonRequest = {
-            person: person
+            person:   {
+                ...person,
+                nick_name: nick_name,
+                full_name: full_name,
+                tussenvoegsel: tussenvoegsel,
+                last_name: last_name,
+                date_of_birth: date_of_birth,
+                date_of_death: date_of_death,
+                place_of_birth: place_of_birth,
+                place_of_death: place_of_death,
+                comment: comment,
+                image_url: image_url,
+                image_caption: image_caption,
+            }
         };
 
         adminPersonApi.updatePersonDetails(request).then(response => {
             if (response.data.person != null) {
                 setPerson(response.data.person)
-                setEditDone(true)
+                setEditDone()
             }
         }).catch(error => {
             console.log(error)
         })
     }
 
-
-    if (editDone) {
-        setEditDone(false);
-    }
-    if (cancel) {
-        setEditDone(false)
-        toggleEditDone();
-    }
-
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <p>{person.nick_name} {person.tussenvoegsel} {person.last_name}</p>
+                    <p>{nick_name ?? ''} {tussenvoegsel ?? ''} {last_name ?? ''}</p>
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Nick name</label>
+                    <label htmlFor="status">{strings.nickname}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="nick_name"
-                        value={person.nick_name}
+                        value={nick_name ?? ''}
                         onChange={handleNickNameChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Full name</label>
+                    <label htmlFor="status">{strings.fullname}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="full_name"
-                        value={person.full_name}
+                        value={full_name ?? ''}
                         onChange={handleFullNameChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Tussenvoegsel</label>
+                    <label htmlFor="status">{strings.tussenvoegsel}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="tussenvoegsel"
-                        value={person.tussenvoegsel}
+                        value={tussenvoegsel ?? ''}
                         onChange={handleTussenvoegselChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Last name</label>
+                    <label htmlFor="status">{strings.lastname}e</label>
                     <input
                         type="text"
                         className="form-control "
                         id="last_name"
-                        value={person.last_name}
-                        onChange={handleLastNameChange}
+                        value={last_name}
+                        onChange={handleLastNameChange ?? ''}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Geboren</label>
+                    <label htmlFor="status">{strings.geboren}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="last_name"
-                        value={person.date_of_birth}
+                        value={date_of_birth ?? ''}
                         onChange={handleDoBChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Plaats</label>
+                    <label htmlFor="status">{strings.plaats}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="last_name"
-                        value={person.place_of_birth}
+                        value={place_of_birth ?? ''}
                         onChange={handlePoBChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Overleden</label>
+                    <label htmlFor="status">{strings.overleden}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="last_name"
-                        value={person.date_of_death}
+                        value={date_of_death ?? ''}
                         onChange={handleDoDChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Plaats</label>
+                    <label htmlFor="status">{strings.plaats}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="last_name"
-                        value={person.place_of_death}
+                        value={place_of_death ?? ''}
                         onChange={handlePoDChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Opmerkingen</label>
+                    <label htmlFor="status">{strings.opmerkingen}</label>
                     <textarea
-                        type="text"
                         className="form-control textarea200"
                         id="comments"
-                        value={person.comment}
+                        value={comment ?? ''}
                         onChange={handlecommentChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Image URL</label>
+                    <label htmlFor="status">{strings.image_url}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="image_url"
-                        value={person.image_url}
+                        value={image_url ?? ''}
                         onChange={handleImageUrlChange}
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">Image caption</label>
+                    <label htmlFor="status">{strings.image_caption}</label>
                     <input
                         type="text"
                         className="form-control "
                         id="image_caption"
-                        value={person.image_caption}
+                        value={image_caption ?? ''}
                         onChange={handleImageCaptionChange}
                     />
                 </div>
                 <table>
                     <tbody>
                     <tr>
-                        <td></td>
-                        <input
-                            type="submit"
-                            className="btn btn-outline-success mybutton mt-3"
-                            value="Submit"
-                        />
+                        <td>
+                            <input
+                                type="submit"
+                                className="btn btn-outline-success mybutton mt-3"
+                                value="Submit"
+                            />
+                        </td>
                         <td>
                             <input
                                 type="button"
@@ -581,29 +602,28 @@ function EditPersonForm({person, toggleEditDone, setPerson}: EditPersonFormProps
 }
 
 
-function EditPersonLinkForm({}: EditPersonLinkFormProps) {
+function EditPersonLinkForm({
+                                person, linkId, setPerson, setLinkEditDone
+                            }: EditPersonLinkFormProps) {
 
-    const [person, setPerson] = useState<Person>();
-    const [link_id, setLinkId] = useState<number>();
     const [link_name, setLinkName] = useState<string>();
     const [link_url, setLinkUrl] = useState<string>();
-    const [linkEditDone, setLinkEditDone] = useState<boolean>(false);
 
 
-    function handleLinkSubmit(event) {
+    function handleLinkSubmit(event: { preventDefault: () => void; }) {
         event.preventDefault();
 
         let request = {
             person_id: person!.id,
-            link_id: link_id,
-            link_name: link_name,
-            link_url: link_url,
+            link_id: linkId,
         };
 
         adminLinksApi.editLink(request).then(response => {
             if (response.data.person != null) {
                 setPerson(response.data.person)
             }
+            setLinkEditDone()
+
         }).catch(error => {
             console.log(error)
         })
@@ -615,13 +635,6 @@ function EditPersonLinkForm({}: EditPersonLinkFormProps) {
 
     function handleUrlChange(event: { target: { value: string } }) {
         setLinkUrl(event.target.value);
-    }
-
-
-    const redirectTo = '/getperson_details/' + person!.id;
-
-    if (linkEditDone === true) {
-        return <Navigate to={redirectTo}/>
     }
 
     return (
