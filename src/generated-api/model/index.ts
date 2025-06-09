@@ -62,6 +62,7 @@ export * from './search-request';
 export * from './search-result';
 export * from './subject';
 export * from './subject-request';
+export * from './subject-result';
 export * from './subjects-result';
 export * from './text';
 export * from './text-request';

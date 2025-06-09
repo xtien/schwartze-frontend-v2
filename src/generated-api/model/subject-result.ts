@@ -15,37 +15,19 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { Text } from './text';
+import type { Subject } from './subject';
 
 /**
  * 
  * @export
- * @interface SubjectRequest
+ * @interface SubjectResult
  */
-export interface SubjectRequest {
+export interface SubjectResult {
     /**
      * 
-     * @type {number}
-     * @memberof SubjectRequest
+     * @type {Subject}
+     * @memberof SubjectResult
      */
-    'subject_id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof SubjectRequest
-     */
-    'subject_name'?: string;
-    /**
-     * 
-     * @type {Text}
-     * @memberof SubjectRequest
-     */
-    'subject_text'?: Text;
-    /**
-     * 
-     * @type {string}
-     * @memberof SubjectRequest
-     */
-    'language'?: string;
+    'subject'?: Subject;
 }
 

@@ -91,6 +91,7 @@ model/search-people-request.ts
 model/search-request.ts
 model/search-result.ts
 model/subject-request.ts
+model/subject-result.ts
 model/subject.ts
 model/subjects-result.ts
 model/text-request.ts

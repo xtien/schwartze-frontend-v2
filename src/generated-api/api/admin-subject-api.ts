@@ -24,6 +24,8 @@ import { BASE_PATH, COLLECTION_FORMATS, type RequestArgs, BaseAPI, RequiredError
 // @ts-ignore
 import type { SubjectRequest } from '../model';
 // @ts-ignore
+import type { SubjectResult } from '../model';
+// @ts-ignore
 import type { SubjectsResult } from '../model';
 /**
  * AdminSubjectApi - axios parameter creator
@@ -37,10 +39,10 @@ export const AdminSubjectApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addSubject: async (subjectRequest: SubjectRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addOrUpdateSubject: async (subjectRequest: SubjectRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'subjectRequest' is not null or undefined
-            assertParamExists('addSubject', 'subjectRequest', subjectRequest)
-            const localVarPath = `/admin/addSubject/`;
+            assertParamExists('addOrUpdateSubject', 'subjectRequest', subjectRequest)
+            const localVarPath = `/admin/addOrUpdateSubject/`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -117,10 +119,10 @@ export const AdminSubjectApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubjectsResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addSubject(subjectRequest, options);
+        async addOrUpdateSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubjectResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addOrUpdateSubject(subjectRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['AdminSubjectApi.addSubject']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['AdminSubjectApi.addOrUpdateSubject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -151,8 +153,8 @@ export const AdminSubjectApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): AxiosPromise<SubjectsResult> {
-            return localVarFp.addSubject(subjectRequest, options).then((request) => request(axios, basePath));
+        addOrUpdateSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig): AxiosPromise<SubjectResult> {
+            return localVarFp.addOrUpdateSubject(subjectRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -180,8 +182,8 @@ export class AdminSubjectApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof AdminSubjectApi
      */
-    public addSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig) {
-        return AdminSubjectApiFp(this.configuration).addSubject(subjectRequest, options).then((request) => request(this.axios, this.basePath));
+    public addOrUpdateSubject(subjectRequest: SubjectRequest, options?: RawAxiosRequestConfig) {
+        return AdminSubjectApiFp(this.configuration).addOrUpdateSubject(subjectRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -6,10 +6,10 @@
  */
 
 import {useEffect, useState} from 'react'
-import {Link, Navigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import strings from './strings.js'
 import language from "./language";
-import {AdminSubjectApi, type Subject, SubjectApi} from "./generated-api";
+import {AdminSubjectApi, type Subject, SubjectApi, type SubjectRequest} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {SubjectEditLinkFormProps} from "./interface/SubjectEditLinkFormProps.tsx";
@@ -20,12 +20,9 @@ const adminSubjectApi = new AdminSubjectApi(apiConfig)
 function Topics() {
 
     const [subjects, setSubjects] = useState<Subject[]>()
-    const [editLink, setEditLink] = useState<boolean>(false)
-    const [subject_id, setSubjectId] = useState<number>()
+    const [subject, setSubject] = useState<Subject>()
 
     const [showLinkEdit, setShowLinkEdit] = useState(false);
-
-    language()
 
     useEffect(() => {
 
@@ -41,14 +38,18 @@ function Topics() {
     }, [])
 
 
-    function add_link() {
+    function add_link(event: { preventDefault: () => void; }) {
+        event.preventDefault();
         setShowLinkEdit(true)
     }
 
-    function delete_link(id: string) {
+    function delete_link(id: number | undefined) {
 
+        if (id == null) {
+            return
+        }
         let postData = {
-            subject_id: parseInt(id),
+            subject_id: id,
             language: language()
         };
 
@@ -63,19 +64,16 @@ function Topics() {
         )
     }
 
-    function edit_link(id: number) {
-        setEditLink(true)
-        setSubjectId(id)
+    function edit_link(subject: Subject) {
+        if (subject == null) {
+            return
+        }
+        setSubject(subject)
+        setShowLinkEdit(true)
     }
 
-    const subjectsText = strings.topics;
-    const subjectId = subject_id;
 
-    if (editLink) {
-        return <Navigate to={'/edit_text/subject/' + subjectId}/>
-    }
-
-    let links : any[] = []
+    let links: any[] = []
     if (subjects != null) {
         links = subjects.map(function (link, i) {
             return (
@@ -94,14 +92,14 @@ function Topics() {
                                     <div>
                                         <button
                                             className="btn btn-outline-success mybutton ml-2 mt-2"
-                                            onClick={() => edit_link(link.id!)}
+                                            onClick={() => edit_link(link)}
                                         >
                                             {strings.edit}
                                         </button>
                                         &nbsp;&nbsp;
                                         <button
                                             className="btn btn-outline-danger mybutton ml-2 mt-2"
-                                            onClick={() => delete_link(link.id!.toString())}
+                                            onClick={() => delete_link(link.id)}
                                         >
                                             {strings.delete}
                                         </button>
@@ -119,65 +117,69 @@ function Topics() {
     return (
 
         <div className='container'>
+            {showLinkEdit ? (
+                    <EditLinkForm
+                        subject={subject}
+                        setShowEditSubject={setShowLinkEdit}
+                    />
+                )
+                : null}
+            {
+                isAdmin() === "true" ?
+                    <div>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <form  className='mt-5 ml-5 mb-5'>
+                                        <input
+                                            type="submit"
+                                            className="btn btn-outline-success mybutton"
+                                            value={strings.addTopic}
+                                            onClick={add_link}
+                                        />
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    : null}
 
             <div className='mt-5 topics'>
-                <h3>{subjectsText}</h3>
+                <h3>{subject?.name}</h3>
                 <div id='linkContainer'>
                     {links}
                 </div>
-                {showLinkEdit ? (
-                        <EditLinkForm
-                            name={''}
-                            setSubjects={setSubjects}
-                        />
-                    )
-                    : null}
                 <div>
-                    {
-                        isAdmin() === "true" ?
-
-                            <div>
-
-                                <table>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <form onSubmit={add_link} className='mt-5 ml-5 mb-5'>
-                                                <input
-                                                    type="submit"
-                                                    className="btn btn-outline-success mybutton"
-                                                    value="Onderwerp toevoegen"
-                                                />
-
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            : null}
-                </div>
+                 </div>
             </div>
         </div>
     )
 }
 
+function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
 
-function EditLinkForm({name, setSubjects}: SubjectEditLinkFormProps) {
+    const [subject_name, setSubjectName] = useState<string>(subject?.name ?? '');
+    const [subject_text, setSubjectText] = useState<string>(subject?.text?.text_string ?? '');
+    const [subject_title, setSubjectTitle] = useState<string>(subject?.text?.text_title ?? '');
 
-    const [subject_name, setSubjectName] = useState(name);
+    function handleLinkSubmit(event: { preventDefault: () => void; }) {
+        event.preventDefault();
 
-    function handleLinkSubmit() {
-
-        let postData = {
-            subject_name: name,
-            language: strings.getLanguage()
+        let postData: SubjectRequest = {
+            subject_id: subject?.id ?? 0,
+            subject_name: subject_name ,
+            language: language(),
+            subject_text: {
+                text_string: subject_text ?? '',
+                text_title: subject_title ?? ''
+            }
         };
 
-        adminSubjectApi.addSubject(postData).then((response) => {
-            if(response.data.subjects !=null){
-                setSubjects(response.data.subjects)
-            }
+        adminSubjectApi.addOrUpdateSubject(postData).then((response ) => {
+            console.log(response.data)
+            doCancel()
         }).catch(
             error => {
                 console.log(error)
@@ -185,30 +187,68 @@ function EditLinkForm({name, setSubjects}: SubjectEditLinkFormProps) {
         )
     }
 
-    function handleNameChange(event: { target: { value: string }; }) {
+    function handleNameChange(event: { target: { value: string; }; }) {
         setSubjectName(event.target.value);
     }
 
+    function handleTextChange(event: { target: { value: string; }; }) {
+        setSubjectText(event.target.value);
+    }
+
+    function handleTitleChange(event: { target: { value: string; }; }) {
+        setSubjectTitle(event.target.value);
+    }
+
+    function doCancel() {
+        setShowEditSubject(false)
+    }
+
     return (
-        <form onSubmit={handleLinkSubmit}>
-            <div className="form-group">
-                <label htmlFor="status">Link naam</label>
+        <div className='container mt-5'>
+            <h3>{subject?.name} {strings.edit}</h3>
+            <form onSubmit={handleLinkSubmit}>
+                <div className="form-group">
+                    <div>
+                        <label htmlFor="status">{strings.linknaam}</label>
+                        <input
+                            type="text"
+                            className="form-control mt-3"
+                            id="subject_name"
+                            value={subject_name}
+                            onChange={handleNameChange}
+                        />
+                        <label htmlFor="status">{strings.linktitle}</label>
+                        <input
+                            type="text"
+                            className="form-control mt-3"
+                            id="subject_name"
+                            value={subject_title}
+                            onChange={handleTitleChange}
+                        />
+                        <label htmlFor="status">{strings.linktext}</label>
+                        <input
+                            type="text"
+                            className="form-control mt-3"
+                            id="subject_name"
+                            value={subject_text}
+                            onChange={handleTextChange}
+                        />
+                    </div>
+                </div>
                 <input
-                    type="text"
-                    className="form-control mt-3"
-                    id="subject_name"
-                    value={subject_name}
-                    onChange={handleNameChange}
+                    type="submit"
+                    className="btn btn-outline-success mybutton m-lg-3"
+                    value={strings.submit}
                 />
-            </div>
-            <input
-                type="submit"
-                className="btn btn-outline-success mybutton mt-3"
-                value="Submit"
-            />
-        </form>
+                <input
+                    type="submit"
+                    className="btn btn-outline-success mybutton m-lg-3"
+                    value={strings.cancel}
+                    onClick={doCancel}
+                />
+            </form>
+        </div>
     );
 }
-
 
 export default Topics

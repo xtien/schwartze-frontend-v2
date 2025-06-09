@@ -94,6 +94,8 @@ const strings = new LocalizedStrings({
         opmerkingen: "Opmerkingen",
         image_url: "Image URL",
         image_caption: "Image Caption",
+        addTopic: "Onderwerp toevoegen",
+        linknaam: "Link naam"
     },
     en: {
         about: "About",
@@ -187,6 +189,10 @@ const strings = new LocalizedStrings({
         opmerkingen: "Opmerkingen",
         image_url: "Image URL",
         image_caption: "Image Caption",
+        addTopic: "Add topic",
+        linknaam: "Link name",
+        linktitle: "Link title",
+        linktext: "Link text",
     },
     fr: {
         about: "À propos",
@@ -275,6 +281,10 @@ const strings = new LocalizedStrings({
         opmerkingen: "Opmerkingen",
         image_url: "Image URL",
         image_caption: "Image Caption",
+        addTopic: "Ajouter un sujet",
+        linknaam: "Link name",
+        linktitle: "Link title",
+        linktext: "Link text",
     },
     de: {
         about: "Über",
