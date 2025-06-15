@@ -28,7 +28,7 @@ import {EditPictureUrlForm} from "./functions/EditPictureUrlForm.tsx";
 import {EditReferenceForm} from "./functions/EditReferenceForm.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
-import Cookies from "universal-cookie";
+import language from "./language.tsx";
 
 const homeTextApi = new HomeTextApi(apiConfig);
 const pageApi = new PageApi(apiConfig);
@@ -36,8 +36,7 @@ const adminReferencesApi = new AdminReferencesApi(apiConfig);
 
 function Landing() {
 
-    const cookies = new Cookies();
-    const lang: string = cookies.get('language');
+    const lang = language()
 
     const [pageNumber] = useState<number>(0);
     const [chapterNumber] = useState<number>(0);
@@ -88,7 +87,7 @@ function Landing() {
 
         getLeftPage()
 
-    }, []);
+    }, [lang]);
 
     function getLeftPage() {
         const request: PageTextRequest = {
