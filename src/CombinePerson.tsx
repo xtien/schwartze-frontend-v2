@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
+ * Copyright (c) 2028 - 2025, Zaphod Consulting BV, Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of
  * the Apache License, Version 2.0. You can find a copy of the license at
  * http://www.apache.org/licenses/LICENSE-2.0.
@@ -29,7 +29,7 @@ function CombinePerson() {
     const params = location.pathname.split('/')
     const id = params[2]
 
-    const [redirect, setRedirect] = useState<boolean>(false);
+    const [, setRedirect] = useState<boolean>(false);
     const [first_id, setFirstId] = useState(id)
     const [second_id, setSecondId] = useState(0)
     const [showConfirm, setShowConfirm] = useState(false)
@@ -156,11 +156,8 @@ interface CombinePersonProps {
 function CombinePersonForm({person1, person2, setRedirect}: CombinePersonProps) {
 
     const [_redirect, _setRedirect] = useState(false);
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [first_id, setFirstId] = useState(person1.id);
-    const [second_id, setSecondId] = useState(person2.id);
-    const [_person1, setPerson1] = useState(person1);
-    const [_person2, setPerson2] = useState(person2);
+    const [_person1] = useState(person1);
+    const [_person2] = useState(person2);
 
     function combine() {
 

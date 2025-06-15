@@ -1,12 +1,11 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
- * This project is free software: you can redistribute it and/or modify it under the terms of
- * the Apache License, Version 2.0. You can find a copy of the license at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ *  * Copyright (c) 2018 - "2025", Zaphod Consulting BV, Christine Karman.
+ *  This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at http://www.apache.org/licenses/LICENSE-2.0.
+ *
  */
 
 import * as React from 'react'
-import {Navigate, useLocation, useNavigate} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 import language from "./language";
 import {
     type GetPersonRequest,
@@ -27,14 +26,20 @@ import strings from "./strings.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import {apiConfig} from "./service/AuthenticationService.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {AxiosResponse} from "axios";
+import ReactGA from "react-ga4";
 
 const lettersApi = new LettersApi(apiConfig);
 const personApi = new PersonApi(apiConfig);
 const searchApi = new LuceneSearchApi(apiConfig)
 
 function Letters() {
+
+    useEffect(() => {
+        // Send pageview with a custom path
+        ReactGA.send({ hitType: "pageview", page: "/get_letters", title: "Letters Page" });
+    }, [])
 
     const location = useLocation()
     const params = location.pathname.substring(1).split('/')

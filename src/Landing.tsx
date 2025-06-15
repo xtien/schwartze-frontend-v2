@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
+ * Copyright (c) 2028 - 2025, Zaphod Consulting BV, Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of
  * the Apache License, Version 2.0. You can find a copy of the license at
  * http://www.apache.org/licenses/LICENSE-2.0.
@@ -24,11 +24,11 @@ import {
 } from "./generated-api";
 import type {RefMap} from "./model/refMap.tsx";
 import strings from "./strings";
-import language from "./language";
 import {EditPictureUrlForm} from "./functions/EditPictureUrlForm.tsx";
 import {EditReferenceForm} from "./functions/EditReferenceForm.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
+import Cookies from "universal-cookie";
 
 const homeTextApi = new HomeTextApi(apiConfig);
 const pageApi = new PageApi(apiConfig);
@@ -36,7 +36,8 @@ const adminReferencesApi = new AdminReferencesApi(apiConfig);
 
 function Landing() {
 
-    const lang = language()
+    const cookies = new Cookies();
+    const lang: string = cookies.get('language');
 
     const [pageNumber] = useState<number>(0);
     const [chapterNumber] = useState<number>(0);

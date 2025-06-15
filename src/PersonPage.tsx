@@ -1,8 +1,7 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
- * This project is free software: you can redistribute it and/or modify it under the terms of
- * the Apache License, Version 2.0. You can find a copy of the license at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ *  * Copyright (c) 2018 - "2025", Zaphod Consulting BV, Christine Karman.
+ *  This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at http://www.apache.org/licenses/LICENSE-2.0.
+ *
  */
 
 import {useEffect, useState} from 'react'
@@ -23,7 +22,6 @@ import {
     PersonApi
 } from "./generated-api";
 import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
-import type {LinkEditProps} from './interface/LinkEditProps.tsx';
 import type {EditPersonFormProps} from "./interface/EditPersonFormProps.tsx";
 import type {EditPersonLinkFormProps} from "./interface/EditPersonLinkFormProps.tsx";
 import {Modal} from "react-bootstrap";
@@ -44,8 +42,7 @@ function PersonPage() {
     const [showEdit, setShowEdit] = useState(false)
     const [showLinkEdit, setShowLinkEdit] = useState(false)
     const [person, setPerson] = useState<Person>({})
-    const [linkEdit, setLinkEdit] = useState<LinkEditProps>()
-    const [link_id, setLinkId] = useState<number>(0)
+    const [link_id] = useState<number>(0)
     const [showDialog, setShowDialog] = useState<boolean>(false)
 
     language()
@@ -115,13 +112,7 @@ function PersonPage() {
             });
             if (link != null && link.id != null) {
                 setShowLinkEdit(true)
-                setLinkEdit({
-                    linkId: link.id,
-                    linkName: link.link_name,
-                    linkUrl: link.link_url
-                })
             }
-
         }
     }
 
@@ -145,15 +136,7 @@ function PersonPage() {
         links = person.links.map(function (link, i) {
             return (
                 <div key={i}>
-                    <Modal show={showDialog} onHide={handleClose}>
-                        <Modal.Body>{strings.letterRemoved}</Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                                {strings.close}
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                    <table width="100%">
+                     <table width="100%">
                         <tbody>
                         <tr>
                             <td>
@@ -205,11 +188,20 @@ function PersonPage() {
 
     const handleClose = () => {
         setShowDialog(false);
-        navigate('/getPeople/0')
+  //      navigate('/getPeople/0')
     }
 
     return (
         <>
+            <Modal show={showDialog} onHide={handleClose}>
+                <Modal.Body>{strings.letterRemoved}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        {strings.close}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
             {person == null ?
                 <div className='content-container letter mt-5'>
                     No person found with id {id}
@@ -336,7 +328,7 @@ function PersonPage() {
                                             </form>
                                         </td>
                                         <td>
-                                            <form onSubmit={() => deletePerson} className="ml-5 mb-5">
+                                            <form onSubmit={deletePerson} className="ml-5 mb-5">
                                                 <input
                                                     type="submit"
                                                     className="btn btn-outline-danger mybutton"
@@ -640,7 +632,7 @@ function EditPersonLinkForm({
     return (
         <form onSubmit={handleLinkSubmit}>
             <div className="form-group mt-3 mt-5">
-                <label htmlFor="status">Link naam</label>
+                <label htmlFor="status">{strings.linknaam}</label>
                 <input
                     type="text"
                     className="form-control"
@@ -650,7 +642,7 @@ function EditPersonLinkForm({
                 />
             </div>
             <div className="form-group mt-3">
-                <label htmlFor="status">Link url</label>
+                <label htmlFor="status">{strings.link_url}</label>
                 <input
                     type="text"
                     className="form-control"

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
+ * Copyright (c) 2028 - 2025, Zaphod Consulting BV, Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of
  * the Apache License, Version 2.0. You can find a copy of the license at
  * http://www.apache.org/licenses/LICENSE-2.0.
@@ -95,7 +95,8 @@ const strings = new LocalizedStrings({
         image_url: "Image URL",
         image_caption: "Image Caption",
         addTopic: "Onderwerp toevoegen",
-        linknaam: "Link naam"
+        linknaam: "Link naam",
+        link_url: "Link URL",
     },
     en: {
         about: "About",
@@ -193,6 +194,7 @@ const strings = new LocalizedStrings({
         linknaam: "Link name",
         linktitle: "Link title",
         linktext: "Link text",
+        link_url: "Link URL",
     },
     fr: {
         about: "À propos",

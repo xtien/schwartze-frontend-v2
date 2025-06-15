@@ -2,7 +2,7 @@ export const LanguageTypeEnum = {
     En: 'en',
     Nl: 'nl',
     Es: 'es',
-    Fr: 'fl',
+    Fr: 'fr',
     De: 'de'
 } as const;
 

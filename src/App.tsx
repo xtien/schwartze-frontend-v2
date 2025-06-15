@@ -1,3 +1,9 @@
+/*
+ *  * Copyright (c) 2018 - "2025", Zaphod Consulting BV, Christine Karman.
+ *  This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at http://www.apache.org/licenses/LICENSE-2.0.
+ *
+ */
+
 import './App.css'
 import {BrowserRouter, Link, Route, Routes} from "react-router";
 import strings from "./strings.tsx";
@@ -30,15 +36,22 @@ import Selector from "./component/Selector.tsx";
 import {LanguageTypeEnum} from "./enum/LanguageTypeEnum.tsx";
 import Cookies from "universal-cookie";
 import {useEffect, useState} from "react";
+import ReactGA from 'react-ga4'
 
 function App() {
 
     const [selectedLanguage, setSelectedLanguage] = useState<string>(strings.getLanguage());
 
     useEffect(() => {
+        ReactGA.initialize("G-BK9BVQ50MX");
+        // Send pageview with a custom path
+        ReactGA.send({hitType: "pageview", page: "/", title: "Landing Page"});
+    }, [])
+
+    useEffect(() => {
         const cookies = new Cookies();
         const lan: string = cookies.get('language');
-        if (lan != null) {
+       if (lan != null) {
             console.log("cookie language: " + lan)
             const l = (stringToEnum(lan));
             if (l != undefined) {

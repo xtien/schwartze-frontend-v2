@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
+ * Copyright (c) 2028 - 2025, Zaphod Consulting BV, Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of
  * the Apache License, Version 2.0. You can find a copy of the license at
  * http://www.apache.org/licenses/LICENSE-2.0.
@@ -12,7 +12,6 @@ import {Link} from "react-router-dom";
 import {Navigate, useLocation} from "react-router";
 import arrow_left from "./images/arrow_left.png";
 import arrow_right from "./images/arrow_right.png";
-import language from "./language";
 import {
     AdminLetterApi,
     ImagesApi,
@@ -27,12 +26,20 @@ import type {CommentFormProps} from "./interface/CommentFormProps.tsx";
 import strings from "./strings.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import Util from "./service/Util.tsx";
+import Cookies from "universal-cookie";
+import ReactGA from "react-ga4";
 
 const letterApi = new LettersApi(apiConfig)
 const imageApi = new ImagesApi(apiConfig)
 const adminLetterApi = new AdminLetterApi(apiConfig)
 
 function LetterPage() {
+
+    useEffect(() => {
+        // Send pageview with a custom path
+        ReactGA.send({ hitType: "pageview", page: "/get_letter_details", title: "LetterPage" });
+    }, [])
+
     const location = useLocation()
     const params = location.pathname.substring(1).split('/')
     const number = params[1]
@@ -61,7 +68,8 @@ function LetterPage() {
     // const [goSearch, setGoSearch] = useState(false)
     // const [search_term, setSearch_term] = useState('')
 
-    const lang: string = language()
+    const cookies = new Cookies();
+    const lang: string = cookies.get('language');
 
     useEffect(() => {
         const request: LetterRequest = {
@@ -80,7 +88,7 @@ function LetterPage() {
             setShowError(true)
             setError(error.toString())
         })
-    }, [])
+    }, [lang])
 
     function toggleEditDone() {
         setShowEdit(false)
@@ -316,7 +324,7 @@ function LetterPage() {
                             dangerouslySetInnerHTML={{__html: letterText != null && letterText != null ? letterText : ''}}/>
                         : null}
                     <div className='textpage mt-5 ml-5'>
-                        {letter.text != null && Util.isNotEmpty(letter.text.text_string) ?
+                        {letter.text != null && letter.text.text_string != undefined && Util.isNotEmpty(letter.text.text_string) ?
                             <div>
                                 {/* TODO: this needs to change when others than myself get access to data entry */}
 

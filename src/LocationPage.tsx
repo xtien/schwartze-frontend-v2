@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
+ * Copyright (c) 2028 - 2025, Zaphod Consulting BV, Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of
  * the Apache License, Version 2.0. You can find a copy of the license at
  * http://www.apache.org/licenses/LICENSE-2.0.
@@ -180,7 +180,7 @@ function LocationPage() {
                             <p className='mt-5'>{location.comment}</p>
 
                             <div className='textpage mt-5 ml-5'>
-                                {location.text != null && Util.isNotEmpty(location.text.text_string) ?
+                                {location.text != null&& location.text.text_string !=undefined && Util.isNotEmpty(location.text.text_string) ?
                                     <div>
                                         {/* TODO: this needs to change when others than myself get access to data entry */}
                                         {location.text.text_string != null && location.text.text_string.length > 300

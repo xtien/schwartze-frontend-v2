@@ -1,8 +1,7 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
- * This project is free software: you can redistribute it and/or modify it under the terms of
- * the Apache License, Version 2.0. You can find a copy of the license at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ *  * Copyright (c) 2018 - "2025", Zaphod Consulting BV, Christine Karman.
+ *  This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at http://www.apache.org/licenses/LICENSE-2.0.
+ *
  */
 
 import {useEffect, useState} from 'react'
@@ -18,10 +17,16 @@ import {
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import Table from "react-bootstrap/Table";
 import {useNavigate} from "react-router";
+import ReactGA from "react-ga4";
 
 const personApi = new PersonApi(apiConfig)
 
 function People() {
+
+    useEffect(() => {
+        // Send pageview with a custom path
+        ReactGA.send({ hitType: "pageview", page: "/get_people", title: "People" });
+    }, [])
 
     const [people, setPeople] = useState<Person[]>([]);
     const [orderBy, setOrderBy] = useState<PeopleRequestOrderByEnum>(PeopleRequestOrderByEnum.FirstName);

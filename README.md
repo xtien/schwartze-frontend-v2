@@ -1,13 +1,16 @@
-# React + TypeScript + Vite
+## Aunt Thérèse's niece ##
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a frontend for my [Schwartze-Ansingh project](https://www.schwartze-ansingh.com).
 
-Currently, two official plugins are available:
+I have 500 letters from the families Schwartze and Ansingh, written between 1880 and 1940. I have scanned all letters, then I read them and transcribed them (to ascii files), which is time consuming. This application serves to enter the data on the letters, to show the scanned letters and transcripts. After finishing the preparations, I'll continue the research and write a book. The backend is in Java/Spring Boot, the frontend is in React/typescript/vite.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The backend software is at https://www.github.com/xtien/schwartze-backend
 
-## Expanding the ESLint configuration
+The web site is at https://www.schwartze-ansingh.com
+
+
+
+#### Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
@@ -52,6 +55,9 @@ export default tseslint.config({
   },
 })
 ```
+
+The project uses openapi-generator to generate the api calls from the swagger page of the api.
+https://openapi-generator.tech/docs/installation/
 
 ```bash
 java -jar ./openapi-generator-cli.jar generate -i http://localhost:8084/v3/api-docs -g typescript-axios -pwithSeparateModelsAndApi=true -papiPackage=api -pmodelPackage=model -o ./src/generated-api 

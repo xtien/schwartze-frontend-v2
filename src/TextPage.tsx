@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
+ * Copyright (c) 2028 - 2025, Zaphod Consulting BV, Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of
  * the Apache License, Version 2.0. You can find a copy of the license at
  * http://www.apache.org/licenses/LICENSE-2.0.
@@ -13,10 +13,17 @@ import {TextApi, type TextRequest, type TextResult} from "./generated-api";
 import strings from "./strings.tsx";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {useLocation} from "react-router";
+import ReactGA from "react-ga4";
 
 const textApi = new TextApi(apiConfig)
 
 function TextPage() {
+
+    useEffect(() => {
+        // Send pageview with a custom path
+        ReactGA.send({ hitType: "pageview", page: "/get_page", title: "TextPage" });
+    }, [])
+
 
     const location = useLocation()
     const params = location.pathname.split('/')

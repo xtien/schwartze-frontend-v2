@@ -1,8 +1,7 @@
 /*
- * Copyright (c) 2018 - 2024, Zaphod Consulting BV, Christine Karman
- * This project is free software: you can redistribute it and/or modify it under the terms of
- * the Apache License, Version 2.0. You can find a copy of the license at
- * http://www.apache.org/licenses/LICENSE-2.0.
+ *  * Copyright (c) 2018 - "2025", Zaphod Consulting BV, Christine Karman.
+ *  This project is free software: you can redistribute it and/or modify it under the terms of the Apache License, Version 2.0. You can find a copy of the license at http://www.apache.org/licenses/LICENSE-2.0.
+ *
  */
 
 import {
@@ -44,8 +43,7 @@ function DeleteLetter() {
     const [recipients, setRecipients] = useState<Array<Person>>()
     const [sender_location, setSenderLocation] = useState<MyLocation>()
     const [recipient_location, setRecipientLocation] = useState<MyLocation>()
-    const [errorMessage, setErrorMessage] = useState<string>()
-    const [cancel, setCancel] = useState<boolean>(false)
+     const [cancel, setCancel] = useState<boolean>(false)
     const [showDialog, setShowDialog] = useState<boolean>(false)
 
     const handleClose = () => {
@@ -111,7 +109,6 @@ function DeleteLetter() {
             setShowDialog(true)
         }).catch(error => {
             console.log(error)
-            setErrorMessage(error)
         })
 
     }
