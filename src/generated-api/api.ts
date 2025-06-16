@@ -23,6 +23,7 @@ export * from './api/admin-person-api';
 export * from './api/admin-references-api';
 export * from './api/admin-subject-api';
 export * from './api/admin-text-api';
+export * from './api/admin-translate-api';
 export * from './api/content-api';
 export * from './api/home-text-api';
 export * from './api/images-api';

@@ -13,35 +13,23 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import type { Subject } from './subject';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { Text } from './text';
 
 /**
  * 
  * @export
- * @interface SubjectRequest
+ * @interface TranslateResult
  */
-export interface SubjectRequest {
-    /**
-     * 
-     * @type {Subject}
-     * @memberof SubjectRequest
-     */
-    'subject'?: Subject;
-    /**
-     * 
-     * @type {Text}
-     * @memberof SubjectRequest
-     */
-    'text'?: Text;
+export interface TranslateResult {
     /**
      * 
      * @type {string}
-     * @memberof SubjectRequest
+     * @memberof TranslateResult
+     */
+    'text'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TranslateResult
      */
     'language'?: string;
 }

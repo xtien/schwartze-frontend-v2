@@ -13,42 +13,30 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import type { Text } from './text';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { Title } from './title';
 
 /**
  * 
  * @export
- * @interface Subject
+ * @interface Title
  */
-export interface Subject {
-    /**
-     * 
-     * @type {{ [key: string]: Title; }}
-     * @memberof Subject
-     */
-    'titles'?: { [key: string]: Title; };
+export interface Title {
     /**
      * 
      * @type {number}
-     * @memberof Subject
+     * @memberof Title
      */
     'id'?: number;
     /**
      * 
      * @type {string}
-     * @memberof Subject
+     * @memberof Title
      */
-    'name'?: string;
+    'language'?: string;
     /**
      * 
-     * @type {Text}
-     * @memberof Subject
+     * @type {string}
+     * @memberof Title
      */
-    'text'?: Text;
+    'text'?: string;
 }
 

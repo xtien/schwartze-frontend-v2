@@ -168,10 +168,9 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
         event.preventDefault();
 
         let postData: SubjectRequest = {
-            subject_id: subject?.id ?? 0,
-            subject_name: subject_name ,
+            subject: subject,
             language: language(),
-            subject_text: {
+            text: {
                 text_string: subject_text ?? '',
                 text_title: subject_title ?? ''
             }
@@ -181,7 +180,7 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
             console.log(response.data)
             doCancel()
         }).catch(
-            error => {
+            (error: any) => {
                 console.log(error)
             }
         )

@@ -10,6 +10,7 @@ api/admin-person-api.ts
 api/admin-references-api.ts
 api/admin-subject-api.ts
 api/admin-text-api.ts
+api/admin-translate-api.ts
 api/content-api.ts
 api/home-text-api.ts
 api/images-api.ts
@@ -87,6 +88,7 @@ model/person.ts
 model/references-result.ts
 model/references.ts
 model/remove-reference-link-request.ts
+model/remove-subject-request.ts
 model/search-people-request.ts
 model/search-request.ts
 model/search-result.ts
@@ -97,6 +99,9 @@ model/subjects-result.ts
 model/text-request.ts
 model/text-result.ts
 model/text.ts
+model/title.ts
+model/translate-request.ts
+model/translate-result.ts
 model/update-location-request.ts
 model/update-page-request.ts
 model/update-person-request.ts

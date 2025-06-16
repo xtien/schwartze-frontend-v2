@@ -16,39 +16,30 @@
 // May contain unused imports in some cases
 // @ts-ignore
 import type { Text } from './text';
-// May contain unused imports in some cases
-// @ts-ignore
-import type { Title } from './title';
 
 /**
  * 
  * @export
- * @interface Subject
+ * @interface RemoveSubjectRequest
  */
-export interface Subject {
-    /**
-     * 
-     * @type {{ [key: string]: Title; }}
-     * @memberof Subject
-     */
-    'titles'?: { [key: string]: Title; };
+export interface RemoveSubjectRequest {
     /**
      * 
      * @type {number}
-     * @memberof Subject
+     * @memberof RemoveSubjectRequest
      */
-    'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Subject
-     */
-    'name'?: string;
+    'subject'?: number;
     /**
      * 
      * @type {Text}
-     * @memberof Subject
+     * @memberof RemoveSubjectRequest
      */
-    'text'?: Text;
+    'subject_text'?: Text;
+    /**
+     * 
+     * @type {string}
+     * @memberof RemoveSubjectRequest
+     */
+    'language'?: string;
 }
 

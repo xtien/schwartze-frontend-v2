@@ -97,6 +97,7 @@ const strings = new LocalizedStrings({
         addTopic: "Onderwerp toevoegen",
         linknaam: "Link naam",
         link_url: "Link URL",
+        translateLetter: "Vertaal brief",
     },
     en: {
         about: "About",
@@ -169,7 +170,7 @@ const strings = new LocalizedStrings({
         letterRemoved: "Brief verwijderd",
         addPageReferenceTitle: "Add Page Reference",
         editCommentLine: "Edit commentaarregel",
-        editsenderRecipient: "Edit afzender/ontvanger",
+        editsenderRecipient: "Edit",
         deleteLetter: "Delete brief",
         collection: "Collectie",
         editText: "Edit tekst",
@@ -182,12 +183,12 @@ const strings = new LocalizedStrings({
         spanish: "Español",
         french: "Français",
         selectLanguage: "Language",
-        nickname: "Voornaam",
+        nickname: "First ",
         fullname: "Full name",
-        tussenvoegsel: "Tussenvoegsel",
-        lastname: "Achternaam",
-        plaats: "Plaats",
-        opmerkingen: "Opmerkingen",
+        tussenvoegsel: "Infix",
+        lastname: "Last name",
+        plaats: "City",
+        opmerkingen: "Comments",
         image_url: "Image URL",
         image_caption: "Image Caption",
         addTopic: "Add topic",
@@ -195,6 +196,7 @@ const strings = new LocalizedStrings({
         linktitle: "Link title",
         linktext: "Link text",
         link_url: "Link URL",
+        translateLetter: "Translate letter",
     },
     fr: {
         about: "À propos",
@@ -287,6 +289,7 @@ const strings = new LocalizedStrings({
         linknaam: "Link name",
         linktitle: "Link title",
         linktext: "Link text",
+        translateLetter: "Traduire la lettre",
     },
     de: {
         about: "Über",
@@ -380,6 +383,7 @@ const strings = new LocalizedStrings({
         linktitle: "Link-Titel",
         linktext: "Link-Text",
         link_url: "Link-URL",
+        translateLetter: "Brief übersetzen",
     },
     es: {
         about: "Acerca de",
@@ -473,6 +477,7 @@ const strings = new LocalizedStrings({
         linktitle: "Título del enlace",
         linktext: "Texto del enlace",
         link_url: "URL del enlace",
+        translateLetter: "Traducir carta",
     }
 });
 export default strings;

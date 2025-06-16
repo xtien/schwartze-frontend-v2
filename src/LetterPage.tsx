@@ -13,13 +13,13 @@ import {Navigate, useLocation} from "react-router";
 import arrow_left from "./images/arrow_left.png";
 import arrow_right from "./images/arrow_right.png";
 import {
-    AdminLetterApi,
+    AdminLetterApi, AdminTranslateApi,
     ImagesApi,
     type Letter,
     type LetterRequest,
     LettersApi,
     type MyLocation,
-    type Person
+    type Person, type TranslateRequest
 } from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import type {CommentFormProps} from "./interface/CommentFormProps.tsx";
@@ -32,18 +32,23 @@ import ReactGA from "react-ga4";
 const letterApi = new LettersApi(apiConfig)
 const imageApi = new ImagesApi(apiConfig)
 const adminLetterApi = new AdminLetterApi(apiConfig)
+const translateApi = new AdminTranslateApi(apiConfig)
 
 function LetterPage() {
 
     useEffect(() => {
         // Send pageview with a custom path
-        ReactGA.send({ hitType: "pageview", page: "/get_letter_details", title: "LetterPage" });
+        ReactGA.send({hitType: "pageview", page: "/get_letter_details", title: "LetterPage"});
     }, [])
 
     const location = useLocation()
     const params = location.pathname.substring(1).split('/')
-    const number = params[1]
+    let n = 0;
+    if (params[1] != null) {
+        n = parseInt(params[1])
+    }
 
+    const [letterNumber, setLetterNumber] = useState<number>(n)
     const [letter, setLetter] = useState<Letter>({
         collectie: undefined,
         comment: "",
@@ -67,20 +72,21 @@ function LetterPage() {
     const [error, setError] = useState<string>()
     // const [goSearch, setGoSearch] = useState(false)
     // const [search_term, setSearch_term] = useState('')
+    const [translated, setTranslated] = useState(0)
 
     const cookies = new Cookies();
     const lang: string = cookies.get('language');
 
     useEffect(() => {
         const request: LetterRequest = {
-            'number': parseInt(number),
-            'language' : lang
+            'number': letterNumber,
+            'language': lang
         }
         letterApi.getLetter(request).then((response) => {
             if (response.data.letter !== undefined) {
                 setLetter(response.data.letter)
                 setLetterText(response.data.lettertext)
-                getLetterImages(number);
+                getLetterImages(letterNumber.toString());
             }
 
         }).catch((error) => {
@@ -88,7 +94,7 @@ function LetterPage() {
             setShowError(true)
             setError(error.toString())
         })
-    }, [lang])
+    }, [lang, translated, letterNumber])
 
     function toggleEditDone() {
         setShowEdit(false)
@@ -121,6 +127,9 @@ function LetterPage() {
         letterApi.getNextLetter(request).then((response) => {
             if (response.data.letter != null) {
                 setLetter(response.data.letter)
+                if (response.data.letter.number != undefined) {
+                    setLetterNumber(response.data.letter.number)
+                }
             }
         }).catch((error) => {
             console.log(error)
@@ -190,6 +199,20 @@ function LetterPage() {
         return <Navigate to={'/delete_letter/' + letter.number}/>
     }
 
+    function translateLetter() {
+        const request: TranslateRequest = {
+            id: letter.number,
+            language: lang
+        }
+        translateApi.translateLetter(request)
+            .then(() => {
+                setTranslated(translated + 1)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     return (
         <>
 
@@ -200,61 +223,70 @@ function LetterPage() {
                         : null
                 }
 
-                { showEdit ? null : (
+                {showEdit ? null : (
 
-                        <div>
-                            <div className="row">
-                                <div className='col-sm-1'>
-                                    <button type="button"
-                                            className='btn btn-link'
-                                            onClick={back}>
-                                        <img src={arrow_left} alt="back"/>
-                                    </button>
-                                </div>
-                                <div className='col-sm-3'>
-                                    <div>
-                                        {
-                                            isAdmin() === "true" ?
-                                                <button
-                                                    className="btn btn-outline-success mybutton"
-                                                    onClick={editComment}>
-                                                    {strings.editCommentLine}
-                                                </button> : null}
-                                    </div>
-                                </div>
-                                <div className='col-sm-3'>
-                                    <div>
-                                        {
-                                            isAdmin() === "true" ?
-                                                <button
-                                                    className="btn btn-outline-warning mybutton ml-2"
-                                                    onClick={editLetter}>
-                                                    {strings.editsenderRecipient}
-                                                </button> : null}
-                                    </div>
-                                </div>
-                                <div className='col-sm-4'>
-                                    <div>
-                                        {
-                                            isAdmin() === "true" ?
-                                                <button
-                                                    className="btn btn-outline-warning mybutton ml-2"
-                                                    onClick={deleteLetter}>
-                                                    {strings.deleteLetter}
-                                                </button> : null}
-                                    </div>
-                                </div>
-                                <div className='col-sm-1'>
-                                    <button
-                                        className="btn btn-link"
-                                        onClick={forward}>
-                                        <img src={arrow_right} alt="forward"/>
-                                    </button>
+                    <div>
+                        <div className="row">
+                            <div className='col-sm-1'>
+                                <button type="button"
+                                        className='btn btn-link'
+                                        onClick={back}>
+                                    <img src={arrow_left} alt="back"/>
+                                </button>
+                            </div>
+                            <div className='col-sm-2'>
+                                <div>
+                                    {
+                                        isAdmin() === "true" ?
+                                            <button
+                                                className="btn btn-outline-success mybutton"
+                                                onClick={editComment}>
+                                                {strings.editCommentLine}
+                                            </button> : null}
                                 </div>
                             </div>
+                            <div className='col-sm-2'>
+                                <div>
+                                    {
+                                        isAdmin() === "true" ?
+                                            <button
+                                                className="btn btn-outline-warning mybutton ml-2"
+                                                onClick={editLetter}>
+                                                {strings.editsenderRecipient}
+                                            </button> : null}
+                                </div>
+                            </div>
+                            <div className='col-sm-2'>
+                                {
+                                    isAdmin() === "true" ?
+                                        <button
+                                            className="btn btn-outline-warning mybutton "
+                                            onClick={deleteLetter}>
+                                            {strings.deleteLetter}
+                                        </button> : null}
 
+                            </div>
+                            <div className='col-sm-2'>
+                                {
+                                    isAdmin() === "true" ?
+                                        <button
+                                            className="btn btn-outline-secondary mybutton  "
+                                            onClick={translateLetter}>
+                                            {strings.translateLetter}
+                                        </button> : null}
+
+                            </div>
+                            <div className='col-sm-1'>
+                                <button
+                                    className="btn btn-link"
+                                    onClick={forward}>
+                                    <img src={arrow_right} alt="forward"/>
+                                </button>
+                            </div>
                         </div>
-                    )}
+
+                    </div>
+                )}
 
                 <div>
                     {showEdit ?
