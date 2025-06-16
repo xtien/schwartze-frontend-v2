@@ -4,7 +4,6 @@
  *
  */
 
-import language from "./language";
 import {Link} from "react-router-dom";
 import {useEffect} from "react";
 import ReactGA from "react-ga4";
@@ -19,7 +18,7 @@ export function About() {
         ReactGA.send({ hitType: "pageview", page: "/about", title: "About Page" });
     }, [])
 
-    
+
     return (
         <div className="container">
             <div className="row align-items-start">
