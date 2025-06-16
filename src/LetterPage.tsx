@@ -13,21 +13,21 @@ import {Navigate, useLocation} from "react-router";
 import arrow_left from "./images/arrow_left.png";
 import arrow_right from "./images/arrow_right.png";
 import {
-    AdminLetterApi, AdminTranslateApi,
+    AdminLetterApi,
+    AdminTranslateApi,
     ImagesApi,
     type Letter,
     type LetterRequest,
     LettersApi,
     type MyLocation,
-    type Person, type TranslateRequest
+    type Person,
+    type TranslateRequest
 } from "./generated-api";
-import {apiConfig} from "./service/AuthenticationService.tsx";
+import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
 import type {CommentFormProps} from "./interface/CommentFormProps.tsx";
-import strings from "./strings.tsx";
-import {isAdmin} from "./service/AuthenticationService.tsx";
 import Util from "./service/Util.tsx";
-import Cookies from "universal-cookie";
 import ReactGA from "react-ga4";
+import {useTranslation} from "react-i18next";
 
 const letterApi = new LettersApi(apiConfig)
 const imageApi = new ImagesApi(apiConfig)
@@ -74,13 +74,13 @@ function LetterPage() {
     // const [search_term, setSearch_term] = useState('')
     const [translated, setTranslated] = useState(0)
 
-    const cookies = new Cookies();
-    const lang: string = cookies.get('language');
+    const { i18n } = useTranslation();
+    const {t} = useTranslation();
 
     useEffect(() => {
         const request: LetterRequest = {
             'number': letterNumber,
-            'language': lang
+            'language': i18n.language
         }
         letterApi.getLetter(request).then((response) => {
             if (response.data.letter !== undefined) {
@@ -94,7 +94,7 @@ function LetterPage() {
             setShowError(true)
             setError(error.toString())
         })
-    }, [lang, translated, letterNumber])
+    }, [i18n.language, translated, letterNumber])
 
     function toggleEditDone() {
         setShowEdit(false)
@@ -202,7 +202,7 @@ function LetterPage() {
     function translateLetter() {
         const request: TranslateRequest = {
             id: letter.number,
-            language: lang
+            language: i18n.language
         }
         translateApi.translateLetter(request)
             .then(() => {
@@ -241,7 +241,7 @@ function LetterPage() {
                                             <button
                                                 className="btn btn-outline-success mybutton"
                                                 onClick={editComment}>
-                                                {strings.editCommentLine}
+                                                {t('editCommentLine')}
                                             </button> : null}
                                 </div>
                             </div>
@@ -252,7 +252,7 @@ function LetterPage() {
                                             <button
                                                 className="btn btn-outline-warning mybutton ml-2"
                                                 onClick={editLetter}>
-                                                {strings.editsenderRecipient}
+                                                {t('editsenderRecipient')}
                                             </button> : null}
                                 </div>
                             </div>
@@ -262,7 +262,7 @@ function LetterPage() {
                                         <button
                                             className="btn btn-outline-warning mybutton "
                                             onClick={deleteLetter}>
-                                            {strings.deleteLetter}
+                                            {t('deleteLetter')}
                                         </button> : null}
 
                             </div>
@@ -272,7 +272,7 @@ function LetterPage() {
                                         <button
                                             className="btn btn-outline-secondary mybutton  "
                                             onClick={translateLetter}>
-                                            {strings.translateLetter}
+                                            {t('translateLetter')}
                                         </button> : null}
 
                             </div>
@@ -306,7 +306,7 @@ function LetterPage() {
                         <tr>
                             <td width="80">
                                 <div>
-                                    {strings.nummer}
+                                    {t('nummer')}
                                 </div>
                             </td>
                             <td>
@@ -319,7 +319,7 @@ function LetterPage() {
                             <tr>
                                 <td width="80">
                                     <div className='mb-3'>
-                                        {strings.collection}
+                                        {t('collection')}
                                     </div>
                                 </td>
                                 <td colSpan={2}>
@@ -329,21 +329,21 @@ function LetterPage() {
                             : null
                         }
                         <tr>
-                            <td>{strings.from}:</td>
+                            <td>{t('from')}:</td>
                             <td>{senderList}</td>
                             <td>
                                 <div className='ml-3'>{senderLocationList}</div>
                             </td>
                         </tr>
                         <tr>
-                            <td>{strings.to}:</td>
+                            <td>{t('to')}:</td>
                             <td>{recipientList}</td>
                             <td>
                                 <div className='ml-3'>{recipientLocationList}</div>
                             </td>
                         </tr>
                         <tr>
-                            <td>{strings.date}:</td>
+                            <td>{t('date')}:</td>
                             <td>{letter.date}</td>
                         </tr>
                         </tbody>
@@ -367,7 +367,7 @@ function LetterPage() {
 
                                 {letter.text.text_string !== undefined && letter.text.text_string.length > 300 ?
                                     <p>
-                                        <Link to={linkTo} className='mt-5 mb-5'> {strings.meer} </Link>
+                                        <Link to={linkTo} className='mt-5 mb-5'> {t('meer')} </Link>
                                     </p>
                                     : null}
                             </div> : null}
@@ -380,7 +380,7 @@ function LetterPage() {
                     {isAdmin() === "true" ?
                         <div className='mb-5 mt-5 ml-5'>
                             <Link to={linkToEditText}>
-                                {strings.editText}
+                                {t('editText')}
                             </Link>
                         </div>
                         : null}

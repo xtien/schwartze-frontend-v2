@@ -8,13 +8,14 @@ import {useState} from 'react'
 import './App.css'
 import './css/bootstrap.css'
 import {Navigate} from "react-router-dom";
-import strings from "./strings.tsx";
 import {AdminLocationApi} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
+import {useTranslation} from "react-i18next";
 
 const adminLocationApi = new AdminLocationApi(apiConfig)
 
 function AddLocation() {
+    const {t} = useTranslation();
 
     const [locationName, setLocationName] = useState<string>('');
     const [comment, setComment] = useState<string>('');
@@ -71,7 +72,7 @@ function AddLocation() {
                 />
             </div>
             <div className="form-group mt-3">
-                <label htmlFor="status">{strings.text}</label>
+                <label htmlFor="status">{t('text')}</label>
                 <textarea
                     className="form-control "
                     id="comments"

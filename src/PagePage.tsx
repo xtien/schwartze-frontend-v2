@@ -12,8 +12,6 @@ import three_arrow_right from "./images/three_arrow_right.png";
 import three_arrow_left from "./images/three_arrow_left.png";
 import arrow_left from "./images/arrow_left.png";
 import {Link} from "react-router-dom";
-import strings from "./strings";
-import language from './language'
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {AdminPageApi, HomeTextApi, PageApi} from './generated-api/api.ts';
 import {useLocation} from "react-router";
@@ -27,18 +25,21 @@ import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {EditPageReferenceFormProps} from "./interface/EditPageReferenceFormProps.tsx";
 import type {EditPictureUrlEditFormProps} from "./interface/EditPictureUrlEditFormProps.tsx";
 import Cookies from "universal-cookie";
+import {useTranslation} from "react-i18next";
 
 const pageApi = new PageApi(apiConfig);
 const adminPageApi = new AdminPageApi(apiConfig);
 const homeTextApi = new HomeTextApi(apiConfig)
 
 function PagePage() {
+    const {t} = useTranslation();
+    const { i18n } = useTranslation();
 
     const cookies = new Cookies();
     const pNr: string = cookies.get('pageNumber');
     const cNr: string = cookies.get('chapterNumber');
 
-    const lang = language()
+    const lang = i18n.language;
 
     const location = useLocation()
     const params = location.pathname.split('/')
@@ -356,7 +357,7 @@ function PagePage() {
                         </button>
                     </td>
                     <td>
-                        <p className='page_header'>{strings.chapter} {chapterNumber} {strings.page} {pageNumber} </p>
+                        <p className='page_header'>{t('chapter')} {chapterNumber} {t('page')} {pageNumber} </p>
                     </td>
                     <td>
                         <button type="button"
@@ -386,7 +387,7 @@ function PagePage() {
                                     {references}
                                 </div>
                                 <div className='ml-3 mt-5'>
-                                    <Link to='/get_content/' className='linkStyle'>{strings.content}</Link>
+                                    <Link to='/get_content/' className='linkStyle'>{t('content')}</Link>
                                 </div>
                                 <div className="row align-items-end mt-5">
                                     <div className='sidebar-picture'>

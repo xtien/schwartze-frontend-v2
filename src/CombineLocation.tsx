@@ -12,7 +12,7 @@ import './css/bootstrap.css'
 import {useLocation, useNavigate} from "react-router";
 import {AdminLocationApi, type MyLocation} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
-import strings from "./strings.tsx";
+import {useTranslation} from "react-i18next";
 
 const locationApi = new AdminLocationApi(apiConfig)
 
@@ -114,6 +114,8 @@ interface CombineLocationProps {
 
 function CombineLocationForm({location1, location2, setRedirect}: CombineLocationProps) {
 
+    const { t } = useTranslation();
+
     function combine() {
 
         let postData = {
@@ -151,12 +153,12 @@ function CombineLocationForm({location1, location2, setRedirect}: CombineLocatio
             <input
                 className="btn btn-outline-success mybutton mt-5"
                 onClick={combine}
-                value={strings.combineren}>
+                value={t('combineren')}>
             </input>
             <input
                 className="btn btn-outline-danger mybutton mt-5"
                 onClick={() => dontCombine()}
-                value={strings.niet_doen}>
+                value={t('niet_doen')}>
             </input>
         </form>
     )

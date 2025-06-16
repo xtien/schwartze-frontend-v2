@@ -17,7 +17,7 @@ import {
     type Person
 } from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
-import strings from "./strings.tsx";
+import {useTranslation} from "react-i18next";
 
 const letterApi = new LettersApi(apiConfig)
 const adminLetterApi = new AdminLetterApi(apiConfig)
@@ -26,6 +26,7 @@ const adminPersonApi = new AdminPersonApi(apiConfig)
 
 
 function EditLetter() {
+     const {t} = useTranslation();
 
     const location = useLocation()
     const params = location.pathname.split('/')
@@ -271,7 +272,7 @@ function EditLetter() {
                 </div> : null}
 
             <div>
-                <h3>{strings.letterNumber} {number} </h3>
+                <h3>{t('letterNumber')} {number} </h3>
 
                 <form>
                     <div className='form-group mt-5'>
@@ -280,7 +281,7 @@ function EditLetter() {
                             <tr>
                                 <td width="150px">
                                     <div className='mb-5'>
-                                        {strings.date}:
+                                        {t('date')}:
                                     </div>
                                 </td>
                                 <td>
@@ -295,7 +296,7 @@ function EditLetter() {
                             </tr>
                             <tr>
                                 <td width="150px">
-                                    {strings.sender}:
+                                    {t('sender')}:
                                 </td>
                                 <td>
                                     {sendersNamesString}
@@ -303,7 +304,7 @@ function EditLetter() {
                             </tr>
                             <tr>
                                 <td width="150px">
-                                    {strings.senderLocation}:
+                                    {t('senderLocation')}:
                                 </td>
                                 <td>
                                     {senderLocationNamesString}
@@ -311,7 +312,7 @@ function EditLetter() {
                             </tr>
                             <tr>
                                 <td>
-                                    <label className='mr-3' htmlFor="status">{strings.personId}</label>
+                                    <label className='mr-3' htmlFor="status">{t('personId')}</label>
                                 </td>
                                 <td>
                                     <input
@@ -324,7 +325,7 @@ function EditLetter() {
                                 </td>
                             </tr>
                             <tr>
-                                <td><label htmlFor="status">{strings.locationId}</label></td>
+                                <td><label htmlFor="status">{t('locationId')}</label></td>
                                 <td>
                                     <input
                                         type="text"
@@ -344,7 +345,7 @@ function EditLetter() {
                             <tbody>
                             <tr>
                                 <td width="150px">
-                                    {strings.recipient}:
+                                    {t('recipient')}:
                                 </td>
                                 <td>
                                     {recipientNamesString}
@@ -352,14 +353,14 @@ function EditLetter() {
                             </tr>
                             <tr>
                                 <td width="150px">
-                                    {strings.recipientLocation}:
+                                    {t('recipientLocation')}:
                                 </td>
                                 <td>
                                     {recipientLocationNamesString}
                                 </td>
                             </tr>
                             <tr>
-                                <td><label htmlFor="status">{strings.personId}</label></td>
+                                <td><label htmlFor="status">{t('personId')}</label></td>
                                 <td>
                                     <input
                                         type="text"
@@ -371,7 +372,7 @@ function EditLetter() {
                                 </td>
                             </tr>
                             <tr>
-                                <td><label htmlFor="status">{strings.locationId}</label></td>
+                                <td><label htmlFor="status">{t('locationId')}</label></td>
                                 <td>
                                     <input
                                         type="text"
@@ -389,18 +390,18 @@ function EditLetter() {
                         <input
                             type="submit"
                             className="btn btn-outline-success mybutton m-lg-3"
-                            value={strings.submit}
+                            value={t('submit')}
                             onClick={handleSubmit}
                         />
                         <button
                             className="btn btn-outline-success mybutton m-lg-3"
                             onClick={handlePreview}>
-                            {strings.preview}
+                            {t('preview')}
                         </button>
                         <button
                             className="btn btn-outline-info mybutton m-lg-3"
                             onClick={handleCancel}
-                        >{strings.cancel}
+                        >{t('cancel')}
                         </button>
 
                     </div>

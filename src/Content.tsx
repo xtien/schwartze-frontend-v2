@@ -5,23 +5,22 @@
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
 import {useEffect, useState} from 'react'
-import strings from "./strings";
 import {Link} from "react-router-dom";
-import language from "./language";
 import {ContentApi, type ContentItem, type ContentRequest} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
+import {useTranslation} from "react-i18next";
 
 const contentApi = new ContentApi(apiConfig)
 
 function Content() {
+    const {t} = useTranslation();
 
     const [contentList, setContentList] = useState<ContentItem[]>([]);
-    const lang = language()
-
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         const request: ContentRequest = {
-            language: lang
+            language: i18n.language
         };
         contentApi.getContent(request).then((response) => {
             if (response.data.content != null) {
@@ -39,7 +38,7 @@ function Content() {
 
     return (
         <div className='container letter'>
-            <h3>{strings.content}</h3>
+            <h3>{t('content')}</h3>
             <div className='mt-3 ml-3'>
                 {items}
             </div>

@@ -10,7 +10,6 @@ import {Link, Navigate} from "react-router-dom";
 import './css/bootstrap.css'
 import Util from './service/Util';
 import language from "./language";
-import strings from "./strings";
 import {useLocation} from "react-router";
 import {
     AdminLinksApi,
@@ -24,12 +23,14 @@ import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {JSX} from "react/jsx-runtime";
 import type {EditLocationLinkFormProps} from "./interface/EditLocationLinkFormProps.tsx";
 import type {EditNameFormProps} from "./interface/EditNameFormProps.tsx";
+import {useTranslation} from "react-i18next";
 
 const locationApi = new LocationApi(apiConfig)
 const adminLocationApi = new AdminLocationApi(apiConfig)
 const adminLinksApi = new AdminLinksApi(apiConfig)
 
 function LocationPage() {
+    const {t} = useTranslation();
 
     const _location = useLocation()
     const id = _location.pathname.split('/')[2]
@@ -41,8 +42,7 @@ function LocationPage() {
     const [link_id] = useState('')
    const [deleted, setDeleted] = useState<boolean>(false)
 
-    language()
-
+    
     useEffect(() => {
         let request: LocationRequest = {
             id: parseInt(id)
@@ -175,7 +175,7 @@ function LocationPage() {
                         <div className='container letter'>
                             <h3>{location.id} {location.location_name}</h3>
                             <p className='mt-5'><Link
-                                to={`/get_letters_for_location/${location.id}`}>{strings.letters} {strings.uit} {location.location_name}</Link>
+                                to={`/get_letters_for_location/${location.id}`}>{t('letters')} {t('uit')} {location.location_name}</Link>
                             </p>
                             <p className='mt-5'>{location.comment}</p>
 
@@ -192,7 +192,7 @@ function LocationPage() {
 
                                         {location.text.text_string != null && location.text.text_string.length > 300 ?
                                             <p>
-                                                <Link to={linkTo} className='mt-5 mb-5'> {strings.meer} </Link>
+                                                <Link to={linkTo} className='mt-5 mb-5'> {t('meer')} </Link>
                                             </p>
                                             : null}
                                     </div> : null}
@@ -289,6 +289,7 @@ function LocationPage() {
 }
 
 function EditNameForm({location}: EditNameFormProps) {
+    const {t} = useTranslation();
 
     const [_location, _setLocation] = useState<MyLocation>(location)
     const [locationName, setLocationName] = useState<string | undefined>(location.name)
@@ -322,7 +323,7 @@ function EditNameForm({location}: EditNameFormProps) {
     return (
         <form onSubmit={handleSubmit}>
             <div className="form-group">
-                <label htmlFor="status">{strings.location_name}</label>
+                <label htmlFor="status">{t('location_name')}</label>
                 <input
                     type="text"
                     className="form-control mb-3"

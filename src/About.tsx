@@ -4,28 +4,29 @@
  *
  */
 
-import strings from './strings.js'
 import language from "./language";
 import {Link} from "react-router-dom";
 import {useEffect} from "react";
 import ReactGA from "react-ga4";
+import {useTranslation} from "react-i18next";
 
 export function About() {
+
+    const {t} = useTranslation();
 
     useEffect(() => {
         // Send pageview with a custom path
         ReactGA.send({ hitType: "pageview", page: "/about", title: "About Page" });
     }, [])
 
-    language()
-
+    
     return (
         <div className="container">
             <div className="row align-items-start">
-                <div className="textpage mt-5 m-lg-5"><p>{strings.aboutText}</p></div>
-                {/*<div className="textpage m-lg-5">{strings.siteVersion} {process.env.REACT_APP_VERSION}</div>*/}
-                <div className="textpage m-lg-5"><Link to={"/get_page/1/1"}>{strings.more_about_site}</Link></div>
-                <div className="textpage m-lg-5"><a href="https://christine.nl/about">{strings.aboutChristine}</a></div>
+                <div className="textpage mt-5 m-lg-5"><p>{t('aboutText')}</p></div>
+                {/*<div className="textpage m-lg-5">{t('siteVersion} {process.env.REACT_APP_VERSION}</div>*/}
+                <div className="textpage m-lg-5"><Link to={"/get_page/1/1"}>{t('more_about_site')}</Link></div>
+                <div className="textpage m-lg-5"><a href="https://christine.nl/about">{t('aboutChristine')}</a></div>
             </div>
         </div>
     )

@@ -12,10 +12,11 @@ import {
     createBasicAuthToken,
     executeLogin, registerSuccessfulLogin, setAuthorities,
 } from "./service/AuthenticationService.tsx";
-import strings from "./strings.tsx";
 import {useNavigate} from "react-router";
+import {useTranslation} from "react-i18next";
 
 function Login() {
+   const {t} = useTranslation();
 
     const navigate = useNavigate();
 
@@ -55,7 +56,7 @@ function Login() {
             <form onSubmit={handleLinkSubmit}>
                 <div className="row mt-5">
                     <div className='col-sm-2 mb-2'>
-                        <label htmlFor="status">{strings.username}</label>
+                        <label htmlFor="status">{t('username')}</label>
                     </div>
 
                     <div className='col-sm-3 mb-2'>
@@ -71,7 +72,7 @@ function Login() {
                 </div>
                 <div className="row">
                     <div className='col-sm-2 mb-2'>
-                        <label htmlFor="status">{strings.password}</label></div>
+                        <label htmlFor="status">{t('password')}</label></div>
 
                     <div className='col-sm-3 mb-2'>
                         <input

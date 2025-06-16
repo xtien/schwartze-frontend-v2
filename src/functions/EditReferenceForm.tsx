@@ -2,8 +2,8 @@ import {AdminPageApi, type PageReferenceRequest, PageReferenceTypeEnum} from "..
 import type {EditReferenceProps} from "../interface/EditReferenceProps";
 import {useState} from "react";
 import Selector from "../component/Selector.tsx";
-import strings from "../strings.tsx";
 import {apiConfig} from "../service/AuthenticationService.tsx";
+import {useTranslation} from "react-i18next";
 
 const adminPageApi = new AdminPageApi(apiConfig);
 
@@ -16,12 +16,13 @@ export function EditReferenceForm({
                                       toggleEditDoneParam
                                   }: EditReferenceProps) {
 
+    const { t } = useTranslation();
+
     const [editDone, setEditDone] = useState(false);
     const [cancel, setCancel] = useState(false);
     const [type, setType] = useState<PageReferenceTypeEnum>();
     const [description, setDescription] = useState('');
     const [_key, setKey] = useState('');
-
 
     function handleDescriptionChange(event: { target: { value: string; }; }) {
         setDescription(event.target.value);
@@ -73,9 +74,9 @@ export function EditReferenceForm({
 
     return (
         <div className='add_reference'>
-            <h5 className='mb-5'>{strings.addPageReferenceTitle}</h5>
+            <h5 className='mb-5'>{t('addPageReferenceTitle')}</h5>
 
-            <div className="mb-3">{strings.chapter} {chapterNumber} {strings.page} {pageNumber}</div>
+            <div className="mb-3">{t('chapter')} {chapterNumber} {t('page')} {pageNumber}</div>
 
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

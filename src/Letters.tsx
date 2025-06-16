@@ -5,8 +5,8 @@
  */
 
 import * as React from 'react'
+import {useEffect, useState} from 'react'
 import {useLocation, useNavigate} from "react-router";
-import language from "./language";
 import {
     type GetPersonRequest,
     type Letter,
@@ -14,27 +14,30 @@ import {
     type LettersRequest,
     LettersRequestOrderByEnum,
     LettersRequestToFromEnum,
-    type LocationLettersRequest, LuceneSearchApi,
+    type LocationLettersRequest,
+    LuceneSearchApi,
     type MyLocation,
     type Person,
     PersonApi,
     type PersonLettersRequest,
     PersonLettersRequestToFromEnum,
-    type PersonResult, type SearchRequest
+    type PersonResult,
+    type SearchRequest
 } from "./generated-api";
 import strings from "./strings.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import {apiConfig} from "./service/AuthenticationService.tsx";
-import {useEffect, useState} from "react";
 import type {AxiosResponse} from "axios";
 import ReactGA from "react-ga4";
+import {useTranslation} from "react-i18next";
 
 const lettersApi = new LettersApi(apiConfig);
 const personApi = new PersonApi(apiConfig);
 const searchApi = new LuceneSearchApi(apiConfig)
 
 function Letters() {
+    const {t} = useTranslation();
 
     useEffect(() => {
         // Send pageview with a custom path
@@ -58,8 +61,6 @@ function Letters() {
     const [orderBy, setOrderBy] = React.useState<LettersRequestOrderByEnum>("NUMBER");
     const [toFrom] = React.useState<LettersRequestToFromEnum>(toFromString === 'to' ? LettersRequestToFromEnum.To : LettersRequestToFromEnum.From);
     const [search_term, setSearchTerm] = React.useState('');
-
-    language()
 
     function getLetters(orderBy: LettersRequestOrderByEnum) {
         if (isPerson ) {
@@ -254,22 +255,22 @@ function Letters() {
                             <button
                                 className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
                                 onClick={() => sort(LettersRequestOrderByEnum.Number)}>
-                                {strings.op_nummer}
+                                {t('op_nummer')}
                             </button>
                             <button
                                 className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
                                 onClick={() => sort(LettersRequestOrderByEnum.Date)}>
-                                {strings.op_datum}
+                                {t('op_datum')}
                             </button>
                             <button
                                 className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
                                 onClick={() => sort(LettersRequestOrderByEnum.SenderLastname)}>
-                                {strings.op_achternaam}
+                                {t('op_achternaam')}
                             </button>
                             <button
                                 className="btn btn-outline-secondary mybutton m-lg-3 mt-3"
                                 onClick={() => sort(LettersRequestOrderByEnum.SenderFirstname)}>
-                                {strings.op_voornaam}
+                                {t('op_voornaam')}
                             </button>
                         </div>
                 }
@@ -279,7 +280,7 @@ function Letters() {
                         <input
                             type="input"
                             id="nr"
-                            placeholder={strings.naar_nummer}
+                            placeholder={t('naar_nummer')}
                             onChange={handleListOrder}
                             className="form-control w-75"
                         />
@@ -291,7 +292,7 @@ function Letters() {
                         <input
                             type="input"
                             id="text"
-                            placeholder={strings.search}
+                            placeholder={t('search')}
                             onChange={handleSearchTermChange}
                             className='form-control w-75'
                         />

@@ -17,12 +17,13 @@ import {
     PersonApi
 } from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
-import strings from "./strings.tsx";
+import {useTranslation} from "react-i18next";
 
 const adminPersonApi = new AdminPersonApi(apiConfig)
 const personApi = new PersonApi(apiConfig)
 
 function CombinePerson() {
+    const {t} = useTranslation();
 
     const location = useLocation();
 
@@ -123,12 +124,12 @@ function CombinePerson() {
                         <input
                             type="submit"
                             className="btn btn-outline-success mybutton m-lg-3  mt-3"
-                            value={strings.combineren}
+                            value={t('combineren')}
                         />
                         <input
                             className="btn btn-outline-danger mybutton mt-5"
                             onClick={() => dontCombine()}
-                            value={strings.niet_doen}>
+                            value={t('niet_doen')}>
                         </input>
                     </form>)
             }

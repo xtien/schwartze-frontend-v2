@@ -5,12 +5,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-import {
-    useEffect,
-    useState,
-    type ReactElement,
-    type ReactNode,
-} from 'react'
+import {type ReactElement, type ReactNode, useEffect, useState,} from 'react'
 import './css/bootstrap.css'
 import {Link} from "react-router-dom";
 
@@ -19,16 +14,17 @@ import {
     HomeTextApi,
     type Page,
     PageApi,
-    type PageReference, PageReferenceTypeEnum, type PageTextRequest,
+    type PageReference,
+    PageReferenceTypeEnum,
+    type PageTextRequest,
     type RemoveReferenceLinkRequest
 } from "./generated-api";
 import type {RefMap} from "./model/refMap.tsx";
-import strings from "./strings";
 import {EditPictureUrlForm} from "./functions/EditPictureUrlForm.tsx";
 import {EditReferenceForm} from "./functions/EditReferenceForm.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {apiConfig, isAdmin} from "./service/AuthenticationService.tsx";
-import language from "./language.tsx";
+import {useTranslation} from "react-i18next";
 
 const homeTextApi = new HomeTextApi(apiConfig);
 const pageApi = new PageApi(apiConfig);
@@ -36,7 +32,10 @@ const adminReferencesApi = new AdminReferencesApi(apiConfig);
 
 function Landing() {
 
-    const lang = language()
+    const {t} = useTranslation();
+    const { i18n } = useTranslation();
+
+    const lang = i18n.language;
 
     const [pageNumber] = useState<number>(0);
     const [chapterNumber] = useState<number>(0);
@@ -293,8 +292,8 @@ function Landing() {
                                 }
                             </div>
                             <div className='border border-dark mt-5'>
-                                <div className='help'>{strings.help_title}</div>
-                                <div className='help'>{strings.help}</div>
+                                <div className='help'>{t('help_title')}</div>
+                                <div className='help'>{t('help')}</div>
                             </div>
                         </ul>
                     </div>
@@ -362,7 +361,6 @@ function Landing() {
                                 <div dangerouslySetInnerHTML={{__html: blogText}}/>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

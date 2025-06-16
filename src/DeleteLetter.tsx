@@ -23,14 +23,15 @@ import {
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import type {JSX} from 'react/jsx-runtime';
 import {isAdmin} from "./service/AuthenticationService.tsx";
-import strings from "./strings.tsx";
 import {Modal} from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
+import {useTranslation} from "react-i18next";
 
 const adminLetterApi = new AdminLetterApi(apiConfig)
 const letterApi = new LettersApi(apiConfig)
 
 function DeleteLetter() {
+    const {t} = useTranslation();
 
     const location = useLocation();
     const navigate = useNavigate()
@@ -144,17 +145,17 @@ function DeleteLetter() {
                         style={{display: 'block', position: 'initial'}}
                     >
                         <Modal show={showDialog} onHide={handleClose}>
-                            <Modal.Body>{strings.letterRemoved}</Modal.Body>
+                            <Modal.Body>{t('letterRemoved')}</Modal.Body>
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
-                                    {strings.close}
+                                    {t('close')}
                                 </Button>
                             </Modal.Footer>
                         </Modal>
                     </div>
                 </div>
                 <div>
-                    <h3>{strings.letterNumber} {number} </h3>
+                    <h3>{t('letterNumber')} {number} </h3>
 
                     <div className='form-group mt-5'>
                         <table width="600px">
@@ -162,7 +163,7 @@ function DeleteLetter() {
                             <tr>
                                 <td width="150px">
                                     <div className='mb-5'>
-                                        {strings.date}:
+                                        {t('date')}:
                                     </div>
                                 </td>
                                 <td>
@@ -171,7 +172,7 @@ function DeleteLetter() {
                             </tr>
                             <tr>
                                 <td width="150px">
-                                    {strings.sender}:
+                                    {t('sender')}:
                                 </td>
                                 <td>
                                     {senderList} in {sender_location != null ? sender_location.name : ''}
@@ -187,7 +188,7 @@ function DeleteLetter() {
                             <tbody>
                             <tr>
                                 <td width="150px">
-                                    {strings.recipient}:
+                                    {t('recipient')}:
                                 </td>
                                 <td>
                                     {recipientList} in {recipient_location != null ? recipient_location.name : ''}
@@ -204,7 +205,7 @@ function DeleteLetter() {
                                     <button
                                         className="btn btn-outline-success mybutton"
                                         onClick={_cancel}>
-                                        {strings.cancel}
+                                        {t('cancel')}
                                     </button> : null}
                         </div>
                     </td>
@@ -215,7 +216,7 @@ function DeleteLetter() {
                                     <button
                                         className="btn btn-outline-warning mybutton ml-2"
                                         onClick={deleteLetter}>
-                                        {strings.delete}
+                                        {t('delete')}
                                     </button> : null}
                         </div>
                     </td>

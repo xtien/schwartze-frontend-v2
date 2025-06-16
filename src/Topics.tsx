@@ -7,17 +7,19 @@
 
 import {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
-import strings from './strings.js'
 import language from "./language";
 import {AdminSubjectApi, type Subject, SubjectApi, type SubjectRequest} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {SubjectEditLinkFormProps} from "./interface/SubjectEditLinkFormProps.tsx";
+import {useTranslation} from "react-i18next";
 
 const subjectApi = new SubjectApi(apiConfig)
 const adminSubjectApi = new AdminSubjectApi(apiConfig)
 
 function Topics() {
+    const {t} = useTranslation();
+    const {i18n} = useTranslation();
 
     const [subjects, setSubjects] = useState<Subject[]>()
     const [subject, setSubject] = useState<Subject>()
@@ -50,7 +52,7 @@ function Topics() {
         }
         let postData = {
             subject_id: id,
-            language: language()
+            language: i18n.language
         };
 
         adminSubjectApi.removeSubject(postData).then((response) => {
@@ -94,14 +96,14 @@ function Topics() {
                                             className="btn btn-outline-success mybutton ml-2 mt-2"
                                             onClick={() => edit_link(link)}
                                         >
-                                            {strings.edit}
+                                            {t('edit')}
                                         </button>
                                         &nbsp;&nbsp;
                                         <button
                                             className="btn btn-outline-danger mybutton ml-2 mt-2"
                                             onClick={() => delete_link(link.id)}
                                         >
-                                            {strings.delete}
+                                            {t('delete')}
                                         </button>
                                     </div>
                                     : null}
@@ -131,11 +133,11 @@ function Topics() {
                             <tbody>
                             <tr>
                                 <td>
-                                    <form  className='mt-5 ml-5 mb-5'>
+                                    <form className='mt-5 ml-5 mb-5'>
                                         <input
                                             type="submit"
                                             className="btn btn-outline-success mybutton"
-                                            value={strings.addTopic}
+                                            value={t('addTopic')}
                                             onClick={add_link}
                                         />
                                     </form>
@@ -152,13 +154,15 @@ function Topics() {
                     {links}
                 </div>
                 <div>
-                 </div>
+                </div>
             </div>
         </div>
     )
 }
 
 function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
+
+    const {t} = useTranslation();
 
     const [subject_name, setSubjectName] = useState<string>(subject?.name ?? '');
     const [subject_text, setSubjectText] = useState<string>(subject?.text?.text_string ?? '');
@@ -176,7 +180,7 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
             }
         };
 
-        adminSubjectApi.addOrUpdateSubject(postData).then((response ) => {
+        adminSubjectApi.addOrUpdateSubject(postData).then((response) => {
             console.log(response.data)
             doCancel()
         }).catch(
@@ -204,11 +208,11 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
 
     return (
         <div className='container mt-5'>
-            <h3>{subject?.name} {strings.edit}</h3>
+            <h3>{subject?.name} {t('edit')}</h3>
             <form onSubmit={handleLinkSubmit}>
                 <div className="form-group">
                     <div>
-                        <label htmlFor="status">{strings.linknaam}</label>
+                        <label htmlFor="status">{t('linknaam')}</label>
                         <input
                             type="text"
                             className="form-control mt-3"
@@ -216,7 +220,7 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
                             value={subject_name}
                             onChange={handleNameChange}
                         />
-                        <label htmlFor="status">{strings.linktitle}</label>
+                        <label htmlFor="status">{t('linktitle')}</label>
                         <input
                             type="text"
                             className="form-control mt-3"
@@ -224,7 +228,7 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
                             value={subject_title}
                             onChange={handleTitleChange}
                         />
-                        <label htmlFor="status">{strings.linktext}</label>
+                        <label htmlFor="status">{t('linktext')}</label>
                         <input
                             type="text"
                             className="form-control mt-3"
@@ -237,12 +241,12 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
                 <input
                     type="submit"
                     className="btn btn-outline-success mybutton m-lg-3"
-                    value={strings.submit}
+                    value={t('submit')}
                 />
                 <input
                     type="submit"
                     className="btn btn-outline-success mybutton m-lg-3"
-                    value={strings.cancel}
+                    value={t('cancel')}
                     onClick={doCancel}
                 />
             </form>

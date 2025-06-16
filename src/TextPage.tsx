@@ -14,10 +14,12 @@ import strings from "./strings.tsx";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {useLocation} from "react-router";
 import ReactGA from "react-ga4";
+import {useTranslation} from "react-i18next";
 
 const textApi = new TextApi(apiConfig)
 
 function TextPage() {
+    const {t} = useTranslation();
 
     useEffect(() => {
         // Send pageview with a custom path
@@ -37,16 +39,14 @@ function TextPage() {
     const [link, setLink] = useState<string | null>();
     const [subjectLink, setSubjectLink] = useState<string | null>();
 
-    language()
-
+    
     useEffect(() => {
         const request: TextRequest = {
             location_id: entity === 'location' ? id : undefined,
             person_id: entity === 'person' ? id : undefined,
             letter_id: entity === 'letter' ? id : undefined,
             subject_id: entity === 'subject' ? id : undefined,
-            language: strings.getLanguage()
-        };
+            language: strings.get        };
         textApi.getText(request)
             .then((response) => {
                 setTextResult(response.data);
@@ -135,10 +135,10 @@ function TextPage() {
                 }
             </div>
             <div className='mt-5'>{link != null ?
-                <Link className='mb-5' to={link}><h3>{strings.back}</h3></Link> : null}
+                <Link className='mb-5' to={link}><h3>{t('back')}</h3></Link> : null}
             </div>
             <div className='mt-5'>{subjectLink != null ?
-                <Link className='mb-5' to={subjectLink}><h3>{strings.back}</h3></Link> : null}
+                <Link className='mb-5' to={subjectLink}><h3>{t('back')}</h3></Link> : null}
             </div>
         </div>
     )

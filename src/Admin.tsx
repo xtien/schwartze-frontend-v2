@@ -10,12 +10,13 @@ import {isAdmin, logout} from "./service/AuthenticationService.tsx";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {AdminLuceneApi, UserApi} from "./generated-api";
 import {useNavigate} from "react-router";
-import strings from "./strings.tsx";
+import {useTranslation} from "react-i18next";
 
 const userApi = new UserApi(apiConfig)
 const indexApi = new AdminLuceneApi(apiConfig)
 
 function Admin() {
+     const {t} = useTranslation();
 
     const navigate = useNavigate()
     const [indexing, setIndexing] = useState<boolean>(false)
@@ -70,7 +71,7 @@ function Admin() {
                                         <input
                                             type="submit"
                                             className="btn btn-outline-success mybutton"
-                                            value={strings.addPerson}
+                                            value={t('addPerson')}
                                         />
 
                                     </form>
@@ -80,7 +81,7 @@ function Admin() {
                                         <input
                                             type="submit"
                                             className="btn btn-outline-success mybutton"
-                                            value={strings.addLetter}
+                                            value={t('addLetter')}
                                         />
 
                                     </form>
@@ -90,7 +91,7 @@ function Admin() {
                                         <input
                                             type="submit"
                                             className="btn btn-outline-success mybutton"
-                                            value={strings.addLocation}
+                                            value={t('addLocation')}
                                         />
 
                                     </form>
@@ -99,7 +100,7 @@ function Admin() {
                                     <button
                                         className="btn btn-outline-success mt-5"
                                         onClick={indexLetters}>
-                                        {strings.indexLetters}
+                                        {t('indexLetters')}
                                     </button>
                                 </td>
                                 <td>
@@ -107,7 +108,7 @@ function Admin() {
                                         <input
                                             type="submit"
                                             className="btn btn-outline-success mybutton"
-                                            value={strings.logout}
+                                            value={t('logout')}
                                         />
 
                                     </form>

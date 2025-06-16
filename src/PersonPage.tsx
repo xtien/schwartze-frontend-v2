@@ -9,7 +9,6 @@ import './App.css'
 import './css/bootstrap.css'
 import {Link} from "react-router-dom";
 import Util from './service/Util';
-import strings from './strings.js'
 import language from "./language";
 import {useLocation, useNavigate} from "react-router";
 import {
@@ -26,12 +25,14 @@ import type {EditPersonFormProps} from "./interface/EditPersonFormProps.tsx";
 import type {EditPersonLinkFormProps} from "./interface/EditPersonLinkFormProps.tsx";
 import {Modal} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import {useTranslation} from "react-i18next";
 
 const personApi = new PersonApi(apiConfig)
 const adminLinksApi = new AdminLinksApi(apiConfig)
 const adminPersonApi = new AdminPersonApi(apiConfig)
 
 function PersonPage() {
+    const { t } = useTranslation();
 
     const navigate = useNavigate();
 
@@ -45,8 +46,7 @@ function PersonPage() {
     const [link_id] = useState<number>(0)
     const [showDialog, setShowDialog] = useState<boolean>(false)
 
-    language()
-
+    
     useEffect(() => {
         getPerson(id)
     }, [])
@@ -129,7 +129,7 @@ function PersonPage() {
 
     let brievenVoor = <Link
         to={`/get_letters_for_person/${person.id}/`}
-        className='linkStyle'> {strings.brieven_van} {person.nick_name} </Link>
+        className='linkStyle'> {t('brieven_van')} {person.nick_name} </Link>
 
     let links;
     if (person != null && person.links != null) {
@@ -151,14 +151,14 @@ function PersonPage() {
                                                 className="btn btn-outline-success mybutton ml-2 mt-2"
                                                 onClick={() => edit_link(link.id!)}
                                             >
-                                                {strings.edit}
+                                                {t('edit')}
                                             </button>
                                             &nbsp;&nbsp;
                                             <button
                                                 className="btn btn-outline-danger mybutton ml-2 mt-2"
                                                 onClick={() => delete_link(link.id!)}
                                             >
-                                                {strings.delete}
+                                                {t('delete')}
                                             </button>
                                         </div>
                                         : null
@@ -194,10 +194,10 @@ function PersonPage() {
     return (
         <>
             <Modal show={showDialog} onHide={handleClose}>
-                <Modal.Body>{strings.letterRemoved}</Modal.Body>
+                <Modal.Body>{t('letterRemoved')}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        {strings.close}
+                        {t('close')}
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -229,8 +229,8 @@ function PersonPage() {
                                 <p>
                                     {person.id} {person.nick_name} {fullname} {person.tussenvoegsel} {person.last_name}
                                 </p>
-                                <p>{strings.geboren}: {person.date_of_birth} {person.place_of_birth === null ? null : ' te'} {person.place_of_birth} </p>
-                                <p>{strings.overleden}: {person.date_of_death} {person.place_of_death === null ? null : 'te'} {person.place_of_death}</p>
+                                <p>{t('geboren')}: {person.date_of_birth} {person.place_of_birth === null ? null : ' te'} {person.place_of_birth} </p>
+                                <p>{t('overleden')}: {person.date_of_death} {person.place_of_death === null ? null : 'te'} {person.place_of_death}</p>
                                 <p>{person.comment}</p>
                                 <p className='mt-5'>
                                     {brievenVoor}
@@ -265,7 +265,7 @@ function PersonPage() {
 
                                             {person.text.text_string!.length > 300 ?
                                                 <p>
-                                                    <Link to={linkTo} className='mt-5 mb-5'> {strings.meer} </Link>
+                                                    <Link to={linkTo} className='mt-5 mb-5'> {t('meer')} </Link>
                                                 </p>
                                                 : null}
                                         </div> : null}
@@ -361,6 +361,7 @@ function PersonPage() {
 
 
 function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonFormProps) {
+    const { t } = useTranslation();
 
     const [nick_name, setNickName] = useState<string>(person.nick_name ?? '')
     const [full_name, setFullName] = useState<string>(person.full_name ?? '')
@@ -458,7 +459,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     <p>{nick_name ?? ''} {tussenvoegsel ?? ''} {last_name ?? ''}</p>
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.nickname}</label>
+                    <label htmlFor="status">{t('nickname')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -468,7 +469,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.fullname}</label>
+                    <label htmlFor="status">{t('fullname')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -478,7 +479,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.tussenvoegsel}</label>
+                    <label htmlFor="status">{t('tussenvoegsel')}[</label>
                     <input
                         type="text"
                         className="form-control "
@@ -488,7 +489,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.lastname}e</label>
+                    <label htmlFor="status">{t('lastname')}e</label>
                     <input
                         type="text"
                         className="form-control "
@@ -498,7 +499,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.geboren}</label>
+                    <label htmlFor="status">{t('geboren')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -508,7 +509,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.plaats}</label>
+                    <label htmlFor="status">{t('plaats')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -518,7 +519,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.overleden}</label>
+                    <label htmlFor="status">{t('overleden')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -528,7 +529,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.plaats}</label>
+                    <label htmlFor="status">{t('plaats')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -538,7 +539,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.opmerkingen}</label>
+                    <label htmlFor="status">{t('opmerkingen')}</label>
                     <textarea
                         className="form-control textarea200"
                         id="comments"
@@ -547,7 +548,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.image_url}</label>
+                    <label htmlFor="status">{t('image_url')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -557,7 +558,7 @@ function EditPersonForm({person, setEditDone, setPerson, setCancel}: EditPersonF
                     />
                 </div>
                 <div className="form-group mt-3">
-                    <label htmlFor="status">{strings.image_caption}</label>
+                    <label htmlFor="status">{t('image_caption')}</label>
                     <input
                         type="text"
                         className="form-control "
@@ -598,6 +599,9 @@ function EditPersonLinkForm({
                                 person, linkId, setPerson, setLinkEditDone
                             }: EditPersonLinkFormProps) {
 
+    const { t } = useTranslation();
+
+
     const [link_name, setLinkName] = useState<string>();
     const [link_url, setLinkUrl] = useState<string>();
 
@@ -632,7 +636,7 @@ function EditPersonLinkForm({
     return (
         <form onSubmit={handleLinkSubmit}>
             <div className="form-group mt-3 mt-5">
-                <label htmlFor="status">{strings.linknaam}</label>
+                <label htmlFor="status">{t('linknaam')}</label>
                 <input
                     type="text"
                     className="form-control"
@@ -642,7 +646,7 @@ function EditPersonLinkForm({
                 />
             </div>
             <div className="form-group mt-3">
-                <label htmlFor="status">{strings.link_url}</label>
+                <label htmlFor="status">{t('link_url')}</label>
                 <input
                     type="text"
                     className="form-control"

@@ -65,8 +65,7 @@ function TextEdit() {
         person_id: personId != undefined ? parseInt(personId) : undefined,
         letter_id: letterId != undefined ? parseInt(letterId) : undefined,
         subject_id: subjectId != undefined ? parseInt(subjectId) : undefined,
-        language: strings.getLanguage()
-    };
+        language: strings.get    };
 
     textApi.getText(request).then((response) => {
         setLocation(response.data.location)
@@ -113,8 +112,7 @@ function TextEdit() {
             subject_id: subjectId != undefined ? parseInt(subjectId) : undefined,
             text_string: text_string,
             title_string: title_string,
-            language: strings.getLanguage()
-        };
+            language: strings.get        };
 
         adminTextApi.updateText(request).then(() => {
             navigate(redirectTo)

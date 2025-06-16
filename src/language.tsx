@@ -18,6 +18,6 @@ function language() {
         strings.setLanguage(lang);
         return lang;
     }
- }
+}
 
 export default language

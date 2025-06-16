@@ -5,17 +5,18 @@
  */
 
 import {useEffect, useState} from 'react'
-import strings from './strings.js'
 import language from "./language";
 import {AdminReferencesApi, type EditReferenceLinkRequest, type References, ReferencesApi} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {EditReferenceLinkFormProps} from "./interface/EditReferenceLinkFormProps.tsx";
+import {useTranslation} from "react-i18next";
 
 const referenceApi = new ReferencesApi(apiConfig)
 const adminReferenceApi = new AdminReferencesApi(apiConfig)
 
 function ReferencesPage() {
+    const { t } = useTranslation();
 
     const [references, setReferences] = useState<References>();
     const [showLinkEdit, setShowLinkEdit] = useState(false);
@@ -23,8 +24,7 @@ function ReferencesPage() {
     const [link_url, setLinkUrl] = useState<string | undefined>('');
     const [link_name, setLinkName] = useState<string | undefined>('');
 
-    language()
-
+    
     useEffect(() => {
         const request = {
             type: 'site'
@@ -131,7 +131,7 @@ function ReferencesPage() {
         <div className='container'>
 
             <div className='mt-5 topics'>
-                <h3>{strings.references}</h3>
+                <h3>{t('references')}</h3>
                 {showLinkEdit ? null :
                     <div id='linkContainer'>
                         {links}

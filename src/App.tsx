@@ -6,7 +6,6 @@
 
 import './App.css'
 import {BrowserRouter, Link, Route, Routes} from "react-router";
-import strings from "./strings.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import twitli from './images/logo.png'
 import Landing from "./Landing.tsx";
@@ -32,15 +31,15 @@ import DeleteLetter from "./DeleteLetter.tsx";
 import TextEdit from "./TextEdit.tsx";
 import CombinePerson from "./CombinePerson.tsx";
 import CombineLocation from "./CombineLocation.tsx";
-import Selector from "./component/Selector.tsx";
-import {LanguageTypeEnum} from "./enum/LanguageTypeEnum.tsx";
-import Cookies from "universal-cookie";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import ReactGA from 'react-ga4'
+import {t} from "i18next";
+import { Form } from 'react-bootstrap';
+import {useTranslation} from "react-i18next";
 
 function App() {
 
-    const [selectedLanguage, setSelectedLanguage] = useState<string>(strings.getLanguage());
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         ReactGA.initialize("G-BK9BVQ50MX");
@@ -48,94 +47,80 @@ function App() {
         ReactGA.send({hitType: "pageview", page: "/", title: "Landing Page"});
     }, [])
 
-    useEffect(() => {
-        const cookies = new Cookies();
-        const lan: string = cookies.get('language');
-       if (lan != null) {
-            console.log("cookie language: " + lan)
-            const l = (stringToEnum(lan));
-            if (l != undefined) {
-                setSelectedLanguage(l);
-            }
-            strings.setLanguage(lan);
-        } else {
-            const l = (stringToEnum(strings.getLanguage()));
-            if (l != undefined) {
-                setSelectedLanguage(l);
-            }
+    const languages = [
+        {
+            code: "fr",
+            name: "fr",
+            countryCode: "fr"
+        },
+        {
+            code: "en",
+            name: "en",
+            countryCode: "us"
+        },
+        {
+            code: "nl",
+            name: "nl",
+            countryCode: "nl"
+        },
+        {
+            code: "de",
+            name: "de",
+            countryCode: "nl"
+        },
+        {
+            code: "es",
+            name: "es",
+            countryCode: "es"
         }
-    }, [selectedLanguage])
-
-    function setLanguage(language: LanguageTypeEnum) {
-        const cookies = new Cookies();
-        cookies.set('language', language, {path: '/'});
-        setSelectedLanguage(language);
-    }
-
-    function stringToEnum(str: string) {
-        switch (str) {
-            case 'nl':
-                return LanguageTypeEnum.Nl;
-            case 'en':
-                return LanguageTypeEnum.En;
-            case 'de':
-                return LanguageTypeEnum.De;
-            case 'fr':
-                return LanguageTypeEnum.Fr;
-            case 'es':
-                return LanguageTypeEnum.Es;
-        }
-    }
-
-    const l = strings.getLanguage()
-    console.log('language ' + l)
+    ];
 
     return (
         <div>
              <BrowserRouter>
                 <div className='container-fluid h-auto vh-100 mt-3 '>
                     <div className="d-block d-sm-none"> {/* large screens */}
-                        <h1>{strings.titel}</h1>
+                        <h1>{t('titel')}</h1>
                         <table>
                             <tbody>
                             <tr>
                                 <td>
                                     <p className='navbar-nav'>
-                                        <Link to='/' className='linkStyle'>{strings.home}</Link>
+                                        <Link to='/' className='linkStyle'>{t('home')}</Link>
                                     </p>
                                 </td>
                                 <td>
                                     <p className='navbar-nav textStyle'>
-                                        <Link to='/get_letters/0' className='linkStyle'>{strings.letters}</Link>
+                                        <Link to='/get_letters/0' className='linkStyle'>{t('letters')}</Link>
                                     </p>
                                 </td>
                                 <td>
                                     <p className='navbar-nav textStyle'><Link to='/get_people/'
-                                                                              className='linkStyle'>{strings.people}</Link>
+                                                                              className='linkStyle'>{t('people')}</Link>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <p className='navbar-nav textStyle'>
-                                        <Link to='/get_locations/' className='linkStyle'>{strings.locations}</Link>
+                                        <Link to='/get_locations/' className='linkStyle'>{t('locations')}</Link>
                                     </p>
                                 </td>
                                 <td>
                                     <p className='navbar-nav textStyle'>
-                                        <Link to='/references/' className='linkStyle'>{strings.references}</Link>
+                                        <Link to='/references/' className='linkStyle'>{t('references')}</Link>
                                     </p>
                                 </td>
                                 <td>
                                     <p className='navbar-nav textStyle'>
-                                        <Link to='/topics/' className='linkStyle'>{strings.topics}</Link>
+                                        <Link to='/topics/' className='linkStyle'>{t('topics')}</Link>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <p className='navbar-nav textStyle'>
-                                        <Link to='/get_page/1/1' className='linkStyle'>{strings.pages}</Link>
+                                        <Link to='/get_page/1/1' className='linkStyle'>{t('pages')}</Link>
                                     </p>
                                 </td>
                                 <td>
@@ -143,13 +128,13 @@ function App() {
                                                to render App.js by setting its state  */}
                                     {isAdmin() === 'true' ?
                                         <p className='navbar-nav textStyle'>
-                                            <Link to={'/admin/'} className='linkStyle'>{strings.admin}</Link>
+                                            <Link to={'/admin/'} className='linkStyle'>{t('admin')}</Link>
                                         </p>
                                         : null}
                                 </td>
                                 <td>
                                     <p className='navbar-nav textStyle'>
-                                        <Link to='/about/' className='linkStyle'>{strings.about}</Link>
+                                        <Link to='/about/' className='linkStyle'>{t('about')}</Link>
                                     </p>
                                 </td>
                             </tr>
@@ -162,48 +147,60 @@ function App() {
                             <tr>
                                 <td>
                                     <div className="position-absolute top-0 end-0 m-lg-3">
-                                        <Selector
-                                            enumType={LanguageTypeEnum}
-                                            value={stringToEnum(selectedLanguage)}
-                                            onChange={(selectedType) => setLanguage(selectedType)}>
-                                        </Selector>
+                                        <Form.Select
+                                            defaultValue={i18n.resolvedLanguage}
+                                            onChange={e => {
+                                                i18n.changeLanguage(e.target.value);
+                                            }}
+                                        >
+                                            {languages.map(({ code, name, countryCode }) => {
+                                                return (
+                                                    <option
+                                                        key={countryCode}
+                                                        value={code}
+                                                    >
+                                                        {name}
+                                                    </option>
+                                                );
+                                            })}
+                                        </Form.Select>
                                     </div>
-                                    <h1 className='px-5'>{strings.titel}</h1>
+                                    <h1 className='px-5'>{t('titel')}</h1>
                                     <nav className="navbar navbar-expand-lg navbar-light px-5">
                                         <p className='navbar-nav'>
-                                            <Link to='/' className='linkStyle'>{strings.home}</Link>
+                                            <Link to='/' className='linkStyle'>{t('home')}</Link>
                                         </p>
                                         <p className='navbar-nav textStyle'>
-                                            <Link to='/get_letters/0' className='linkStyle'>{strings.letters}</Link>
+                                            <Link to='/get_letters/0' className='linkStyle'>{t('letters')}</Link>
                                         </p>
                                         <p className='navbar-nav textStyle'>
-                                            <Link to='/get_people/' className='linkStyle'>{strings.people}</Link>
+                                            <Link to='/get_people/' className='linkStyle'>{t('people')}</Link>
                                         </p>
                                         <p className='navbar-nav textStyle'>
                                             <Link to='/get_locations/'
-                                                  className='linkStyle'>{strings.locations}</Link>
+                                                  className='linkStyle'>{t('locations')}</Link>
                                         </p>
                                         <p className='navbar-nav textStyle'>
                                             <Link to='/references/'
-                                                  className='linkStyle'>{strings.references}</Link>
+                                                  className='linkStyle'>{t('references')}</Link>
                                         </p>
                                         <p className='navbar-nav textStyle'>
-                                            <Link to='/topics/' className='linkStyle'>{strings.topics}</Link>
+                                            <Link to='/topics/' className='linkStyle'>{t('topics')}</Link>
                                         </p>
                                         <p className='navbar-nav textStyle'>
-                                            <Link to='/get_page/1/1' className='linkStyle'>{strings.pages}</Link>
+                                            <Link to='/get_page/1/1' className='linkStyle'>{t('pages')}</Link>
                                         </p>
                                         {/*Admin should only be visible after login. toggle enables Login.js to render App.js by setting its state*/}
                                         {
                                             isAdmin() === 'true' ?
                                                 <p className='navbar-nav textStyle'>
                                                     <Link to={'/admin/'}
-                                                          className='linkStyle'>{strings.admin}</Link>
+                                                          className='linkStyle'>{t('admin')}</Link>
                                                 </p>
                                                 : null
                                         }
                                         <p className='navbar-nav textStyle'>
-                                            <Link to='/about/' className='linkStyle'>{strings.about}</Link>
+                                            <Link to='/about/' className='linkStyle'>{t('about')}</Link>
                                         </p>
                                     </nav>
                                 </td>

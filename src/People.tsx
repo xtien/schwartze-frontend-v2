@@ -5,7 +5,6 @@
  */
 
 import {useEffect, useState} from 'react'
-import strings from './strings.tsx'
 import language from "./language";
 import {
     type PeopleRequest,
@@ -18,10 +17,12 @@ import {apiConfig} from "./service/AuthenticationService.tsx";
 import Table from "react-bootstrap/Table";
 import {useNavigate} from "react-router";
 import ReactGA from "react-ga4";
+import {useTranslation} from "react-i18next";
 
 const personApi = new PersonApi(apiConfig)
 
 function People() {
+    const {t} = useTranslation();
 
     useEffect(() => {
         // Send pageview with a custom path
@@ -34,8 +35,7 @@ function People() {
 
     const navigate = useNavigate()
 
-    language()
-
+    
     useEffect(() => {
         apiGetPeople()
     }, [])
@@ -111,17 +111,17 @@ function People() {
                     <button
                         className="btn btn-outline-secondary mybutton mt-5 m-lg-2"
                         onClick={() => sort(PeopleRequestOrderByEnum.FirstName)}>
-                        {strings.op_voornaam}
+                        {t('op_voornaam')}
                     </button>
                     <button
                         className="btn btn-outline-secondary mybutton mt-5 m-lg-2"
                         onClick={() => sort(PeopleRequestOrderByEnum.Name)}>
-                        {strings.op_achternaam}
+                        {t('op_achternaam')}
                     </button>
                     <button
                         className="btn btn-outline-secondary mybutton mt-5 m-lg-2"
                         onClick={() => sort(PeopleRequestOrderByEnum.Number)}>
-                        {strings.op_nummer}
+                        {t('op_nummer')}
                     </button>
                 </div>
                 <div className='col-sm-3'>
@@ -129,7 +129,7 @@ function People() {
                         <input
                             type="input"
                             id="text"
-                            placeholder={strings.search}
+                            placeholder={t('search')}
                             onChange={handleSearchTermChange}
                             className="form-control "
                         />
@@ -141,9 +141,9 @@ function People() {
             <Table>
                 <thead>
                 <tr>
-                    <th>{strings.nummer}</th>
-                    <th>{strings.name}</th>
-                    <th>{strings.comment}</th>
+                    <th>{t('nummer')}</th>
+                    <th>{t('name')}</th>
+                    <th>{t('comment')}</th>
 
                 </tr>
                 </thead>
