@@ -257,7 +257,7 @@ function Landing() {
             <div className="container">
                 <div className="row">
                     <div className="col col-lg-4">
-                        <div id="sidebar-wrapper">
+                        <div >
                             <ul className="sidebar-nav ms-5 mt-5">
                                 <div>{isAdm === 'true' ?
                                     <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
