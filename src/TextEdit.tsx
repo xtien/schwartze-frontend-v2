@@ -6,7 +6,6 @@
  */
 
 import './css/bootstrap.css'
-import strings from './strings.js'
 import {Link, useLocation, useNavigate} from "react-router";
 import {useState} from "react";
 import {
@@ -19,11 +18,13 @@ import {
     type TextRequest
 } from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
+import {useTranslation} from "react-i18next";
 
 const textApi = new TextApi(apiConfig)
 const adminTextApi = new AdminTextApi(apiConfig)
 
 function TextEdit() {
+    const {i18n} = useTranslation();
 
     const _location = useLocation();
     const params = _location.pathname.split('/')
@@ -65,7 +66,8 @@ function TextEdit() {
         person_id: personId != undefined ? parseInt(personId) : undefined,
         letter_id: letterId != undefined ? parseInt(letterId) : undefined,
         subject_id: subjectId != undefined ? parseInt(subjectId) : undefined,
-        language: strings.get    };
+        language: i18n.language
+    };
 
     textApi.getText(request).then((response) => {
         setLocation(response.data.location)
@@ -112,7 +114,7 @@ function TextEdit() {
             subject_id: subjectId != undefined ? parseInt(subjectId) : undefined,
             text_string: text_string,
             title_string: title_string,
-            language: strings.get        };
+            language: i18n.language      };
 
         adminTextApi.updateText(request).then(() => {
             navigate(redirectTo)

@@ -33,7 +33,7 @@ const adminReferencesApi = new AdminReferencesApi(apiConfig);
 function Landing() {
 
     const {t} = useTranslation();
-    const { i18n } = useTranslation();
+    const {i18n} = useTranslation();
 
     const lang = i18n.language;
 
@@ -112,7 +112,7 @@ function Landing() {
 
         adminReferencesApi.removeReferenceLink(request)
             .then((response) => {
-               console.log(response)
+                console.log(response)
                 getLeftPage()
             })
             .catch((error) => {
@@ -254,52 +254,51 @@ function Landing() {
 
     return (
 
-        <div>
-            <div className="float-container">
-                <div className="float-child-left ">
-                    <div id="sidebar-wrapper">
-                        <ul className="sidebar-nav ms-5 mt-5">
-                            <div>{isAdm === 'true' ?
-                                <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
-                                </p>
-                                : null}
-                            </div>
-                            <div id='linkContainer' className='ml-3'>
-                                {references}
-                            </div>
+            <div className="container">
+                <div className="row">
+                    <div className="col col-lg-4">
+                        <div id="sidebar-wrapper">
+                            <ul className="sidebar-nav ms-5 mt-5">
+                                <div>{isAdm === 'true' ?
+                                    <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
+                                    </p>
+                                    : null}
+                                </div>
+                                <div id='linkContainer' className='ml-3'>
+                                    {references}
+                                </div>
 
-                            <div className='sidebar-picture'>
-                                {picture_url === null ? null :
-                                    <div><img src={picture_url!} width="200" alt=""/></div>
-                                }
-                                <div className='picture-caption'>{picture_caption}</div>
-                            </div>
-                            <div>
-                                {
-                                    isAdmin() === "true" ?
-                                        <div>
-                                            <button type="button"
-                                                    className='btn btn-link mt-5 pl-3'
-                                                    onClick={add_reference}>
-                                                Add reference
-                                            </button>
-                                            <button type="button"
-                                                    className='btn btn-link mt-5'
-                                                    onClick={edit_picture}>
-                                                edit picture
-                                            </button>
-                                        </div> : null
-                                }
-                            </div>
-                            <div className='border border-dark mt-5'>
-                                <div className='help'>{t('help_title')}</div>
-                                <div className='help'>{t('help')}</div>
-                            </div>
-                        </ul>
+                                <div className='sidebar-picture'>
+                                    {picture_url === null ? null :
+                                        <div><img src={picture_url!} width="200" alt=""/></div>
+                                    }
+                                    <div className='picture-caption'>{picture_caption}</div>
+                                </div>
+                                <div>
+                                    {
+                                        isAdmin() === "true" ?
+                                            <div>
+                                                <button type="button"
+                                                        className='btn btn-link mt-5 pl-3'
+                                                        onClick={add_reference}>
+                                                    Add reference
+                                                </button>
+                                                <button type="button"
+                                                        className='btn btn-link mt-5'
+                                                        onClick={edit_picture}>
+                                                    edit picture
+                                                </button>
+                                            </div> : null
+                                    }
+                                </div>
+                                <div className='border border-dark mt-5'>
+                                    <div className='help'>{t('help_title')}</div>
+                                    <div className='help'>{t('help')}</div>
+                                </div>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div className="d-none d-xl-block">
-                    <div className="float-child-right">
+                    <div className="col mt-5 ">
                         <div>
                             {showPictureUrlEdit && leftBlockPage != null ? (
                                 <EditPictureUrlForm
@@ -346,25 +345,10 @@ function Landing() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className="d-xl-none">
-                    <div className="float-child-right">
-                        <div className='textpage'>
-                            {/* TODO: this needs to change when others than myself get access to data entry */}
 
-                            <div dangerouslySetInnerHTML={{__html: pageText}}/>
-                        </div>
-                        <div className='textpage mt-5 '>
-                            <div>
-                                {/* TODO: this needs to change when others than myself get access to data entry */}
-                                <div dangerouslySetInnerHTML={{__html: blogText}}/>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     )
 }
 

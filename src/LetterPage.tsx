@@ -9,7 +9,7 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import './css/bootstrap.css'
 import {Link} from "react-router-dom";
-import {Navigate, useLocation} from "react-router";
+import {Navigate, useLocation, useNavigate} from "react-router";
 import arrow_left from "./images/arrow_left.png";
 import arrow_right from "./images/arrow_right.png";
 import {
@@ -41,6 +41,7 @@ function LetterPage() {
         ReactGA.send({hitType: "pageview", page: "/get_letter_details", title: "LetterPage"});
     }, [])
 
+    const navigate = useNavigate();
     const location = useLocation()
     const params = location.pathname.substring(1).split('/')
     let n = 0;
@@ -74,7 +75,7 @@ function LetterPage() {
     // const [search_term, setSearch_term] = useState('')
     const [translated, setTranslated] = useState(0)
 
-    const { i18n } = useTranslation();
+    const {i18n} = useTranslation();
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -112,37 +113,32 @@ function LetterPage() {
         setDelete_letter(true)
     }
 
-    function forward() {
-        next()
-    }
-
-    function back() {
-        previous()
-    }
-
-    function next() {
+    function next(event: { preventDefault: () => void; }) {
+        event.preventDefault()
         const request: LetterRequest = {
             'number': letter.number
         }
         letterApi.getNextLetter(request).then((response) => {
-            if (response.data.letter != null) {
-                setLetter(response.data.letter)
-                if (response.data.letter.number != undefined) {
-                    setLetterNumber(response.data.letter.number)
-                }
+            // setLetter(response.data.letter)
+            if (response.data.letter != null && response.data.letter.number != undefined) {
+                console.log('next letter: ' + '/get_letter_details/' + response.data.letter.number + '/0')
+                navigate('/get_letter_details/' + response.data.letter.number + '/0')
+                setLetterNumber(response.data.letter.number)
             }
         }).catch((error) => {
             console.log(error)
         })
     }
 
-    function previous() {
+    function previous(event: { preventDefault: () => void; }) {
+        event.preventDefault();
         const request: LetterRequest = {
             'number': letter.number
         }
         letterApi.getPreviousLetter(request).then((response) => {
-            if (response.data.letter != null) {
-                setLetter(response.data.letter)
+            if (response.data.letter != null && response.data.letter.number != undefined) {
+                navigate('/get_letter_details/' + response.data.letter.number + '/0')
+                setLetterNumber(response.data.letter.number)
             }
         }).catch((error) => {
             console.log(error)
@@ -230,7 +226,7 @@ function LetterPage() {
                             <div className='col-sm-1'>
                                 <button type="button"
                                         className='btn btn-link'
-                                        onClick={back}>
+                                        onClick={previous}>
                                     <img src={arrow_left} alt="back"/>
                                 </button>
                             </div>
@@ -279,7 +275,7 @@ function LetterPage() {
                             <div className='col-sm-1'>
                                 <button
                                     className="btn btn-link"
-                                    onClick={forward}>
+                                    onClick={next}>
                                     <img src={arrow_right} alt="forward"/>
                                 </button>
                             </div>

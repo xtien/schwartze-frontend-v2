@@ -7,12 +7,12 @@
 
 import {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
-import language from "./language";
 import {AdminSubjectApi, type Subject, SubjectApi, type SubjectRequest} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
 import type {SubjectEditLinkFormProps} from "./interface/SubjectEditLinkFormProps.tsx";
 import {useTranslation} from "react-i18next";
+import i18next from "i18next";
 
 const subjectApi = new SubjectApi(apiConfig)
 const adminSubjectApi = new AdminSubjectApi(apiConfig)
@@ -173,7 +173,7 @@ function EditLinkForm({subject, setShowEditSubject}: SubjectEditLinkFormProps) {
 
         let postData: SubjectRequest = {
             subject: subject,
-            language: language(),
+            language: i18next.language,
             text: {
                 text_string: subject_text ?? '',
                 text_title: subject_title ?? ''

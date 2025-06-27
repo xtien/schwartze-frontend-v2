@@ -9,7 +9,6 @@ import './App.css'
 import './css/bootstrap.css'
 import {Link} from "react-router-dom";
 import Util from './service/Util';
-import language from "./language";
 import {useLocation, useNavigate} from "react-router";
 import {
     type AddPersonRequest,
@@ -46,7 +45,7 @@ function PersonPage() {
     const [link_id] = useState<number>(0)
     const [showDialog, setShowDialog] = useState<boolean>(false)
 
-    
+
     useEffect(() => {
         getPerson(id)
     }, [])

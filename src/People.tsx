@@ -5,7 +5,6 @@
  */
 
 import {useEffect, useState} from 'react'
-import language from "./language";
 import {
     type PeopleRequest,
     PeopleRequestOrderByEnum,
@@ -35,7 +34,7 @@ function People() {
 
     const navigate = useNavigate()
 
-    
+
     useEffect(() => {
         apiGetPeople()
     }, [])

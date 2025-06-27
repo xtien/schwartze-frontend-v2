@@ -48,15 +48,11 @@ function App() {
     }, [])
 
     const languages = [
-        {
-            code: "fr",
-            name: "fr",
-            countryCode: "fr"
-        },
+
         {
             code: "en",
             name: "en",
-            countryCode: "us"
+            countryCode: "en"
         },
         {
             code: "nl",
@@ -66,12 +62,22 @@ function App() {
         {
             code: "de",
             name: "de",
-            countryCode: "nl"
+            countryCode: "de"
         },
         {
             code: "es",
             name: "es",
             countryCode: "es"
+        } ,
+        {
+            code: "fr",
+            name: "fr",
+            countryCode: "fr"
+        },
+        {
+            code: "it",
+            name: "it",
+            countryCode: "it"
         }
     ];
 

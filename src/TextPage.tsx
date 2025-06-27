@@ -8,9 +8,7 @@
 import {useEffect, useState} from 'react'
 import {Link} from "react-router-dom";
 import './css/bootstrap.css'
-import language from "./language";
 import {TextApi, type TextRequest, type TextResult} from "./generated-api";
-import strings from "./strings.tsx";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {useLocation} from "react-router";
 import ReactGA from "react-ga4";
@@ -20,6 +18,7 @@ const textApi = new TextApi(apiConfig)
 
 function TextPage() {
     const {t} = useTranslation();
+    const {i18n} = useTranslation();
 
     useEffect(() => {
         // Send pageview with a custom path
@@ -39,14 +38,15 @@ function TextPage() {
     const [link, setLink] = useState<string | null>();
     const [subjectLink, setSubjectLink] = useState<string | null>();
 
-    
+
     useEffect(() => {
         const request: TextRequest = {
             location_id: entity === 'location' ? id : undefined,
             person_id: entity === 'person' ? id : undefined,
             letter_id: entity === 'letter' ? id : undefined,
             subject_id: entity === 'subject' ? id : undefined,
-            language: strings.get        };
+            language: i18n.language,
+        };
         textApi.getText(request)
             .then((response) => {
                 setTextResult(response.data);

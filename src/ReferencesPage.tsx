@@ -5,7 +5,6 @@
  */
 
 import {useEffect, useState} from 'react'
-import language from "./language";
 import {AdminReferencesApi, type EditReferenceLinkRequest, type References, ReferencesApi} from "./generated-api";
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import {isAdmin} from "./service/AuthenticationService.tsx";
@@ -24,7 +23,7 @@ function ReferencesPage() {
     const [link_url, setLinkUrl] = useState<string | undefined>('');
     const [link_name, setLinkName] = useState<string | undefined>('');
 
-    
+
     useEffect(() => {
         const request = {
             type: 'site'

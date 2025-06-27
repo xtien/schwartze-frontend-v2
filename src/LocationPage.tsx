@@ -9,7 +9,6 @@ import {useEffect, useState} from 'react'
 import {Link, Navigate} from "react-router-dom";
 import './css/bootstrap.css'
 import Util from './service/Util';
-import language from "./language";
 import {useLocation} from "react-router";
 import {
     AdminLinksApi,
@@ -42,7 +41,7 @@ function LocationPage() {
     const [link_id] = useState('')
    const [deleted, setDeleted] = useState<boolean>(false)
 
-    
+
     useEffect(() => {
         let request: LocationRequest = {
             id: parseInt(id)
