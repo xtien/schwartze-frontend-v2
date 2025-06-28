@@ -22,7 +22,7 @@ function TextPage() {
 
     useEffect(() => {
         // Send pageview with a custom path
-        ReactGA.send({ hitType: "pageview", page: "/get_page", title: "TextPage" });
+        ReactGA.send({hitType: "pageview", page: "/get_page", title: "TextPage"});
     }, [])
 
 
@@ -73,7 +73,7 @@ function TextPage() {
                 setSubjectLink(subjectLink);
 
             }).catch((error) => {
-             console.log(error)
+            console.log(error)
         })
     }, [])
 
@@ -88,57 +88,59 @@ function TextPage() {
 
 
     return (
-        <div className='textpage wide mt-5 ml-5'>
+        <div className='container-fluid  m-3 pe-5 ps-5'>
 
+            <div className='col-lg-8'>
 
-            {link != null ?
-                <div>
+                {link != null ?
                     <div>
-                        {textResult?.person != null ?
-                            <h3><Link className='mb-5'
-                                      to={link}> {textResult.person.nick_name} {(textResult.person.tussenvoegsel != null ? (textResult.person.tussenvoegsel + ' ') : '')} {textResult.person.last_name}</Link>
-                            </h3>
-                            : null
-                        }
+                        <div>
+                            {textResult?.person != null ?
+                                <h3><Link className='mb-5'
+                                          to={link}> {textResult.person.nick_name} {(textResult.person.tussenvoegsel != null ? (textResult.person.tussenvoegsel + ' ') : '')} {textResult.person.last_name}</Link>
+                                </h3>
+                                : null
+                            }
+                        </div>
+                        <div>
+                            {textResult?.location != null ?
+                                <h3><Link to={link}> {textResult?.location.location_name}</Link></h3>
+                                : null
+                            }
+                        </div>
+                        <div>
+                            {textResult?.letter != null ?
+                                <h3><Link to={link}> Brief {textResult?.letter.number}</Link>
+                                </h3>
+                                :
+                                null
+                            }
+                        </div>
+                        <div>
+                            {textResult?.subject != null ?
+                                <div>
+                                    <h3>{textResult?.subject.name}</h3>
+                                </div>
+                                : null
+                            }
+                        </div>
                     </div>
-                    <div>
-                        {textResult?.location != null ?
-                            <h3><Link to={link}> {textResult?.location.location_name}</Link></h3>
-                            : null
-                        }
-                    </div>
-                    <div>
-                        {textResult?.letter != null ?
-                            <h3><Link to={link}> Brief {textResult?.letter.number}</Link>
-                            </h3>
-                            :
-                            null
-                        }
-                    </div>
-                    <div>
-                        {textResult?.subject != null ?
-                            <div>
-                                <h3>{textResult?.subject.name}</h3>
-                            </div>
-                            : null
-                        }
-                    </div>
-                </div>
-                :
-                null
-            }
-            <div className='mt-3'>
-                {/* TODO: this needs to change when others than myself get access to data entry */}
-                {(textString != null) ?
-                    <div dangerouslySetInnerHTML={{__html: textString}}/>
-                    : null
+                    :
+                    null
                 }
-            </div>
-            <div className='mt-5'>{link != null ?
-                <Link className='mb-5' to={link}><h3>{t('back')}</h3></Link> : null}
-            </div>
-            <div className='mt-5'>{subjectLink != null ?
-                <Link className='mb-5' to={subjectLink}><h3>{t('back')}</h3></Link> : null}
+                <div className='mt-3'>
+                    {/* TODO: this needs to change when others than myself get access to data entry */}
+                    {(textString != null) ?
+                        <div dangerouslySetInnerHTML={{__html: textString}}/>
+                        : null
+                    }
+                </div>
+                <div className='mt-5'>{link != null ?
+                    <Link className='mb-5' to={link}><h3>{t('back')}</h3></Link> : null}
+                </div>
+                <div className='mt-5'>{subjectLink != null ?
+                    <Link className='mb-5' to={subjectLink}><h3>{t('back')}</h3></Link> : null}
+                </div>
             </div>
         </div>
     )

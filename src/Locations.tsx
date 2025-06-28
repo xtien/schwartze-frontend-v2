@@ -9,10 +9,13 @@ import {LocationApi, type LocationRequest, type MyLocation} from "./generated-ap
 import {apiConfig} from "./service/AuthenticationService.tsx";
 import Table from "react-bootstrap/Table";
 import {useNavigate} from "react-router";
+import {useTranslation} from "react-i18next";
 
 const locationApi = new LocationApi(apiConfig)
 
 function Locations() {
+
+    const {t} = useTranslation();
 
     const [locations, setLocations] = useState<MyLocation[]>([])
     const navigate = useNavigate()
@@ -40,21 +43,19 @@ function Locations() {
                 <tr onClick={() => navigate(locationLink)}>
                     <td className='text-nowrap'>{location.id}</td>
                     <td className='text-nowrap'>{location.name}</td>
-                    <td>{location.comment?.substring(0, 50)}</td>
-                </tr>
+                       </tr>
             )
         })
     }
 
     return (
-        <div className='container mt5'>
-            <div className='locations-container'>
+        <div className='container-fluid mt5'>
+            <div className=''>
                 <Table>
                     <thead>
                     <tr>
-                        <th>Number</th>
-                        <th>Name</th>
-                        <th>Comments</th>
+                        <th>{t('number')}</th>
+                        <th>{t('name')}</th>
                     </tr>
                     </thead>
                     <tbody>

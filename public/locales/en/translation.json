@@ -88,5 +88,7 @@
   "addTopic": "Add topic",
   "linknaam": "Link name",
   "link_url": "Link URL",
-  "translateLetter": "Translate letter"
+  "translateLetter": "Translate letter",
+  "number": "Number",
+  "comments": "Remarks"
 }

@@ -88,5 +88,7 @@
   "addTopic": "Onderwerp toevoegen",
   "linknaam": "Link naam",
   "link_url": "Link URL",
-  "translateLetter": "Vertaal brief"
+  "translateLetter": "Vertaal brief",
+  "number": "Nummer",
+  "comments": "Opmerkingen"
 }
