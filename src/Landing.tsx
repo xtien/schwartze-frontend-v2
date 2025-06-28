@@ -235,7 +235,7 @@ function Landing() {
         references = leftBlockPage.references.map(function (reference, i) {
             return (
                 <div key={i}>
-                    <table width="100%">
+                    <table>
                         <tbody>
                         <tr>
                             <td>
@@ -251,102 +251,106 @@ function Landing() {
 
     return (
 
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-sm-1 col-lg-3 ms-5 bg-light ">
-                        <div >
-                            <ul className="bg-light mt-5">
-                                <div>{isAdm === 'true' ?
-                                    <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
-                                    </p>
-                                    : null}
-                                </div>
-                                <div id='linkContainer' className='ml-3'>
-                                    {references}
-                                </div>
-
-                                <div className='sidebar-picture'>
-                                    {picture_url === null ? null :
-                                        <div><img src={picture_url!} width="200" alt="kinderpartij"/></div>
-                                    }
-                                    <div className='picture-caption'>{picture_caption}</div>
-                                </div>
-                                <div>
-                                    {
-                                        isAdmin() === "true" ?
-                                            <div>
-                                                <button type="button"
-                                                        className='btn btn-link mt-5 pl-3'
-                                                        onClick={add_reference}>
-                                                    Add reference
-                                                </button>
-                                                <button type="button"
-                                                        className='btn btn-link mt-5'
-                                                        onClick={edit_picture}>
-                                                    Edit picture
-                                                </button>
-                                            </div> : null
-                                    }
-                                </div>
-                                <div className='border border-dark mt-5'>
-                                    <div className='help'>{t('help_title')}</div>
-                                    <div className='help'>{t('help')}</div>
-                                </div>
-                            </ul>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-sm col-lg-3 mt-3 pt-3 p-lg-3 m-lg-5 bg-light ">
+                    <div>
+                        <div>{isAdm === 'true' ?
+                            <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
+                            </p>
+                            : null}
                         </div>
-                    </div>
+                        <div id='linkContainer'>
+                            {references}
+                        </div>
 
-                    <div className="col mt-5">
+                        <div className='sidebar-picture'>
+                            {picture_url === null ? null :
+                                <div><img src={picture_url!} width="200" alt="kinderpartij"/></div>
+                            }
+                            <div className='picture-caption'>{picture_caption}</div>
+                        </div>
                         <div>
-                            {showPictureUrlEdit && leftBlockPage != null ? (
-                                <EditPictureUrlForm
-                                    page={leftBlockPage}
-                                    picture_url={pictureUrl}
-                                    pictureCaption={pictureCaption}
-                                    setPictureUrl={setPictureUrl}
-                                    setPictureCaption={setPictureCaption}
-                                    setPage={setPage}
-                                    togglePictureDone={togglePictureDone}
-                                />
-
-                            ) : null
-                            }
-                            {showLinkEdit ? (
-                                    <EditReferenceForm
-                                        pageNumber={pageNumber}
-                                        chapterNumber={chapterNumber}
-                                        key=''
-                                        setPage={setPage}
-                                        toggleEditDone={toggleEditDone}
-                                        toggleEditDoneParam={toggleEditDoneParam}
-                                    />
-                                )
-                                :
-                                null
+                            {
+                                isAdmin() === "true" ?
+                                    <div>
+                                        <button type="button"
+                                                className='btn btn-link mt-5 pl-3'
+                                                onClick={add_reference}>
+                                            Add reference
+                                        </button>
+                                        <button type="button"
+                                                className='btn btn-link mt-5'
+                                                onClick={edit_picture}>
+                                            Edit picture
+                                        </button>
+                                    </div> : null
                             }
                         </div>
-
-                        <div >
-                            <div className='photo'>
-                                <img alt="briefkaart lizzy" src="https://lizzyansingh.nl/pics/32-1.jpg"
-                                     width="500px"/>
-                            </div>
-                            <div className='textpage'>
-                                {/* TODO: this needs to change when others than myself get access to data entry */}
-
-                                <div dangerouslySetInnerHTML={{__html: pageText}}/>
-                            </div>
-                            <div className='textpage mt-5 '>
-                                <div>
-                                    {/* TODO: this needs to change when others than myself get access to data entry */}
-                                    <div dangerouslySetInnerHTML={{__html: blogText}}/>
-                                </div>
-                            </div>
+                        <div className='border border-dark mt-5'>
+                            <div className='help'>{t('help_title')}</div>
+                            <div className='help'>{t('help')}</div>
                         </div>
 
                     </div>
                 </div>
+
+                <div className="col mt-5 p-lg-3 m-lg-3 me-lg-5">
+                    <div>
+                        {showPictureUrlEdit && leftBlockPage != null ? (
+                            <EditPictureUrlForm
+                                page={leftBlockPage}
+                                picture_url={pictureUrl}
+                                pictureCaption={pictureCaption}
+                                setPictureUrl={setPictureUrl}
+                                setPictureCaption={setPictureCaption}
+                                setPage={setPage}
+                                togglePictureDone={togglePictureDone}
+                            />
+
+                        ) : null
+                        }
+                        {showLinkEdit ? (
+                                <EditReferenceForm
+                                    pageNumber={pageNumber}
+                                    chapterNumber={chapterNumber}
+                                    key=''
+                                    setPage={setPage}
+                                    toggleEditDone={toggleEditDone}
+                                    toggleEditDoneParam={toggleEditDoneParam}
+                                />
+                            )
+                            :
+                            null
+                        }
+                    </div>
+
+                    <div>
+                        <div className='photo-center'>
+                            <img className=' d-sm-none' alt="briefkaart lizzy"
+                                 src="https://lizzyansingh.nl/pics/32-1.jpg"
+                                 width="250px"/>
+                        </div>
+                        <div className='photo'>
+                            <img className=' d-none d-sm-block' alt="briefkaart lizzy"
+                                 src="https://lizzyansingh.nl/pics/32-1.jpg"
+                                 width="500px"/></div>
+                        <div className='textpage'>
+                            {/* TODO: this needs to change when others than myself get access to data entry */}
+
+                            <div dangerouslySetInnerHTML={{__html: pageText}}/>
+                        </div>
+                        <div className='textpage mt-5 '>
+                            <div>
+                                {/* TODO: this needs to change when others than myself get access to data entry */}
+                                <div dangerouslySetInnerHTML={{__html: blogText}}/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+        </div>
     )
 }
 

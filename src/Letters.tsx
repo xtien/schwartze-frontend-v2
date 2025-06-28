@@ -229,13 +229,13 @@ function Letters() {
 
             return (
                 <tr onClick={() => navigateTo(letterLink)}>
-                    <td className='text-nowrap'>{letter.number}</td>
+                    <td className='text-nowrap d-none d-lg-block'>{letter.number}</td>
                     <td className='text-nowrap'>{letter.date}</td>
                     <td>{senderName}</td>
-                    <td>{senderLocation}</td>
+                    <td className='d-none d-lg-block'>{senderLocation}</td>
                     <td>{recipientName}</td>
-                    <td>{recipientLocation}</td>
-                    <td>{letter.comment?.substring(0, 30)}</td>
+                    <td className='d-none d-lg-block'>{recipientLocation}</td>
+                    <td className='d-none d-lg-block'>{letter.comment?.substring(0, 30)}</td>
                 </tr>
             )
         });
@@ -301,12 +301,12 @@ function Letters() {
                 <Table>
                     <thead>
                     <tr>
-                        <th>Number</th>
+                        <th className='d-none d-lg-block'>Number</th>
                         <th>Date</th>
                         <th>Sender</th>
-                        <th>Sender Location</th>
+                        <th className='d-none d-lg-block'>Sender Location</th>
                         <th>Recipient</th>
-                        <th>Recipient Location</th>
+                        <th className='d-none d-lg-block'>Recipient Location</th>
                     </tr>
                     </thead>
                     <tbody>
