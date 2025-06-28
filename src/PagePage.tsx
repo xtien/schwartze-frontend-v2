@@ -33,7 +33,7 @@ const homeTextApi = new HomeTextApi(apiConfig)
 
 function PagePage() {
     const {t} = useTranslation();
-    const { i18n } = useTranslation();
+    const {i18n} = useTranslation();
 
     const cookies = new Cookies();
     const pNr: string = cookies.get('pageNumber');
@@ -62,7 +62,6 @@ function PagePage() {
     },)
     const [showPictureUrlEdit, setShowPictureUrlEdit] = useState(false)
     const [showLinkEdit, setShowLinkEdit] = useState(false)
-    const [currentLanguage] = useState(lang)
 
     useEffect(() => {
         getPage(chapterNumber, pageNumber)
@@ -209,24 +208,6 @@ function PagePage() {
         setShowLinkEdit(true)
     }
 
-    function switchLanguage() {
-        const request: PageTextRequest = {
-            chapter: chapterNumber,
-            page: pageNumber,
-            language: lang
-        };
-
-        homeTextApi.switchLanguage(request).then(response => {
-            if (response.data.text != null) {
-                setText(response.data.text)
-            }
-        }).catch(
-            error => {
-                console.log(error)
-            }
-        )
-    }
-
     function toggleEditDoneParam() {
         setShowLinkEdit(false)
         getPage(chapterNumber, pageNumber)
@@ -306,10 +287,6 @@ function PagePage() {
         }
     }
 
-    const otherLanguage = currentLanguage === 'nl' ? 'en' : 'nl';
-    const otherLanguageDisplay = otherLanguage.toLocaleUpperCase();
-
-
     let picture_url = page != null ? page!.picture_url : '';
     const picture_caption = page != null ? page!.picture_caption : '';
 
@@ -338,7 +315,8 @@ function PagePage() {
     }
 
     return (
-        <div className=''>
+        <div className='container-fluid'>
+            <div className='d-md-none m-4'>  <Link to='/get_content/' className='linkStyle'>{t('content')}</Link></div>
             <table width='100%'>
                 <tbody>
                 <tr>
@@ -377,47 +355,45 @@ function PagePage() {
                 </tbody>
             </table>
 
-            <div className="float-container">
-                <div className="float-child-left">
-                    <div className="row align-items-start">
-                        <div id="sidebar-wrapper">
-                            <ul className="sidebar-nav">
-                                <li className="sidebar-brand"></li>
-                                <div id='linkContainer' className='ml-3'>
-                                    {references}
+            <div className="row">
+                <div className="col-3 mt-5 ms-5 d-none d-lg-block">
+                    <div >
+                        <ul className="sidebar-nav">
+                            <li className="sidebar-brand"></li>
+                            <div id='linkContainer' className='ml-3'>
+                                {references}
+                            </div>
+                            <div className='ml-3 mt-5'>
+                                <Link to='/get_content/' className='linkStyle'>{t('content')}</Link>
+                            </div>
+                            <div className="row align-items-end mt-5">
+                                <div className='sidebar-picture'>
+                                    <div><img src={picture_url} width="200" alt=""/></div>
+                                    <div className='picture-caption'>{picture_caption}</div>
                                 </div>
-                                <div className='ml-3 mt-5'>
-                                    <Link to='/get_content/' className='linkStyle'>{t('content')}</Link>
+                                <div>
+                                    {
+                                        isAdmin() === "true" ?
+                                            <div>
+                                                <button type="button"
+                                                        className='btn btn-link mt-5'
+                                                        onClick={add_reference}>
+                                                    Add reference
+                                                </button>
+                                                <button type="button"
+                                                        className='btn btn-link mt-5'
+                                                        onClick={edit_picture}>
+                                                    edit picture
+                                                </button>
+                                            </div>
+                                            : null
+                                    }
                                 </div>
-                                <div className="row align-items-end mt-5">
-                                    <div className='sidebar-picture'>
-                                        <div><img src={picture_url} width="200" alt=""/></div>
-                                        <div className='picture-caption'>{picture_caption}</div>
-                                    </div>
-                                    <div>
-                                        {
-                                            isAdmin() === "true" ?
-                                                <div>
-                                                    <button type="button"
-                                                            className='btn btn-link mt-5'
-                                                            onClick={add_reference}>
-                                                        Add reference
-                                                    </button>
-                                                    <button type="button"
-                                                            className='btn btn-link mt-5'
-                                                            onClick={edit_picture}>
-                                                        edit picture
-                                                    </button>
-                                                </div>
-                                                : null
-                                        }
-                                    </div>
-                                </div>
-                            </ul>
-                        </div>
+                            </div>
+                        </ul>
                     </div>
                 </div>
-                <div className="float-child-right">
+                <div className="col me-5">
                     <div>
                         {showPictureUrlEdit ? (
 
@@ -453,17 +429,6 @@ function PagePage() {
                             </div>
                         }
                     </div>
-                    <div>
-                        <p className='page_text'>
-                            <button type="button"
-                                    className='btn btn-link'
-                                    onClick={switchLanguage}>
-                                {otherLanguageDisplay}
-                            </button>
-
-                        </p>
-                    </div>
-
                 </div>
             </div>
         </div>

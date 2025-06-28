@@ -85,9 +85,29 @@ function App() {
         <div className='container-fluid h-auto mt-3 '>
 
             <BrowserRouter>
-                <div className="d-block d-sm-none"> {/* large screens */}
+                <div className='container-fluid h-auto mt-3'>
+                    <div className="d-block d-sm-none">
+                        <div className='col float-end'>
+                            <Form.Select
+                                defaultValue={i18n.resolvedLanguage}
+                                onChange={e => {
+                                    i18n.changeLanguage(e.target.value);
+                                }}
+                            >
+                                {languages.map(({code, name, countryCode}) => {
+                                    return (
+                                        <option
+                                            key={countryCode}
+                                            value={code}
+                                        >
+                                            {name}
+                                        </option>
+                                    );
+                                })}
+                            </Form.Select></div>
+                    </div>
                     <h1>{t('titel')}</h1>
-                    <table>
+                    <table className='mt-3'>
                         <tbody>
                         <tr>
                             <td>
@@ -147,8 +167,8 @@ function App() {
                         </tbody>
                     </table>
                 </div>
-                <div className="d-none d-sm-block">  {/* small screens */}
-                    <table >
+                <div className="d-none d-sm-block">
+                    <table>
                         <tbody>
                         <tr>
                             <td>
