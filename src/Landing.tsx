@@ -253,7 +253,7 @@ function Landing() {
 
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-7 ms-5 bg-light ">
+                    <div className="col-sm-1 col-lg-3 ms-5 bg-light ">
                         <div >
                             <ul className="bg-light mt-5">
                                 <div>{isAdm === 'true' ?
@@ -267,7 +267,7 @@ function Landing() {
 
                                 <div className='sidebar-picture'>
                                     {picture_url === null ? null :
-                                        <div><img src={picture_url!} width="200" alt=""/></div>
+                                        <div><img src={picture_url!} width="200" alt="kinderpartij"/></div>
                                     }
                                     <div className='picture-caption'>{picture_caption}</div>
                                 </div>
@@ -283,7 +283,7 @@ function Landing() {
                                                 <button type="button"
                                                         className='btn btn-link mt-5'
                                                         onClick={edit_picture}>
-                                                    edit picture
+                                                    Edit picture
                                                 </button>
                                             </div> : null
                                     }
@@ -295,6 +295,7 @@ function Landing() {
                             </ul>
                         </div>
                     </div>
+
                     <div className="col mt-5">
                         <div>
                             {showPictureUrlEdit && leftBlockPage != null ? (
@@ -325,7 +326,7 @@ function Landing() {
                             }
                         </div>
 
-                        <div className='container'>
+                        <div >
                             <div className='photo'>
                                 <img alt="briefkaart lizzy" src="https://lizzyansingh.nl/pics/32-1.jpg"
                                      width="500px"/>

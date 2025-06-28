@@ -155,8 +155,8 @@ text {
 .textpage {
   font-family: Garamond;
   font-size: 20px;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .wide {
@@ -330,8 +330,8 @@ h3 {
 }
 
 .sidebar-picture {
-  margin-top: 100px;
-  margin-left: 25px;
+  margin-top: 0px;
+  margin-left: 0px;
 }
 
 .picture-caption {
