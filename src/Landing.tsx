@@ -213,11 +213,8 @@ function Landing() {
         }
     }
 
-
     const isAdm = isAdmin();
-
     const caption: string | undefined = leftBlockPage != null && leftBlockPage?.picture_caption != null ? leftBlockPage!.picture_caption : ''
-
     const picture_caption = caption != null ? caption! : '';
 
     let picture_url = null;
@@ -254,11 +251,11 @@ function Landing() {
 
     return (
 
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row">
-                    <div className="col col-lg-4">
+                    <div className="col-7 ms-5 bg-light ">
                         <div >
-                            <ul className="sidebar-nav ms-5 mt-5">
+                            <ul className="bg-light mt-5">
                                 <div>{isAdm === 'true' ?
                                     <p className='nav-link'><Link to={'/admin/'}>Admin</Link>
                                     </p>
@@ -298,7 +295,7 @@ function Landing() {
                             </ul>
                         </div>
                     </div>
-                    <div className="col mt-5 ">
+                    <div className="col mt-5">
                         <div>
                             {showPictureUrlEdit && leftBlockPage != null ? (
                                 <EditPictureUrlForm
