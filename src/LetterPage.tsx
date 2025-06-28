@@ -169,7 +169,9 @@ function LetterPage() {
     let linkToEditText = '';
 
     const listItems = imageData.map((d) => (
-        <div className='letter_image ml-4 mt-5'><img alt="original letter" src={`data:image/jpeg;base64,${d}`}/>
+        <div className='mt-5'>
+            <img className="img-fluid w-20" src={`data:image/jpeg;base64,${d}`}/>      {/*     small devices */}
+
         </div>));
     const senderList = letter.senders.map((s: Person) =>
         <span><Link to={`/get_person_details/${s.id}`}
@@ -210,9 +212,7 @@ function LetterPage() {
     }
 
     return (
-        <>
-
-            <div className='container mt-3'>
+            <div className='container-fluid mt-3'>
                 {
                     error != null && showError ?
                         <div className='alert alert-danger' role='alert'></div>
@@ -223,14 +223,14 @@ function LetterPage() {
 
                     <div>
                         <div className="row">
-                            <div className='col-sm-1'>
+                            <div className='col'>
                                 <button type="button"
                                         className='btn btn-link'
                                         onClick={previous}>
                                     <img src={arrow_left} alt="back"/>
                                 </button>
                             </div>
-                            <div className='col-sm-2'>
+                            <div className='col'>
                                 <div>
                                     {
                                         isAdmin() === "true" ?
@@ -241,7 +241,7 @@ function LetterPage() {
                                             </button> : null}
                                 </div>
                             </div>
-                            <div className='col-sm-2'>
+                            <div className='col'>
                                 <div>
                                     {
                                         isAdmin() === "true" ?
@@ -252,7 +252,7 @@ function LetterPage() {
                                             </button> : null}
                                 </div>
                             </div>
-                            <div className='col-sm-2'>
+                            <div className='col'>
                                 {
                                     isAdmin() === "true" ?
                                         <button
@@ -262,7 +262,7 @@ function LetterPage() {
                                         </button> : null}
 
                             </div>
-                            <div className='col-sm-2'>
+                            <div className='col'>
                                 {
                                     isAdmin() === "true" ?
                                         <button
@@ -272,7 +272,7 @@ function LetterPage() {
                                         </button> : null}
 
                             </div>
-                            <div className='col-sm-1'>
+                            <div className='col'>
                                 <button
                                     className="btn btn-link"
                                     onClick={next}>
@@ -296,7 +296,7 @@ function LetterPage() {
                             </div>
                         </div> : null}
                 </div>
-                <div className='letter'>
+                <div className='bg-light'>
                     <table>
                         <tbody>
                         <tr>
@@ -346,12 +346,12 @@ function LetterPage() {
                     </table>
                 </div>
 
-                <div className='letter'>
+                <div className='mt-5 mb-5'>
                     {letterText != null && letterText != null ?
                         <div
                             dangerouslySetInnerHTML={{__html: letterText != null && letterText != null ? letterText : ''}}/>
                         : null}
-                    <div className='textpage mt-5 ml-5'>
+                    <div className=''>
                         {letter.text != null && letter.text.text_string != undefined && Util.isNotEmpty(letter.text.text_string) ?
                             <div>
                                 {/* TODO: this needs to change when others than myself get access to data entry */}
@@ -374,19 +374,19 @@ function LetterPage() {
 
 
                     {isAdmin() === "true" ?
-                        <div className='mb-5 mt-5 ml-5'>
+                        <div className=''>
                             <Link to={linkToEditText}>
                                 {t('editText')}
                             </Link>
                         </div>
                         : null}
 
-                    <div className='list_of_letters'>
+                    <div >
                         {listItems}
                     </div>
                 </div>
             </div>
-        </>
+
     )
 
     function CommentForm({letter, toggleEditDone, setLetter}: CommentFormProps) {
