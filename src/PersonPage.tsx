@@ -191,8 +191,8 @@ function PersonPage() {
     }
 
     return (
-        <>
-            <Modal show={showDialog} onHide={handleClose}>
+        <div className='container-fluid me-sm-5 ms-sm-5'>
+        <Modal show={showDialog} onHide={handleClose}>
                 <Modal.Body>{t('letterRemoved')}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -354,7 +354,7 @@ function PersonPage() {
 
                 </div>
             }
-        </>
+        </div>
     )
 }
 

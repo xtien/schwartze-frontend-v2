@@ -175,15 +175,15 @@ function LetterPage() {
         </div>));
     const senderList = letter.senders.map((s: Person) =>
         <span><Link to={`/get_person_details/${s.id}`}
-                    className='linkStyle'>{s.nick_name} {s.tussenvoegsel} {s.last_name} </Link> </span>);
+                    className='linkStyle me-2'>{s.nick_name} {s.tussenvoegsel} {s.last_name} </Link> </span>);
     const recipientList = letter.recipients.map((r: Person) => <span><Link
         to={`/get_person_details/${r.id}`}
-        className='linkStyle'>{r.nick_name} {r.tussenvoegsel} {r.last_name} </Link> </span>);
+        className='linkStyle me-2'>{r.nick_name} {r.tussenvoegsel} {r.last_name} </Link> </span>);
 
     const senderLocationList = letter.sender_locations.map((s: MyLocation) => <span><Link
-        to={`/get_location_details/${s.id}`} className='linkStyle'>{s.location_name} </Link> </span>);
+        to={`/get_location_details/${s.id}`} className='linkStyle ms-2'>{s.location_name} </Link> </span>);
     const recipientLocationList = letter.recipient_locations.map((s: MyLocation) => <span><Link
-        to={`/get_location_details/${s.id}`} className='linkStyle'>{s.location_name} </Link> </span>);
+        to={`/get_location_details/${s.id}`} className='linkStyle ms-2'>{s.location_name} </Link> </span>);
 
     if (letter != null) {
         linkTo = '/get_text/letter/' + letter.id;
@@ -212,8 +212,8 @@ function LetterPage() {
     }
 
     return (
-            <div className='container-fluid mt-3 '>
-                {
+        <div className='container-fluid me-sm-5 ms-sm-5'>
+        {
                     error != null && showError ?
                         <div className='alert alert-danger' role='alert'></div>
                         : null
