@@ -105,67 +105,68 @@ function App() {
                                     );
                                 })}
                             </Form.Select></div>
-                    </div>
-                    <h1>{t('titel')}</h1>
-                    <table className='mt-3'>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <p className='navbar-nav'>
-                                    <Link to='/' className='linkStyle'>{t('home')}</Link>
-                                </p>
-                            </td>
-                            <td>
-                                <p className='navbar-nav textStyle'>
-                                    <Link to='/get_letters/0' className='linkStyle'>{t('letters')}</Link>
-                                </p>
-                            </td>
-                            <td>
-                                <p className='navbar-nav textStyle'><Link to='/get_people/'
-                                                                          className='linkStyle'>{t('people')}</Link>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p className='navbar-nav textStyle'>
-                                    <Link to='/get_locations/' className='linkStyle'>{t('locations')}</Link>
-                                </p>
-                            </td>
-                            <td>
-                                <p className='navbar-nav textStyle'>
-                                    <Link to='/references/' className='linkStyle'>{t('references')}</Link>
-                                </p>
-                            </td>
-                            <td>
-                                <p className='navbar-nav textStyle'>
-                                    <Link to='/topics/' className='linkStyle'>{t('topics')}</Link>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p className='navbar-nav textStyle'>
-                                    <Link to='/get_page/1/1' className='linkStyle'>{t('pages')}</Link>
-                                </p>
-                            </td>
-                            <td>
-                                {/* Admin should only be visible after login. toggle enables Login.js
-                                               to render App.js by setting its state  */}
-                                {isAdmin() === 'true' ?
-                                    <p className='navbar-nav textStyle'>
-                                        <Link to={'/admin/'} className='linkStyle'>{t('admin')}</Link>
+
+                        <h1>{t('titel')}</h1>
+                        <table className='mt-3'>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <p className='navbar-nav'>
+                                        <Link to='/' className='linkStyle'>{t('home')}</Link>
                                     </p>
-                                    : null}
-                            </td>
-                            <td>
-                                <p className='navbar-nav textStyle'>
-                                    <Link to='/about/' className='linkStyle'>{t('about')}</Link>
-                                </p>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                </td>
+                                <td>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/get_letters/0' className='linkStyle'>{t('letters')}</Link>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p className='navbar-nav textStyle'><Link to='/get_people/'
+                                                                              className='linkStyle'>{t('people')}</Link>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/get_locations/' className='linkStyle'>{t('locations')}</Link>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/references/' className='linkStyle'>{t('references')}</Link>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/topics/' className='linkStyle'>{t('topics')}</Link>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/get_page/1/1' className='linkStyle'>{t('pages')}</Link>
+                                    </p>
+                                </td>
+                                <td>
+                                    {/* Admin should only be visible after login. toggle enables Login.js
+                                               to render App.js by setting its state  */}
+                                    {isAdmin() === 'true' ?
+                                        <p className='navbar-nav textStyle'>
+                                            <Link to={'/admin/'} className='linkStyle'>{t('admin')}</Link>
+                                        </p>
+                                        : null}
+                                </td>
+                                <td>
+                                    <p className='navbar-nav textStyle'>
+                                        <Link to='/about/' className='linkStyle'>{t('about')}</Link>
+                                    </p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div className="d-none d-sm-block">
                     <table>

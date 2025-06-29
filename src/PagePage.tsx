@@ -13,7 +13,7 @@ import three_arrow_left from "./images/three_arrow_left.png";
 import arrow_left from "./images/arrow_left.png";
 import {Link} from "react-router-dom";
 import {apiConfig} from "./service/AuthenticationService.tsx";
-import {AdminPageApi, HomeTextApi, PageApi} from './generated-api/api.ts';
+import {AdminPageApi, PageApi} from './generated-api/api.ts';
 import {useLocation} from "react-router";
 import type {
     Page, PageReference,
@@ -29,7 +29,6 @@ import {useTranslation} from "react-i18next";
 
 const pageApi = new PageApi(apiConfig);
 const adminPageApi = new AdminPageApi(apiConfig);
-const homeTextApi = new HomeTextApi(apiConfig)
 
 function PagePage() {
     const {t} = useTranslation();
