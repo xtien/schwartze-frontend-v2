@@ -71,8 +71,6 @@ function LetterPage() {
     const [delete_letter, setDelete_letter] = useState(false)
     const [showError, setShowError] = useState(false)
     const [error, setError] = useState<string>()
-    // const [goSearch, setGoSearch] = useState(false)
-    // const [search_term, setSearch_term] = useState('')
     const [translated, setTranslated] = useState(0)
 
     const {i18n} = useTranslation();
@@ -160,10 +158,6 @@ function LetterPage() {
             console.log(error)
         })
     }
-
-    // if (goSearch) {
-    //     return <Navigate to={'/search_letters/' + search_term}/>
-    // }
 
     let linkTo = '';
     let linkToEditText = '';

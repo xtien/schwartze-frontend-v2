@@ -157,20 +157,6 @@ function Letters() {
         setSearchTerm(event.target.value);
     }
 
-    function handleListOrder(event: { target: { value: string }; }) {
-        setOrderBy(orderBy === LettersRequestOrderByEnum.Date ? LettersRequestOrderByEnum.Number : LettersRequestOrderByEnum.Date)
-        const request = {
-            'number': parseInt(event.target.value)
-        }
-        lettersApi.getLetter(request).then((response) => {
-            if (response.data.letter != null) {
-                setLetters([response.data.letter])
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
-
     function handleSearchSubmit() {
         navigate('/search_letters/' + search_term)
     }
@@ -273,19 +259,7 @@ function Letters() {
                         </div>
                 }
 
-                <div className='col-sm-3'>
-                    <form onSubmit={letterbynumber} className='mb-3 mt-3'>
-                        <input
-                            type="input"
-                            id="nr"
-                            placeholder={t('naar_nummer')}
-                            onChange={handleListOrder}
-                            className="form-control w-75"
-                        />
-                    </form>
-                </div>
-
-                <div className='col-sm-6'>
+                <div className='col-sm-5'>
                     <form onSubmit={handleSearchSubmit} className='mb-3 mt-3'>
                         <input
                             type="input"
