@@ -82,11 +82,11 @@ function App() {
     ];
 
     return (
-        <div className='container-fluid h-auto mt-3 '>
+        <div className='container-fluid h-auto position-absolute top-0 end-0 mt-3'>
 
-            <BrowserRouter>
-                <div className='container-fluid h-auto mt-3'>
-                    <div className="d-block d-sm-none">
+        <BrowserRouter>
+                <div className='container-fluid h-auto '>
+                    <div className="d-block d-sm-none">   {/*only xs*/}
                         <div className='col float-end'>
                             <Form.Select
                                 defaultValue={i18n.resolvedLanguage}
@@ -105,7 +105,6 @@ function App() {
                                     );
                                 })}
                             </Form.Select></div>
-
                         <h1>{t('titel')}</h1>
                         <table className='mt-3'>
                             <tbody>
@@ -168,12 +167,12 @@ function App() {
                         </table>
                     </div>
                 </div>
-                <div className="d-none d-sm-block">
+                <div className="d-none d-sm-block">   {/*  hidden below sm    */}
                     <table>
                         <tbody>
                         <tr>
                             <td>
-                                <div className="position-absolute top-0 end-0 m-lg-3">
+                                <div className="position-absolute top-0 end-0 m-xl-3">
                                     <Form.Select
                                         defaultValue={i18n.resolvedLanguage}
                                         onChange={e => {
@@ -193,7 +192,7 @@ function App() {
                                     </Form.Select>
                                 </div>
                                 <h1 className='px-5'>{t('titel')}</h1>
-                                <nav className="navbar navbar-expand-lg navbar-light px-5">
+                                <nav className="navbar navbar-expand-xl navbar-light px-5">
                                     <p className='navbar-nav'>
                                         <Link to='/' className='linkStyle'>{t('home')}</Link>
                                     </p>

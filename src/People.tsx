@@ -25,7 +25,7 @@ function People() {
 
     useEffect(() => {
         // Send pageview with a custom path
-        ReactGA.send({ hitType: "pageview", page: "/get_people", title: "People" });
+        ReactGA.send({hitType: "pageview", page: "/get_people", title: "People"});
     }, [])
 
     const [people, setPeople] = useState<Person[]>([]);
@@ -89,7 +89,7 @@ function People() {
 
     function renderPeople() {
         return people.map(function (person) {
-            const personLink = '/get_person_details/' + person.id ;
+            const personLink = '/get_person_details/' + person.id;
 
 
             return (
@@ -103,8 +103,7 @@ function People() {
     }
 
     return (
-
-        <div className='container'>
+        <div className='container-fluid mt-5 me-sm-5 ms-sm-5'>
             <div className="row">
                 <div className='col-sm-5'>
                     <button

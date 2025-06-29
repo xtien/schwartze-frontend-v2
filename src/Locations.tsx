@@ -49,8 +49,7 @@ function Locations() {
     }
 
     return (
-        <div className='container-fluid mt5'>
-            <div className=''>
+        <div className='container-fluid mt-5 me-sm-5 ms-sm-5'>
                 <Table>
                     <thead>
                     <tr>
@@ -63,7 +62,7 @@ function Locations() {
                     </tbody>
                 </Table>
             </div>
-        </div>
+
     )
 }
 

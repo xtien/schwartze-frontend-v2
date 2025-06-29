@@ -86,11 +86,10 @@ function TextPage() {
                     )))))
         );
 
-
     return (
-        <div className='container-fluid  m-3 pe-5 ps-5'>
+        <div className='container-fluid mt-5 me-sm-5 ms-sm-5'>
 
-            <div className='col-lg-8'>
+        <div className='col-lg-8'>
 
                 {link != null ?
                     <div>

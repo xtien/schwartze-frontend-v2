@@ -41,7 +41,7 @@ function Letters() {
 
     useEffect(() => {
         // Send pageview with a custom path
-        ReactGA.send({ hitType: "pageview", page: "/get_letters", title: "Letters Page" });
+        ReactGA.send({hitType: "pageview", page: "/get_letters", title: "Letters Page"});
     }, [])
 
     const location = useLocation()
@@ -49,9 +49,9 @@ function Letters() {
     const id = params[1]
     const searchTerm = params[1]
     const urlPart = params[0]
-    const isPerson : boolean = urlPart.includes('person') ? true : false
-    const isLocation : boolean = urlPart.includes('location') ? true : false
-    const isSearch : boolean = urlPart.includes('search_letters') ? true : false
+    const isPerson: boolean = urlPart.includes('person') ? true : false
+    const isLocation: boolean = urlPart.includes('location') ? true : false
+    const isSearch: boolean = urlPart.includes('search_letters') ? true : false
     const toFromString = params[2]
 
     const navigate = useNavigate();
@@ -63,7 +63,7 @@ function Letters() {
     const [search_term, setSearchTerm] = React.useState('');
 
     function getLetters(orderBy: LettersRequestOrderByEnum) {
-        if (isPerson ) {
+        if (isPerson) {
             function getPerson(id: string) {
                 const personRequest: GetPersonRequest = {
                     id: parseInt(id),
@@ -114,7 +114,7 @@ function Letters() {
 
             getLocation(id)
 
-        } else if(isSearch){
+        } else if (isSearch) {
             let postData: SearchRequest = {
                 search_term: searchTerm,
             };
@@ -126,8 +126,7 @@ function Letters() {
             }).catch((error) => {
                 console.log(error)
             })
-        }
-        else         {
+        } else {
             const request: LettersRequest = {
                 orderBy: orderBy
             }
@@ -235,20 +234,19 @@ function Letters() {
                     <td className='d-none d-lg-block'>{senderLocation}</td>
                     <td>{recipientName}</td>
                     <td className='d-none d-lg-block'>{recipientLocation}</td>
-                    <td className='d-none d-lg-block'>{letter.comment?.substring(0, 30)}</td>
                 </tr>
             )
         });
     }
 
     return (
-        <div className='container'>
+        <div className='container-fluid me-sm-5 ms-sm-5'>
             <div className="row">
-                <div className='mt-3 m-lg-5'>
-                    {person != null ? (strings.personLettersText + " " + (toFrom === PersonLettersRequestToFromEnum.From ? strings.from : strings.to) + ' ' + createFullName(person)) : ''}
-                    {myLocation != null ? (strings.locationLettersText + ' ' + myLocation.name) : ''}
-
-                </div>
+                {person != null || myLocation != null ?
+                    <div className='mt-3 m-lg-5'>
+                        {person != null ? (strings.personLettersText + " " + (toFrom === PersonLettersRequestToFromEnum.From ? strings.from : strings.to) + ' ' + createFullName(person)) : ''}
+                        {myLocation != null ? (strings.locationLettersText + ' ' + myLocation.name) : ''}
+                    </div> : null}
                 {
                     letters.length < 10 ? null :
                         <div className='col-sm-7'>
@@ -301,12 +299,12 @@ function Letters() {
                 <Table>
                     <thead>
                     <tr>
-                        <th className='d-none d-lg-block'>Number</th>
-                        <th>Date</th>
-                        <th>Sender</th>
-                        <th className='d-none d-lg-block'>Sender Location</th>
-                        <th>Recipient</th>
-                        <th className='d-none d-lg-block'>Recipient Location</th>
+                        <th className='d-none d-lg-block'>{t('number')}</th>
+                        <th>{t('date')}</th>
+                        <th>{t('sender')}</th>
+                        <th className='d-none d-lg-block'>{t('senderLocation')}</th>
+                        <th>{t('recipient')}</th>
+                        <th className='d-none d-lg-block'>{t('recipientLocation')}</th>
                     </tr>
                     </thead>
                     <tbody>

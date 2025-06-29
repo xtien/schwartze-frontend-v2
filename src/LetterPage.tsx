@@ -170,7 +170,7 @@ function LetterPage() {
 
     const listItems = imageData.map((d) => (
         <div className='mt-5'>
-            <img className="img-fluid w-20" src={`data:image/jpeg;base64,${d}`}/>      {/*     small devices */}
+            <img className="img-fluid" src={`data:image/jpeg;base64,${d}`}/>
 
         </div>));
     const senderList = letter.senders.map((s: Person) =>
@@ -212,7 +212,7 @@ function LetterPage() {
     }
 
     return (
-            <div className='container-fluid mt-3'>
+            <div className='container-fluid mt-3 '>
                 {
                     error != null && showError ?
                         <div className='alert alert-danger' role='alert'></div>

@@ -118,8 +118,8 @@ function Topics() {
 
     return (
 
-        <div className='container'>
-            {showLinkEdit ? (
+        <div className='container-fluid mt-5 me-sm-5 ms-sm-5'>
+        {showLinkEdit ? (
                     <EditLinkForm
                         subject={subject}
                         setShowEditSubject={setShowLinkEdit}

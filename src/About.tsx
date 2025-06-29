@@ -18,12 +18,10 @@ export function About() {
         ReactGA.send({ hitType: "pageview", page: "/about", title: "About Page" });
     }, [])
 
-
     return (
-        <div className="container">
-            <div className="row align-items-start">
+        <div className='container-fluid me-sm-5 ms-sm-5'>
+        <div className="row align-items-start">
                 <div className="textpage mt-5 m-lg-5"><p>{t('aboutText')}</p></div>
-                {/*<div className="textpage m-lg-5">{t('siteVersion} {process.env.REACT_APP_VERSION}</div>*/}
                 <div className="textpage m-lg-5"><Link to={"/get_page/1/1"}>{t('more_about_site')}</Link></div>
                 <div className="textpage m-lg-5"><a href="https://christine.nl/about">{t('aboutChristine')}</a></div>
             </div>

@@ -127,9 +127,9 @@ function ReferencesPage() {
 
     return (
 
-        <div className='container'>
+        <div className='container-fluid mt-5 me-sm-5 ms-sm-5'>
 
-            <div className='mt-5 topics'>
+        <div className='mt-5 topics'>
                 <h3>{t('references')}</h3>
                 {showLinkEdit ? null :
                     <div id='linkContainer'>
@@ -177,13 +177,11 @@ function ReferencesPage() {
     )
 }
 
-
 function EditLinkForm({type, link_id, link_name, link_url}: EditReferenceLinkFormProps) {
     const [_link_name, setLinkName] = useState(link_name);
     const [_link_url, setLinkUrl] = useState(link_url);
     const [_link_id] = useState(link_id);
     const [_type] = useState(type);
-
 
     function handleLinkSubmit() {
 
