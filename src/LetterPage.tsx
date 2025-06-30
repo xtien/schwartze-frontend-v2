@@ -349,7 +349,7 @@ function LetterPage() {
                 {letter != null && letter.text != null && letter.text.text_string != undefined ?
                     <div>
                         <div className='mt-5'>{t('remark')}</div>
-                        <div className='fst-italic pt-3 pb-3 mb-3 bg-light'>
+                        <div className='fst-italic pt-3 pb-1 mb-3 bg-light'>
                             {letter.text != null && letter.text.text_string != undefined && Util.isNotEmpty(letter.text.text_string) ?
                                 <div>
                                     {/* TODO: this needs to change when others than myself get access to data entry */}
@@ -363,9 +363,12 @@ function LetterPage() {
                                         </p>
                                         : null}
                                 </div> : null}
+                            {letter !=null && letter.comment != null ?
                             <div className='remark'>
                                 {letter.comment}
                             </div>
+                                : null
+                            }
                         </div>
                     </div>
                     : null
