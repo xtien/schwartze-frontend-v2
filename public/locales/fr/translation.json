@@ -88,6 +88,8 @@
   "addTopic": "Ajouter un sujet",
   "linknaam": "Nom du lien",
   "link_url": "URL du lien",
-  "translateLetter": "Traduire la lettre"
+  "translateLetter": "Traduire la lettre",
+  "number": "Numéro",
+  "comments": "Commentaires"
 }
 

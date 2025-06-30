@@ -88,5 +88,7 @@
   "addTopic": "Agregar tema",
   "linknaam": "Nombre del enlace",
   "link_url": "URL del enlace",
-  "translateLetter": "Traducir carta"
+  "translateLetter": "Traducir carta",
+  "number": "Número",
+  "comments": "Comentarios"
 }
