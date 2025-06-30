@@ -207,181 +207,183 @@ function LetterPage() {
 
     return (
         <div className='container-fluid me-sm-5 ms-sm-5'>
-        {
-                    error != null && showError ?
-                        <div className='alert alert-danger' role='alert'></div>
-                        : null
-                }
+            {
+                error != null && showError ?
+                    <div className='alert alert-danger' role='alert'></div>
+                    : null
+            }
 
-                {showEdit ? null : (
-
-                    <div>
-                        <div className="row">
-                            <div className='col'>
-                                <button type="button"
-                                        className='btn btn-link'
-                                        onClick={previous}>
-                                    <img src={arrow_left} alt="back"/>
-                                </button>
-                            </div>
-                            <div className='col'>
-                                <div>
-                                    {
-                                        isAdmin() === "true" ?
-                                            <button
-                                                className="btn btn-outline-success mybutton"
-                                                onClick={editComment}>
-                                                {t('editCommentLine')}
-                                            </button> : null}
-                                </div>
-                            </div>
-                            <div className='col'>
-                                <div>
-                                    {
-                                        isAdmin() === "true" ?
-                                            <button
-                                                className="btn btn-outline-warning mybutton ml-2"
-                                                onClick={editLetter}>
-                                                {t('editsenderRecipient')}
-                                            </button> : null}
-                                </div>
-                            </div>
-                            <div className='col'>
-                                {
-                                    isAdmin() === "true" ?
-                                        <button
-                                            className="btn btn-outline-warning mybutton "
-                                            onClick={deleteLetter}>
-                                            {t('deleteLetter')}
-                                        </button> : null}
-
-                            </div>
-                            <div className='col'>
-                                {
-                                    isAdmin() === "true" ?
-                                        <button
-                                            className="btn btn-outline-secondary mybutton  "
-                                            onClick={translateLetter}>
-                                            {t('translateLetter')}
-                                        </button> : null}
-
-                            </div>
-                            <div className='col'>
-                                <button
-                                    className="btn btn-link"
-                                    onClick={next}>
-                                    <img src={arrow_right} alt="forward"/>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                )}
+            {showEdit ? null : (
 
                 <div>
-                    {showEdit ?
-                        <div>
+                    <div className="row">
+                        <div className='col'>
+                            <button type="button"
+                                    className='btn btn-link'
+                                    onClick={previous}>
+                                <img src={arrow_left} alt="back"/>
+                            </button>
+                        </div>
+                        <div className='col'>
                             <div>
-                                <CommentForm
-                                    letter={letter}
-                                    toggleEditDone={toggleEditDone}
-                                    setLetter={setLetter}
-                                />
+                                {
+                                    isAdmin() === "true" ?
+                                        <button
+                                            className="btn btn-outline-success mybutton"
+                                            onClick={editComment}>
+                                            {t('editCommentLine')}
+                                        </button> : null}
                             </div>
-                        </div> : null}
+                        </div>
+                        <div className='col'>
+                            <div>
+                                {
+                                    isAdmin() === "true" ?
+                                        <button
+                                            className="btn btn-outline-warning mybutton ml-2"
+                                            onClick={editLetter}>
+                                            {t('editsenderRecipient')}
+                                        </button> : null}
+                            </div>
+                        </div>
+                        <div className='col'>
+                            {
+                                isAdmin() === "true" ?
+                                    <button
+                                        className="btn btn-outline-warning mybutton "
+                                        onClick={deleteLetter}>
+                                        {t('deleteLetter')}
+                                    </button> : null}
+
+                        </div>
+                        <div className='col'>
+                            {
+                                isAdmin() === "true" ?
+                                    <button
+                                        className="btn btn-outline-secondary mybutton  "
+                                        onClick={translateLetter}>
+                                        {t('translateLetter')}
+                                    </button> : null}
+
+                        </div>
+                        <div className='col'>
+                            <button
+                                className="btn btn-link"
+                                onClick={next}>
+                                <img src={arrow_right} alt="forward"/>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-                <div className='bg-light'>
-                    <table>
-                        <tbody>
+            )}
+
+            <div>
+                {showEdit ?
+                    <div>
+                        <div>
+                            <CommentForm
+                                letter={letter}
+                                toggleEditDone={toggleEditDone}
+                                setLetter={setLetter}
+                            />
+                        </div>
+                    </div> : null}
+            </div>
+            <div className='bg-light'>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td width="80">
+                            <div>
+                                {t('nummer')}
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                {letter.number}
+                            </div>
+                        </td>
+                    </tr>
+                    {letter.collectie != null ?
                         <tr>
                             <td width="80">
-                                <div>
-                                    {t('nummer')}
+                                <div className='mb-3'>
+                                    {t('collection')}
                                 </div>
                             </td>
-                            <td>
+                            <td colSpan={2}>
+                                {letter.collectie.name}
+                            </td>
+                        </tr>
+                        : null
+                    }
+                    <tr>
+                        <td>{t('from')}:</td>
+                        <td>{senderList}</td>
+                        <td>
+                            <div className='ml-3'>{senderLocationList}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{t('to')}:</td>
+                        <td>{recipientList}</td>
+                        <td>
+                            <div className='ml-3'>{recipientLocationList}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{t('date')}:</td>
+                        <td>{letter.date}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div className='mt-5 mb-5'>
+                {letterText != null && letterText != null ?
+                    <div
+                        dangerouslySetInnerHTML={{__html: letterText != null && letterText != null ? letterText : ''}}/>
+                    : null}
+
+                {letter != null && letter.text != null && letter.text.text_string != undefined ?
+                    <div>
+                        <div className='mt-5'>{t('remark')}</div>
+                        <div className='fst-italic pt-3 pb-3 mb-3 bg-light'>
+                            {letter.text != null && letter.text.text_string != undefined && Util.isNotEmpty(letter.text.text_string) ?
                                 <div>
-                                    {letter.number}
-                                </div>
-                            </td>
-                        </tr>
-                        {letter.collectie != null ?
-                            <tr>
-                                <td width="80">
-                                    <div className='mb-3'>
-                                        {t('collection')}
-                                    </div>
-                                </td>
-                                <td colSpan={2}>
-                                    {letter.collectie.name}
-                                </td>
-                            </tr>
-                            : null
-                        }
-                        <tr>
-                            <td>{t('from')}:</td>
-                            <td>{senderList}</td>
-                            <td>
-                                <div className='ml-3'>{senderLocationList}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{t('to')}:</td>
-                            <td>{recipientList}</td>
-                            <td>
-                                <div className='ml-3'>{recipientLocationList}</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{t('date')}:</td>
-                            <td>{letter.date}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className='mt-5 mb-5'>
-                    {letterText != null && letterText != null ?
-                        <div
-                            dangerouslySetInnerHTML={{__html: letterText != null && letterText != null ? letterText : ''}}/>
-                        : null}
-                    <div className='mt-5'>{t('remark')}</div>
-                    <div className='fst-italic pt-3 pb-3 mb-3 bg-light'>
-
-                        {letter.text != null && letter.text.text_string != undefined && Util.isNotEmpty(letter.text.text_string) ?
-                            <div>
-                                {/* TODO: this needs to change when others than myself get access to data entry */}
-
-                                {letter.text.text_string === undefined ? '' :
-                                    <div
-                                        dangerouslySetInnerHTML={{__html: letter.text.text_string.substring(0, 300)}}/>
-                                }
-
-                                {letter.text.text_string !== undefined && letter.text.text_string.length > 300 ?
-                                    <p>
-                                        <Link to={linkTo} className='mt-5 mb-5'> {t('meer')} </Link>
-                                    </p>
-                                    : null}
-                            </div> : null}
-                        <div className='remark'>
-                            {letter.comment}
+                                    {/* TODO: this needs to change when others than myself get access to data entry */}
+                                    {letter.text.text_string === undefined ? '' :
+                                        <div
+                                            dangerouslySetInnerHTML={{__html: letter.text.text_string.substring(0, 300)}}/>
+                                    }
+                                    {letter.text.text_string !== undefined && letter.text.text_string.length > 300 ?
+                                        <p>
+                                            <Link to={linkTo} className='mt-5 mb-5'> {t('meer')} </Link>
+                                        </p>
+                                        : null}
+                                </div> : null}
+                            <div className='remark'>
+                                {letter.comment}
+                            </div>
                         </div>
                     </div>
+                    : null
+                }
 
-
-                    {isAdmin() === "true" ?
-                        <div className=''>
-                            <Link to={linkToEditText}>
-                                {t('editText')}
-                            </Link>
-                        </div>
-                        : null}
-
-                    <div >
-                        {listItems}
+                {isAdmin() === "true" ?
+                    <div className=''>
+                        <Link to={linkToEditText}>
+                            {t('editText')}
+                        </Link>
                     </div>
+                    : null}
+
+                <div>
+                    {listItems}
                 </div>
             </div>
+        </div>
 
     )
 
