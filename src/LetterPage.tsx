@@ -345,7 +345,9 @@ function LetterPage() {
                         <div
                             dangerouslySetInnerHTML={{__html: letterText != null && letterText != null ? letterText : ''}}/>
                         : null}
-                    <div className=''>
+                    <div className='mt-5'>{t('remark')}</div>
+                    <div className='fst-italic pt-3 pb-3 mb-3 bg-light'>
+
                         {letter.text != null && letter.text.text_string != undefined && Util.isNotEmpty(letter.text.text_string) ?
                             <div>
                                 {/* TODO: this needs to change when others than myself get access to data entry */}

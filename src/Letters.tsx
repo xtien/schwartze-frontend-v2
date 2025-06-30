@@ -161,9 +161,6 @@ function Letters() {
         navigate('/search_letters/' + search_term)
     }
 
-    function letterbynumber() {
-    }
-
     function navigateTo(location: string) {
         navigate(location);
     }
@@ -233,8 +230,9 @@ function Letters() {
                         {person != null ? (strings.personLettersText + " " + (toFrom === PersonLettersRequestToFromEnum.From ? strings.from : strings.to) + ' ' + createFullName(person)) : ''}
                         {myLocation != null ? (strings.locationLettersText + ' ' + myLocation.name) : ''}
                     </div> : null}
-                {
-                    letters.length < 10 ? null :
+
+                <div className='d-none d-lg-block'>
+                    {letters.length < 10 ? null :
                         <div className='col-sm-7'>
                             <button
                                 className="btn btn-outline-secondary mybutton m-lg-3  mt-3"
@@ -257,7 +255,8 @@ function Letters() {
                                 {t('op_voornaam')}
                             </button>
                         </div>
-                }
+                    }
+                </div>
 
                 <div className='col-sm-5'>
                     <form onSubmit={handleSearchSubmit} className='mb-3 mt-3'>
